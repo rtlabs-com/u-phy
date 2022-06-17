@@ -17,6 +17,7 @@
 #include "bsp.h"
 #include "gpio.h"
 #include "osal.h"
+#include "math.h"
 
 static struct
 {
@@ -133,6 +134,13 @@ static void cb_sync (up_t * up)
 
    /* Process inputs */
    /* my_slot_data.io8.i8 = my_filter (my_slot_data.io8.i8); */
+
+#if 0
+   /* Simulate inpputs */
+   double t = tick_get();
+   my_slot_data.i8.i8 = 100 + 100 * sin (t/1000.0);
+   my_slot_data.io8.i8 = 80 + 80 * cos (t/800.0);
+#endif
 
    up_write_inputs (up);
 #endif
