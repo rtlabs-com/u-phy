@@ -24,6 +24,5 @@ add_executable(sample
 
 target_link_libraries(sample
   ${BSP}
-  core
   up
 )

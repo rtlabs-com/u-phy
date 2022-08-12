@@ -14,10 +14,12 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-#include "bsp.h"
-#include "gpio.h"
+/* #include "bsp.h" */
+/* #include "gpio.h" */
 #include "osal.h"
 #include "math.h"
+
+#include <stdio.h>
 
 static struct
 {
@@ -48,9 +50,6 @@ static up_signal_t slot_I8_inputs[] =
       .datatype = UP_DTYPE_UINT8,
       .bitlength = 8,
    },
-   {
-      .name = NULL,
-   },
 };
 
 static up_signal_t slot_IO8_inputs[] =
@@ -60,9 +59,6 @@ static up_signal_t slot_IO8_inputs[] =
       .ix = 1,
       .datatype = UP_DTYPE_UINT8,
       .bitlength = 8,
-   },
-   {
-      .name = NULL,
    },
 };
 
@@ -74,30 +70,28 @@ static up_signal_t slot_IO8_outputs[] =
       .datatype = UP_DTYPE_UINT8,
       .bitlength = 8,
    },
-   {
-      .name = NULL,
-   },
 };
 
 static up_slot_t slots[] =
 {
    {
       .name = "I8",
+      .n_inputs = NELEMENTS (slot_I8_inputs),
       .inputs = slot_I8_inputs,
    },
    {
       .name = "IO8",
+      .n_inputs = NELEMENTS (slot_IO8_inputs),
       .inputs = slot_IO8_inputs,
+      .n_outputs = NELEMENTS (slot_I8_inputs),
       .outputs = slot_IO8_outputs,
-   },
-   {
-      .name = NULL,
    },
 };
 
 static up_device_t device =
 {
    .name = "digio",
+   .n_slots = NELEMENTS (slots),
    .slots = slots,
 };
 
@@ -113,7 +107,7 @@ static void cb_avail (up_t * up)
 
 static void cb_sync (up_t * up)
 {
-#if 1
+#if 0
    /* Activate outputs */
    gpio_set (GPIO_LED_D6, my_slot_data.io8.o8 & BIT (0));
    gpio_set (GPIO_LED_D7, my_slot_data.io8.o8 & BIT (1));
@@ -136,14 +130,15 @@ static void cb_sync (up_t * up)
    /* my_slot_data.io8.i8 = my_filter (my_slot_data.io8.i8); */
 
 #if 0
-   /* Simulate inpputs */
+   /* Simulate inputs */
    double t = tick_get();
    my_slot_data.i8.i8 = 100 + 100 * sin (t/1000.0);
    my_slot_data.io8.i8 = 80 + 80 * cos (t/800.0);
 #endif
-
-   up_write_inputs (up);
 #endif
+
+   my_slot_data.i8.i8++;
+   up_write_inputs (up);
 }
 
 static up_cfg_t cfg =
@@ -154,13 +149,49 @@ static up_cfg_t cfg =
    .avail = cb_avail,
 };
 
-int main (void)
-{
-   up_t * up = up_init (&cfg);
+/* TODO: erpc callbacks have no arguments, keeping global instance for now */
+static up_t * up;
 
-   /* Start co-processor core (coprocessor reset) */
-   extern int core_main (up_t * up);
-   core_main (up);
+void upi_avail (void)
+{
+   cfg.avail (up);
+}
+
+void upi_sync (void)
+{
+   cfg.sync (up);
+}
+
+int main (int argc, char * argv[])
+{
+   int error;
+
+   if (argc != 2)
+   {
+      printf ("usage: %s <ip of uphycore>\n", argv[0]);
+      exit (EXIT_FAILURE);
+   }
+
+   up = up_init (&cfg);
+
+   error = up_tcp_transport_init (up, argv[1], 5150);
+   if (error)
+   {
+      printf ("Failed to bring up transport\n");
+      exit (EXIT_FAILURE);
+   }
+
+   error = up_rpc_init (up);
+   if (error)
+   {
+      printf ("Failed to connect\n");
+      exit (EXIT_FAILURE);
+   }
+
+   while(1)
+   {
+      os_usleep (1000 * 1000);
+   }
 
    return 0;
 }
