@@ -11,15 +11,21 @@
  ********************************************************************/
 
 #include "up_api.h"
+#include "options.h"
+
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-/* #include "bsp.h" */
-/* #include "gpio.h" */
 #include "osal.h"
 #include "math.h"
 
 #include <stdio.h>
+
+#if defined (__rtk__)
+#include "bsp.h"
+#include "shell.h"
+#include "gpio.h"
+#endif
 
 static struct
 {
@@ -162,17 +168,18 @@ void upi_sync (void)
    cfg.sync (up);
 }
 
-int main (int argc, char * argv[])
+int _cmd_start (int argc, char * argv[])
 {
    int error;
 
+   up = up_init (&cfg);
+
+#if defined (OPTION_TRANSPORT_TCP)
    if (argc != 2)
    {
       printf ("usage: %s <ip of uphycore>\n", argv[0]);
       exit (EXIT_FAILURE);
    }
-
-   up = up_init (&cfg);
 
    error = up_tcp_transport_init (up, argv[1], 5150);
    if (error)
@@ -180,6 +187,37 @@ int main (int argc, char * argv[])
       printf ("Failed to bring up transport\n");
       exit (EXIT_FAILURE);
    }
+#endif
+
+#if defined (__rtk__) && defined (OPTION_TRANSPORT_UART)
+   if (argc != 2)
+   {
+      printf ("usage: %s <port>\n", argv[0]);
+      exit (EXIT_FAILURE);
+   }
+
+   error = up_uart_transport_init (up, argv[1]);
+   if (error)
+   {
+      printf ("Failed to bring up transport\n");
+      exit (EXIT_FAILURE);
+   }
+#endif
+
+#if defined (__linux__) && defined (OPTION_TRANSPORT_UART)
+   if (argc != 2)
+   {
+      printf ("usage: %s <port>\n", argv[0]);
+      exit (EXIT_FAILURE);
+   }
+
+   error = up_serial_transport_init (up, argv[1]);
+   if (error)
+   {
+      printf ("Failed to bring up transport\n");
+      exit (EXIT_FAILURE);
+   }
+#endif
 
    error = up_rpc_init (up);
    if (error)
@@ -195,3 +233,31 @@ int main (int argc, char * argv[])
 
    return 0;
 }
+
+#if defined (__rtk__)
+
+const shell_cmd_t cmd_start =
+{
+   .cmd = _cmd_start,
+   .name = "start",
+   .help_short = "start uphy",
+   .help_long =
+   ""
+};
+
+SHELL_CMD (cmd_start);
+
+int main (int argc, char * argv[])
+{
+   return 0;
+}
+
+#else
+
+int main (int argc, char * argv[])
+{
+   setvbuf (stdout, NULL, _IONBF, 0);
+   _cmd_start (argc, argv);
+}
+
+#endif

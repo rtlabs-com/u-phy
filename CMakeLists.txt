@@ -22,6 +22,11 @@ add_executable(sample
   main.c
 )
 
+target_include_directories(sample
+  PRIVATE
+  ${CMAKE_BINARY_DIR}
+)
+
 target_link_libraries(sample
   ${BSP}
   up
