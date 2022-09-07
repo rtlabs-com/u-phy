@@ -10,21 +10,21 @@
  * See LICENSE file in the project root for full license information.
  ********************************************************************/
 
-#include "up_api.h"
 #include "options.h"
+#include "up_api.h"
 
+#include "math.h"
+#include "osal.h"
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-#include "osal.h"
-#include "math.h"
 
 #include <stdio.h>
 
-#if defined (__rtk__)
+#if defined(__rtk__)
 #include "bsp.h"
-#include "shell.h"
 #include "gpio.h"
+#include "shell.h"
 #endif
 
 static struct
@@ -35,74 +35,126 @@ static struct
    } i8;
    struct
    {
+      uint8_t o8;
+   } o8;
+   struct
+   {
       uint8_t i8;
       uint8_t o8;
    } io8;
 } my_slot_data;
 
-void * up_vars[] =
-{
+void * up_vars[] = {
    &my_slot_data.i8.i8,
+   &my_slot_data.o8.o8,
    &my_slot_data.io8.i8,
    &my_slot_data.io8.o8,
-   NULL
-};
+   NULL};
 
-static up_signal_t slot_I8_inputs[] =
-{
+static up_signal_t slot_I8_inputs[] = {
    {
-      .name = "Input 8 bits",
-      .ix = 0,
+      .name = "I8 Input 8 bits",
+      .ix = 0, // Into up_vars
       .datatype = UP_DTYPE_UINT8,
       .bitlength = 8,
    },
 };
 
-static up_signal_t slot_IO8_inputs[] =
-{
+static up_signal_t slot_O8_outputs[] = {
    {
-      .name = "Input 8 bits",
+      .name = "O8 Output 8 bits",
       .ix = 1,
       .datatype = UP_DTYPE_UINT8,
       .bitlength = 8,
    },
 };
 
-static up_signal_t slot_IO8_outputs[] =
-{
+static up_signal_t slot_IO8_inputs[] = {
    {
-      .name = "Output 8 bits",
+      .name = "IO8 Input 8 bits",
       .ix = 2,
       .datatype = UP_DTYPE_UINT8,
       .bitlength = 8,
    },
 };
 
-static up_slot_t slots[] =
-{
+static up_signal_t slot_IO8_outputs[] = {
+   {
+      .name = "IO8 Output 8 bits",
+      .ix = 3,
+      .datatype = UP_DTYPE_UINT8,
+      .bitlength = 8,
+   },
+};
+
+static up_param_t slot_IO8_parameters[] = {
+   {
+      .name = "IO8 Demo parameter int",
+      .ix = 123, // Profinet signal index
+      .datatype = UP_DTYPE_UINT8,
+      .bitlength = 32,
+   },
+   {
+      .name = "IO8 Demo parameter float",
+      .ix = 124,
+      .datatype = UP_DTYPE_UINT8,
+      .bitlength = 32,
+   },
+};
+
+static up_slot_t slots[] = {
    {
       .name = "I8",
+      .profinet_module_id = 0x100,
+      .profinet_submodule_id = 0x101,
       .n_inputs = NELEMENTS (slot_I8_inputs),
       .inputs = slot_I8_inputs,
    },
    {
+      .name = "O8",
+      .profinet_module_id = 0x200,
+      .profinet_submodule_id = 0x201,
+      .n_outputs = NELEMENTS (slot_O8_outputs),
+      .outputs = slot_O8_outputs,
+   },
+   {
       .name = "IO8",
+      .profinet_module_id = 0x300,
+      .profinet_submodule_id = 0x301,
       .n_inputs = NELEMENTS (slot_IO8_inputs),
       .inputs = slot_IO8_inputs,
-      .n_outputs = NELEMENTS (slot_I8_inputs),
+      .n_outputs = NELEMENTS (slot_IO8_outputs),
       .outputs = slot_IO8_outputs,
+      .n_params = NELEMENTS (slot_IO8_parameters),
+      .params = slot_IO8_parameters,
    },
 };
 
-static up_device_t device =
-{
-   .name = "digio",
+static up_device_t device = {
+   .name = "U-PHY MOD01",
+   .serial_number = "20220112_A12",
+   .bustype = UP_BUSTYPE_PROFINET,
+   .busconf.profinet.vendor_id = 0x0493,
+   .busconf.profinet.device_id = 0x0003,
+   .busconf.profinet.profile_id = 0x1234,
+   .busconf.profinet.profile_specific_type = 0x5678,
+   .busconf.profinet.min_device_interval = 32,
+   .busconf.profinet.default_stationname = "u-phy-dev",
+   .busconf.profinet.order_id = "MOD01",
+   .busconf.profinet.hw_revision = 1,
+   .busconf.profinet.sw_revision_prefix = 'V',
+   .busconf.profinet.sw_revision_functional_enhancement = 0,
+   .busconf.profinet.sw_revision_bug_fix = 1,
+   .busconf.profinet.sw_revision_internal_change = 27,
+   .busconf.profinet.revision_counter = 0,
    .n_slots = NELEMENTS (slots),
    .slots = slots,
 };
 
 static void cb_avail (up_t * up)
 {
+
+   // TODO This does not yet work on Linux
    up_read_outputs (up);
 
    /* Process outputs */
@@ -142,13 +194,15 @@ static void cb_sync (up_t * up)
    my_slot_data.io8.i8 = 80 + 80 * cos (t/800.0);
 #endif
 #endif
-
-   my_slot_data.i8.i8++;
+   my_slot_data.io8.i8 += 1;
+   printf (
+      "Data to PLC: 0x%02X   Data from PLC: 0x%02X\n",
+      my_slot_data.io8.i8,
+      my_slot_data.io8.o8);
    up_write_inputs (up);
 }
 
-static up_cfg_t cfg =
-{
+static up_cfg_t cfg = {
    .device = &device,
    .vars = up_vars,
    .sync = cb_sync,
@@ -172,9 +226,12 @@ int _cmd_start (int argc, char * argv[])
 {
    int error;
 
-   up = up_init (&cfg);
+   printf ("Starting sample host application\n");
 
-#if defined (OPTION_TRANSPORT_TCP)
+   up = up_init (&cfg);
+   memset (&my_slot_data, 0, sizeof (my_slot_data));
+
+#if defined(OPTION_TRANSPORT_TCP)
    if (argc != 2)
    {
       printf ("usage: %s <ip of uphycore>\n", argv[0]);
@@ -189,7 +246,7 @@ int _cmd_start (int argc, char * argv[])
    }
 #endif
 
-#if defined (__rtk__) && defined (OPTION_TRANSPORT_UART)
+#if defined(__rtk__) && defined(OPTION_TRANSPORT_UART)
    if (argc != 2)
    {
       printf ("usage: %s <port>\n", argv[0]);
@@ -204,7 +261,7 @@ int _cmd_start (int argc, char * argv[])
    }
 #endif
 
-#if defined (__linux__) && defined (OPTION_TRANSPORT_UART)
+#if defined(__linux__) && defined(OPTION_TRANSPORT_UART)
    if (argc != 2)
    {
       printf ("usage: %s <port>\n", argv[0]);
@@ -226,7 +283,9 @@ int _cmd_start (int argc, char * argv[])
       exit (EXIT_FAILURE);
    }
 
-   while(1)
+   printf ("Connected\n");
+
+   while (1)
    {
       os_usleep (1000 * 1000);
    }
@@ -234,16 +293,13 @@ int _cmd_start (int argc, char * argv[])
    return 0;
 }
 
-#if defined (__rtk__)
+#if defined(__rtk__)
 
-const shell_cmd_t cmd_start =
-{
+const shell_cmd_t cmd_start = {
    .cmd = _cmd_start,
    .name = "start",
    .help_short = "start uphy",
-   .help_long =
-   ""
-};
+   .help_long = ""};
 
 SHELL_CMD (cmd_start);
 
