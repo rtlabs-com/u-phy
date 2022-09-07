@@ -153,8 +153,6 @@ static up_device_t device = {
 
 static void cb_avail (up_t * up)
 {
-
-   // TODO This does not yet work on Linux
    up_read_outputs (up);
 
    /* Process outputs */
