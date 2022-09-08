@@ -207,26 +207,13 @@ static up_cfg_t cfg = {
    .avail = cb_avail,
 };
 
-/* TODO: erpc callbacks have no arguments, keeping global instance for now */
-static up_t * up;
-
-void upi_avail (void)
-{
-   cfg.avail (up);
-}
-
-void upi_sync (void)
-{
-   cfg.sync (up);
-}
-
 int _cmd_start (int argc, char * argv[])
 {
    int error;
 
    printf ("Starting sample host application\n");
 
-   up = up_init (&cfg);
+   up_t * up = up_init (&cfg);
    memset (&my_slot_data, 0, sizeof (my_slot_data));
 
 #if defined(OPTION_TRANSPORT_TCP)
@@ -281,11 +268,10 @@ int _cmd_start (int argc, char * argv[])
       exit (EXIT_FAILURE);
    }
 
-   printf ("Connected\n");
-
    while (1)
    {
-      os_usleep (1000 * 1000);
+      extern void up_worker (up_t * up);
+      up_worker (up);
    }
 
    return 0;
