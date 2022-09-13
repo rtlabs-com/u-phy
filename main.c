@@ -192,6 +192,7 @@ static void cb_sync (up_t * up)
    my_slot_data.io8.i8 = 80 + 80 * cos (t/800.0);
 #endif
 #endif
+   my_slot_data.i8.i8 += 1;
    my_slot_data.io8.i8 += 1;
    printf (
       "Data to PLC: 0x%02X   Data from PLC: 0x%02X\n",
