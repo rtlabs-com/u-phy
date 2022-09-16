@@ -15,6 +15,8 @@
 
 #include "math.h"
 #include "osal.h"
+
+#include <inttypes.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
@@ -41,6 +43,8 @@ static struct
    {
       uint8_t i8;
       uint8_t o8;
+      int32_t param_1;
+      float param_2;
    } io8;
 } my_slot_data;
 
@@ -49,6 +53,8 @@ void * up_vars[] = {
    &my_slot_data.o8.o8,
    &my_slot_data.io8.i8,
    &my_slot_data.io8.o8,
+   &my_slot_data.io8.param_1,
+   &my_slot_data.io8.param_2,
    NULL};
 
 static up_signal_t slot_I8_inputs[] = {
@@ -87,18 +93,31 @@ static up_signal_t slot_IO8_outputs[] = {
    },
 };
 
+static int32_t param_1_default_value = 12;
+static float param_2_default_value = 1.1;
+
 static up_param_t slot_IO8_parameters[] = {
    {
       .name = "IO8 Demo parameter int",
-      .ix = 123, // Profinet signal index
-      .datatype = UP_DTYPE_UINT8,
+      .ix = 4,
+      .pn_param_index = 123,
+      .datatype = UP_DTYPE_INT32,
       .bitlength = 32,
+      .default_value.dataLength = 4,
+      .default_value.data = (void *)&param_1_default_value,
+      .value.dataLength = 4,
+      .value.data = (void *)&param_1_default_value,
    },
    {
       .name = "IO8 Demo parameter float",
-      .ix = 124,
-      .datatype = UP_DTYPE_UINT8,
+      .ix = 5,
+      .pn_param_index = 124,
+      .datatype = UP_DTYPE_FLOAT32,
       .bitlength = 32,
+      .default_value.dataLength = 4,
+      .default_value.data = (void *)&param_2_default_value,
+      .value.dataLength = 4,
+      .value.data = (void *)&param_2_default_value,
    },
 };
 
@@ -194,11 +213,43 @@ static void cb_sync (up_t * up)
 #endif
    my_slot_data.i8.i8 += 1;
    my_slot_data.io8.i8 += 1;
-   printf (
+   /*printf (
       "Data to PLC: 0x%02X   Data from PLC: 0x%02X\n",
       my_slot_data.io8.i8,
-      my_slot_data.io8.o8);
+      my_slot_data.io8.o8);*/
    up_write_inputs (up);
+}
+
+static void cb_param_write_ind (up_t * up)
+{
+   uint16_t slot_ix;
+   uint16_t param_ix;
+   binary_t data;
+   up_param_t * p;
+
+   printf ("Param write indication - poll pending write requests\n");
+
+   while (up_param_get_write_req (&slot_ix, &param_ix, &data) == 0)
+   {
+      printf (
+         "param_write_req slot=%" PRIu16 " param=%" PRIu16 "\n",
+         slot_ix,
+         param_ix);
+
+      /* TODO - Application updates parameters */
+      p = &slots[slot_ix].params[param_ix];
+      memcpy (up_vars[p->ix], data.data, data.dataLength);
+
+      if (param_ix == 0)
+      {
+         printf ("  %s: %" PRIi32 "\n", p->name, *(int32_t *)up_vars[p->ix]);
+      }
+
+      if (param_ix == 1)
+      {
+         printf ("  %s: %3.3f\n", p->name, *(float *)up_vars[p->ix]);
+      }
+   }
 }
 
 static up_cfg_t cfg = {
@@ -206,6 +257,7 @@ static up_cfg_t cfg = {
    .vars = up_vars,
    .sync = cb_sync,
    .avail = cb_avail,
+   .param_write_ind = cb_param_write_ind,
 };
 
 int _cmd_start (int argc, char * argv[])
