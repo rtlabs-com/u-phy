@@ -180,6 +180,7 @@ int _cmd_start (int argc, char * argv[])
    printf ("Starting sample host application\n");
    up_t * up = up_init (&cfg);
 
+#if !defined(OPTION_MONO)
 #if defined(OPTION_TRANSPORT_TCP)
    error = up_tcp_transport_init (up, argv[1], 5150);
    if (error)
@@ -213,6 +214,7 @@ int _cmd_start (int argc, char * argv[])
       printf ("Failed to connect to u-phy core\n");
       exit (EXIT_FAILURE);
    }
+#endif /* !defined(OPTION_MONO) */
 
 #if !defined(__rtk__)
    /* Delay startup so that there is time to restore the second serial
