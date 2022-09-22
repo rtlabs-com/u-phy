@@ -29,6 +29,12 @@
 #include "shell.h"
 #endif
 
+/* If io demo slot is enabled, ERPC_DEFAULT_BUFFER_SIZE must be increased
+ * (2048). Also usart config. Search for ERPC_DEFAULT_BUFFER_SIZE to find usart
+ * buffer size config.
+ */
+#undef ENABLE_IODEMO_SLOT
+
 static struct
 {
    struct
@@ -46,15 +52,52 @@ static struct
       int32_t param_1;
       float param_2;
    } io8;
+#ifdef ENABLE_IODEMO_SLOT
+   struct
+   {
+      int8_t in_i8;
+      uint8_t in_u8;
+      int16_t in_i16;
+      uint16_t in_u16;
+      int32_t in_i32;
+      uint32_t in_u32;
+      float in_f;
+
+      int8_t out_i8;
+      uint8_t out_u8;
+      int16_t out_i16;
+      uint16_t out_u16;
+      int32_t out_i32;
+      uint32_t out_u32;
+      float out_f;
+   } iodemo;
+#endif
 } my_slot_data;
 
 void * up_vars[] = {
-   &my_slot_data.i8.i8,
-   &my_slot_data.o8.o8,
-   &my_slot_data.io8.i8,
-   &my_slot_data.io8.o8,
-   &my_slot_data.io8.param_1,
-   &my_slot_data.io8.param_2,
+   &my_slot_data.i8.i8,       /* ix = 0*/
+   &my_slot_data.o8.o8,       /* ix = 1*/
+   &my_slot_data.io8.i8,      /* ix = 2*/
+   &my_slot_data.io8.o8,      /* ix = 3*/
+   &my_slot_data.io8.param_1, /* ix = 4*/
+   &my_slot_data.io8.param_2, /* ix = 5*/
+
+#ifdef ENABLE_IODEMO_SLOT
+   &my_slot_data.iodemo.in_u8,   /* ix = 6*/
+   &my_slot_data.iodemo.in_i8,   /* ix = 7*/
+   &my_slot_data.iodemo.in_u16,  /* ix = 8*/
+   &my_slot_data.iodemo.in_i16,  /* ix = 9*/
+   &my_slot_data.iodemo.in_u32,  /* ix = 10*/
+   &my_slot_data.iodemo.in_i32,  /* ix = 11*/
+   &my_slot_data.iodemo.in_f,    /* ix = 12*/
+   &my_slot_data.iodemo.out_u8,  /* ix = 13*/
+   &my_slot_data.iodemo.out_i8,  /* ix = 14*/
+   &my_slot_data.iodemo.out_u16, /* ix = 15*/
+   &my_slot_data.iodemo.out_i16, /* ix = 16*/
+   &my_slot_data.iodemo.out_u32, /* ix = 17*/
+   &my_slot_data.iodemo.out_i32, /* ix = 18*/
+   &my_slot_data.iodemo.out_f,   /* ix = 19*/
+#endif
    NULL};
 
 static up_signal_t slot_I8_inputs[] = {
@@ -121,6 +164,100 @@ static up_param_t slot_IO8_parameters[] = {
    },
 };
 
+#ifdef ENABLE_IODEMO_SLOT
+static up_signal_t slot_IODemo_inputs[] = {
+   {
+      .name = "Input uint8",
+      .ix = 6,
+      .datatype = UP_DTYPE_UINT8,
+      .bitlength = 8,
+   },
+   {
+      .name = "Input int8",
+      .ix = 7,
+      .datatype = UP_DTYPE_INT8,
+      .bitlength = 8,
+   },
+   {
+      .name = "Input uint16",
+      .ix = 8,
+      .datatype = UP_DTYPE_UINT16,
+      .bitlength = 16,
+   },
+   {
+      .name = "Input int16",
+      .ix = 9,
+      .datatype = UP_DTYPE_INT16,
+      .bitlength = 16,
+   },
+   {
+      .name = "Input uint32",
+      .ix = 10,
+      .datatype = UP_DTYPE_UINT32,
+      .bitlength = 32,
+   },
+   {
+      .name = "Input int32",
+      .ix = 11,
+      .datatype = UP_DTYPE_INT32,
+      .bitlength = 32,
+   },
+   {
+      .name = "Input float",
+      .ix = 12,
+      .datatype = UP_DTYPE_FLOAT32,
+      .bitlength = 32,
+   },
+};
+
+static up_signal_t slot_IODemo_outputs[] = {
+
+   {
+      .name = "Output uint8",
+      .ix = 13,
+      .datatype = UP_DTYPE_UINT8,
+      .bitlength = 8,
+   },
+   {
+      .name = "Output int8",
+      .ix = 14,
+      .datatype = UP_DTYPE_INT8,
+      .bitlength = 8,
+   },
+
+   {
+      .name = "Output uint16",
+      .ix = 15,
+      .datatype = UP_DTYPE_UINT16,
+      .bitlength = 16,
+   },
+   {
+      .name = "Output int16",
+      .ix = 16,
+      .datatype = UP_DTYPE_INT16,
+      .bitlength = 16,
+   },
+   {
+      .name = "Output uint32",
+      .ix = 17,
+      .datatype = UP_DTYPE_UINT32,
+      .bitlength = 32,
+   },
+   {
+      .name = "Output int32",
+      .ix = 18,
+      .datatype = UP_DTYPE_INT32,
+      .bitlength = 32,
+   },
+   {
+      .name = "Output float",
+      .ix = 19,
+      .datatype = UP_DTYPE_FLOAT32,
+      .bitlength = 32,
+   },
+};
+#endif
+
 static up_slot_t slots[] = {
    {
       .name = "I8",
@@ -147,6 +284,17 @@ static up_slot_t slots[] = {
       .n_params = NELEMENTS (slot_IO8_parameters),
       .params = slot_IO8_parameters,
    },
+#ifdef ENABLE_IODEMO_SLOT
+   {
+      .name = "IODemo",
+      .profinet_module_id = 0x400,
+      .profinet_submodule_id = 0x401,
+      .n_inputs = NELEMENTS (slot_IODemo_inputs),
+      .inputs = slot_IODemo_inputs,
+      .n_outputs = NELEMENTS (slot_IODemo_outputs),
+      .outputs = slot_IODemo_outputs,
+   },
+#endif
 };
 
 static up_device_t device = {
@@ -213,10 +361,28 @@ static void cb_sync (up_t * up)
 #endif
    my_slot_data.i8.i8 += 1;
    my_slot_data.io8.i8 += 1;
+
+#ifdef ENABLE_IODEMO_SLOT
+   my_slot_data.iodemo.in_u8 = my_slot_data.iodemo.out_u8;
+   my_slot_data.iodemo.in_i8 = my_slot_data.iodemo.out_i8;
+   my_slot_data.iodemo.in_u16 = my_slot_data.iodemo.out_u16;
+   my_slot_data.iodemo.in_i16 = my_slot_data.iodemo.out_i16;
+   my_slot_data.iodemo.in_u32 = my_slot_data.iodemo.out_u32;
+   my_slot_data.iodemo.in_i32 = my_slot_data.iodemo.out_i32;
+   my_slot_data.iodemo.in_f = my_slot_data.iodemo.out_f;
+
+   printf (
+      "o8: %d in_u16: %d in_float: %3.2f\n",
+      my_slot_data.o8.o8,
+      my_slot_data.iodemo.in_u16,
+      my_slot_data.iodemo.in_f);
+#endif
+
    /*printf (
       "Data to PLC: 0x%02X   Data from PLC: 0x%02X\n",
       my_slot_data.io8.i8,
       my_slot_data.io8.o8);*/
+
    up_write_inputs (up);
 }
 

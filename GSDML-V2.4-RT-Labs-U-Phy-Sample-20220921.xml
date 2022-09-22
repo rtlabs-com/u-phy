@@ -23,7 +23,7 @@
       </DeviceFunction>
       <ApplicationProcess>
          <DeviceAccessPointList>
-            <DeviceAccessPointItem ID="IDD_1" PNIO_Version="V2.4" PhysicalSlots="0..3" ModuleIdentNumber="0x00000001" MinDeviceInterval="32" DNS_CompatibleName="u-phy-dev" FixedInSlots="0" ObjectUUID_LocalIndex="1" DeviceAccessSupported="false" MultipleWriteSupported="true" CheckDeviceID_Allowed="true" NameOfStationNotTransferable="false" LLDP_NoD_Supported="true" ResetToFactoryModes="1..2">
+            <DeviceAccessPointItem ID="IDD_1" PNIO_Version="V2.4" PhysicalSlots="0..4" ModuleIdentNumber="0x00000001" MinDeviceInterval="32" DNS_CompatibleName="u-phy-dev" FixedInSlots="0" ObjectUUID_LocalIndex="1" DeviceAccessSupported="false" MultipleWriteSupported="true" CheckDeviceID_Allowed="true" NameOfStationNotTransferable="false" LLDP_NoD_Supported="true" ResetToFactoryModes="1..2">
                <ModuleInfo>
                   <Name TextId="IDT_MODULE_NAME_DAP1" />
                   <InfoText TextId="IDT_INFO_DAP1" />
@@ -38,6 +38,7 @@
                   <ModuleItemRef ModuleItemTarget="IDM_100" AllowedInSlots="1" />
                   <ModuleItemRef ModuleItemTarget="IDM_200" AllowedInSlots="2" />
                   <ModuleItemRef ModuleItemTarget="IDM_300" AllowedInSlots="3" />
+                  <ModuleItemRef ModuleItemTarget="IDM_400" AllowedInSlots="4" />
                </UseableModules>
                <VirtualSubmoduleList>
                   <VirtualSubmoduleItem ID="IDS_1" SubmoduleIdentNumber="0x00000001" Writeable_IM_Records="1 2 3" MayIssueProcessAlarm="false">
@@ -144,6 +145,42 @@
                   </VirtualSubmoduleItem>
                </VirtualSubmoduleList>
             </ModuleItem>
+            <ModuleItem ID="IDM_400" ModuleIdentNumber="0x400">
+               <ModuleInfo>
+                  <Name TextId="TOK_Name_Module_IODemo" />
+                  <InfoText TextId="TOK_InfoText_Module_IODemo" />
+                  <HardwareRelease Value="1.0" />
+                  <SoftwareRelease Value="1.0" />
+               </ModuleInfo>
+               <VirtualSubmoduleList>
+                  <VirtualSubmoduleItem ID="IDSM_401" SubmoduleIdentNumber="0x0401" MayIssueProcessAlarm="false">
+                     <IOData>
+                        <Input>
+                           <DataItem DataType="Unsigned8" TextId="TOK_Input_DataItem_uint8"></DataItem>
+                           <DataItem DataType="Integer8" TextId="TOK_Input_DataItem_int8"></DataItem>
+                           <DataItem DataType="Unsigned16" TextId="TOK_Input_DataItem_uint16"></DataItem>
+                           <DataItem DataType="Integer16" TextId="TOK_Input_DataItem_int16"></DataItem>
+                           <DataItem DataType="Unsigned32" TextId="TOK_Input_DataItem_uint32"></DataItem>
+                           <DataItem DataType="Integer32" TextId="TOK_Input_DataItem_int32"></DataItem>
+                           <DataItem DataType="Float32" TextId="TOK_Input_DataItem_float32"></DataItem>
+                        </Input>
+                        <Output Consistency="All items consistency">
+                           <DataItem DataType="Unsigned8" TextId="TOK_Output_DataItem_uint8"></DataItem>
+                           <DataItem DataType="Integer8" TextId="TOK_Output_DataItem_int8"></DataItem>
+                           <DataItem DataType="Unsigned16" TextId="TOK_Output_DataItem_uint16"></DataItem>
+                           <DataItem DataType="Integer16" TextId="TOK_Output_DataItem_int16"></DataItem>
+                           <DataItem DataType="Unsigned32" TextId="TOK_Output_DataItem_uint32"></DataItem>
+                           <DataItem DataType="Integer32" TextId="TOK_Output_DataItem_int32"></DataItem>
+                           <DataItem DataType="Float32" TextId="TOK_Output_DataItem_float32"></DataItem>
+                        </Output>
+                     </IOData>
+                     <ModuleInfo>
+                        <Name TextId="TOK_Name_Module_IODemo" />
+                        <InfoText TextId="TOK_InfoText_Module_IODemo" />
+                     </ModuleInfo>
+                  </VirtualSubmoduleItem>
+               </VirtualSubmoduleList>
+            </ModuleItem>
          </ModuleList>
          <GraphicsList>
             <GraphicItem ID="RT-LabsStackImage" GraphicFile="GSDML-RT-LABS-STACK" />
@@ -161,15 +198,32 @@
                <Text TextId="TOK_Name_Module_I8" Value="I8" />
                <Text TextId="TOK_Name_Module_O8" Value="O8" />
                <Text TextId="TOK_Name_Module_I8O8" Value="IO8" />
+               <Text TextId="TOK_Name_Module_IODemo" Value="IODemo" />
 
                <!--module info -->
                <Text TextId="TOK_InfoText_Module_I8" Value="Digital In 8" />
                <Text TextId="TOK_InfoText_Module_O8" Value="Digital Out 8" />
                <Text TextId="TOK_InfoText_Module_I8O8" Value="Digital InOut 8" />
+               <Text TextId="TOK_InfoText_Module_IODemo" Value="For data type conversions test" />
 
                <!--dataitem name-->
                <Text TextId="TOK_Input_DataItem_8" Value="Input 8 bits" />
                <Text TextId="TOK_Output_DataItem_8" Value="Output 8 bits" />
+
+               <Text TextId="TOK_Input_DataItem_uint8" Value="Input uint8"/>
+               <Text TextId="TOK_Input_DataItem_int8" Value="Input int8"/>
+               <Text TextId="TOK_Input_DataItem_uint16" Value="Input uint16"/>
+               <Text TextId="TOK_Input_DataItem_int16" Value="Input int16"/>
+               <Text TextId="TOK_Input_DataItem_uint32" Value="Input uint32"/>
+               <Text TextId="TOK_Input_DataItem_int32" Value="Input int32"/>
+               <Text TextId="TOK_Input_DataItem_float32" Value="Input float32"/>
+               <Text TextId="TOK_Output_DataItem_uint8" Value="Output uint8"/>
+               <Text TextId="TOK_Output_DataItem_int8" Value="Output int8" />
+               <Text TextId="TOK_Output_DataItem_uint16" Value="Output uint16" />
+               <Text TextId="TOK_Output_DataItem_int16" Value="Output int16"/>
+               <Text TextId="TOK_Output_DataItem_uint32" Value="Output uint32"/>
+               <Text TextId="TOK_Output_DataItem_int32"  Value="Output int32"/>
+               <Text TextId="TOK_Output_DataItem_float32" Value="Output float32"/>
 
                <!--parameters-->
                <Text TextId="TOK_sample_parameter_1" Value="Parameter 1" />
