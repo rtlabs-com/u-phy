@@ -106,6 +106,7 @@ static up_signal_t slot_I8_inputs[] = {
       .ix = 0, // Into up_vars
       .datatype = UP_DTYPE_UINT8,
       .bitlength = 8,
+      .frame_offset = 0,
    },
 };
 
@@ -115,6 +116,7 @@ static up_signal_t slot_O8_outputs[] = {
       .ix = 1,
       .datatype = UP_DTYPE_UINT8,
       .bitlength = 8,
+      .frame_offset = 0,
    },
 };
 
@@ -124,6 +126,7 @@ static up_signal_t slot_IO8_inputs[] = {
       .ix = 2,
       .datatype = UP_DTYPE_UINT8,
       .bitlength = 8,
+      .frame_offset = 1,
    },
 };
 
@@ -133,6 +136,7 @@ static up_signal_t slot_IO8_outputs[] = {
       .ix = 3,
       .datatype = UP_DTYPE_UINT8,
       .bitlength = 8,
+      .frame_offset = 1,
    },
 };
 
@@ -171,42 +175,49 @@ static up_signal_t slot_IODemo_inputs[] = {
       .ix = 6,
       .datatype = UP_DTYPE_UINT8,
       .bitlength = 8,
+      .frame_offset = 2,
    },
    {
       .name = "Input int8",
       .ix = 7,
       .datatype = UP_DTYPE_INT8,
       .bitlength = 8,
+      .frame_offset = 3,
    },
    {
       .name = "Input uint16",
       .ix = 8,
       .datatype = UP_DTYPE_UINT16,
       .bitlength = 16,
+      .frame_offset = 4,
    },
    {
       .name = "Input int16",
       .ix = 9,
       .datatype = UP_DTYPE_INT16,
       .bitlength = 16,
+      .frame_offset = 6,
    },
    {
       .name = "Input uint32",
       .ix = 10,
       .datatype = UP_DTYPE_UINT32,
       .bitlength = 32,
+      .frame_offset = 8,
    },
    {
       .name = "Input int32",
       .ix = 11,
       .datatype = UP_DTYPE_INT32,
       .bitlength = 32,
+      .frame_offset = 12,
    },
    {
       .name = "Input float",
       .ix = 12,
       .datatype = UP_DTYPE_FLOAT32,
       .bitlength = 32,
+      .frame_offset = 16,
    },
 };
 
@@ -217,12 +228,14 @@ static up_signal_t slot_IODemo_outputs[] = {
       .ix = 13,
       .datatype = UP_DTYPE_UINT8,
       .bitlength = 8,
+      .frame_offset = 2,
    },
    {
       .name = "Output int8",
       .ix = 14,
       .datatype = UP_DTYPE_INT8,
       .bitlength = 8,
+      .frame_offset = 3,
    },
 
    {
@@ -230,30 +243,35 @@ static up_signal_t slot_IODemo_outputs[] = {
       .ix = 15,
       .datatype = UP_DTYPE_UINT16,
       .bitlength = 16,
+      .frame_offset = 4,
    },
    {
       .name = "Output int16",
       .ix = 16,
       .datatype = UP_DTYPE_INT16,
       .bitlength = 16,
+      .frame_offset = 6,
    },
    {
       .name = "Output uint32",
       .ix = 17,
       .datatype = UP_DTYPE_UINT32,
       .bitlength = 32,
+      .frame_offset = 8,
    },
    {
       .name = "Output int32",
       .ix = 18,
       .datatype = UP_DTYPE_INT32,
       .bitlength = 32,
+      .frame_offset = 12,
    },
    {
       .name = "Output float",
       .ix = 19,
       .datatype = UP_DTYPE_FLOAT32,
       .bitlength = 32,
+      .frame_offset = 16,
    },
 };
 #endif
@@ -263,6 +281,7 @@ static up_slot_t slots[] = {
       .name = "I8",
       .profinet_module_id = 0x100,
       .profinet_submodule_id = 0x101,
+      .input_bitlength = 8,
       .n_inputs = NELEMENTS (slot_I8_inputs),
       .inputs = slot_I8_inputs,
    },
@@ -270,6 +289,7 @@ static up_slot_t slots[] = {
       .name = "O8",
       .profinet_module_id = 0x200,
       .profinet_submodule_id = 0x201,
+      .output_bitlength = 8,
       .n_outputs = NELEMENTS (slot_O8_outputs),
       .outputs = slot_O8_outputs,
    },
@@ -277,6 +297,8 @@ static up_slot_t slots[] = {
       .name = "IO8",
       .profinet_module_id = 0x300,
       .profinet_submodule_id = 0x301,
+      .input_bitlength = 8,
+      .output_bitlength = 8,
       .n_inputs = NELEMENTS (slot_IO8_inputs),
       .inputs = slot_IO8_inputs,
       .n_outputs = NELEMENTS (slot_IO8_outputs),
@@ -289,6 +311,8 @@ static up_slot_t slots[] = {
       .name = "IODemo",
       .profinet_module_id = 0x400,
       .profinet_submodule_id = 0x401,
+      .input_bitlength = 144,
+      .output_bitlength = 144,
       .n_inputs = NELEMENTS (slot_IODemo_inputs),
       .inputs = slot_IODemo_inputs,
       .n_outputs = NELEMENTS (slot_IODemo_outputs),
@@ -371,11 +395,6 @@ static void cb_sync (up_t * up)
    my_slot_data.iodemo.in_i32 = my_slot_data.iodemo.out_i32;
    my_slot_data.iodemo.in_f = my_slot_data.iodemo.out_f;
 
-   printf (
-      "o8: %d in_u16: %d in_float: %3.2f\n",
-      my_slot_data.o8.o8,
-      my_slot_data.iodemo.in_u16,
-      my_slot_data.iodemo.in_f);
 #endif
 
    /*printf (
