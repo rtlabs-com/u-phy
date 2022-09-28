@@ -29,10 +29,6 @@
 #include "shell.h"
 #endif
 
-/* If io demo slot is enabled, ERPC_DEFAULT_BUFFER_SIZE must be increased
- * (2048). Also usart config. Search for ERPC_DEFAULT_BUFFER_SIZE to find usart
- * buffer size config.
- */
 #undef ENABLE_IODEMO_SLOT
 
 static struct
@@ -502,7 +498,13 @@ int _cmd_start (int argc, char * argv[])
    error = up_rpc_init (up);
    if (error)
    {
-      printf ("Failed to connect\n");
+      printf ("Failed to connect to u-phy core\n");
+      exit (EXIT_FAILURE);
+   }
+
+   if (up_init_device (up) != 0)
+   {
+      printf ("Failed to configure device\n");
       exit (EXIT_FAILURE);
    }
 
