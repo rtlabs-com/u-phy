@@ -146,10 +146,9 @@ static up_param_t slot_IO8_parameters[] = {
       .pn_param_index = 123,
       .datatype = UP_DTYPE_INT32,
       .bitlength = 32,
+      .frame_offset = 0,
       .default_value.dataLength = 4,
       .default_value.data = (void *)&param_1_default_value,
-      .value.dataLength = 4,
-      .value.data = (void *)&param_1_default_value,
    },
    {
       .name = "IO8 Demo parameter float",
@@ -157,10 +156,9 @@ static up_param_t slot_IO8_parameters[] = {
       .pn_param_index = 124,
       .datatype = UP_DTYPE_FLOAT32,
       .bitlength = 32,
+      .frame_offset = 4,
       .default_value.dataLength = 4,
       .default_value.data = (void *)&param_2_default_value,
-      .value.dataLength = 4,
-      .value.data = (void *)&param_2_default_value,
    },
 };
 
