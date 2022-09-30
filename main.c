@@ -30,6 +30,13 @@
 #endif
 
 #undef ENABLE_IODEMO_SLOT
+#undef ENABLE_IO_FILES
+
+#ifdef ENABLE_IO_FILES
+void write_status_file (void);
+void write_input_file (void);
+void read_input_file (void);
+#endif
 
 static struct
 {
@@ -377,26 +384,13 @@ static void cb_sync (up_t * up)
    my_slot_data.io8.i8 = 80 + 80 * cos (t/800.0);
 #endif
 #endif
-   my_slot_data.i8.i8 += 1;
-   my_slot_data.io8.i8 += 1;
-
-#ifdef ENABLE_IODEMO_SLOT
-   my_slot_data.iodemo.in_u8 = my_slot_data.iodemo.out_u8;
-   my_slot_data.iodemo.in_i8 = my_slot_data.iodemo.out_i8;
-   my_slot_data.iodemo.in_u16 = my_slot_data.iodemo.out_u16;
-   my_slot_data.iodemo.in_i16 = my_slot_data.iodemo.out_i16;
-   my_slot_data.iodemo.in_u32 = my_slot_data.iodemo.out_u32;
-   my_slot_data.iodemo.in_i32 = my_slot_data.iodemo.out_i32;
-   my_slot_data.iodemo.in_f = my_slot_data.iodemo.out_f;
-
-#endif
-
-   /*printf (
-      "Data to PLC: 0x%02X   Data from PLC: 0x%02X\n",
-      my_slot_data.io8.i8,
-      my_slot_data.io8.o8);*/
 
    up_write_inputs (up);
+
+#ifdef ENABLE_IO_FILES
+   read_input_file();
+   write_status_file();
+#endif
 }
 
 static void cb_param_write_ind (up_t * up)
@@ -406,28 +400,10 @@ static void cb_param_write_ind (up_t * up)
    binary_t data;
    up_param_t * p;
 
-   printf ("Param write indication - poll pending write requests\n");
-
    while (up_param_get_write_req (&slot_ix, &param_ix, &data) == 0)
    {
-      printf (
-         "param_write_req slot=%" PRIu16 " param=%" PRIu16 "\n",
-         slot_ix,
-         param_ix);
-
-      /* TODO - Application updates parameters */
       p = &slots[slot_ix].params[param_ix];
       memcpy (up_vars[p->ix], data.data, data.dataLength);
-
-      if (param_ix == 0)
-      {
-         printf ("  %s: %" PRIi32 "\n", p->name, *(int32_t *)up_vars[p->ix]);
-      }
-
-      if (param_ix == 1)
-      {
-         printf ("  %s: %3.3f\n", p->name, *(float *)up_vars[p->ix]);
-      }
    }
 }
 
@@ -506,6 +482,11 @@ int _cmd_start (int argc, char * argv[])
       exit (EXIT_FAILURE);
    }
 
+#ifdef ENABLE_IO_FILES
+   /* Generate template input file*/
+   write_input_file();
+#endif
+
    while (1)
    {
       extern void up_worker (up_t * up);
@@ -536,6 +517,296 @@ int main (int argc, char * argv[])
 {
    setvbuf (stdout, NULL, _IONBF, 0);
    _cmd_start (argc, argv);
+}
+
+#endif
+
+#ifdef ENABLE_IO_FILES
+void signal_val2str (char * value_string, size_t size, void * value, up_dtype_t dtype)
+{
+   switch (dtype)
+   {
+   case UP_DTYPE_INT8:
+      snprintf (value_string, size, "%" PRIi8 "", *(int8_t *)value);
+      break;
+   case UP_DTYPE_UINT8:
+      snprintf (value_string, size, "%" PRIu8 "", *(uint8_t *)value);
+      break;
+   case UP_DTYPE_INT16:
+      snprintf (value_string, size, "%" PRIi16 "", *(int16_t *)value);
+      break;
+   case UP_DTYPE_UINT16:
+      snprintf (value_string, size, "%" PRIu16 "", *(uint16_t *)value);
+      break;
+   case UP_DTYPE_INT32:
+      snprintf (value_string, size, "%" PRIi32 "", *(int32_t *)value);
+      break;
+   case UP_DTYPE_UINT32:
+      snprintf (value_string, size, "%" PRIu32 "", *(uint32_t *)value);
+      break;
+   case UP_DTYPE_FLOAT32:
+      snprintf (value_string, size, "%f", *(float *)value);
+      break;
+   case UP_DTYPE_BYTE_ARRAY:
+
+   default:
+      snprintf (value_string, size, "unknown");
+      break;
+   }
+}
+
+void dump_device_status (FILE * f)
+{
+   up_slot_t * slot;
+   up_signal_t * signal;
+   up_param_t * param;
+   char value_string[24];
+
+   for (uint32_t s = 0; s < device.n_slots; s++)
+   {
+      slot = &device.slots[s];
+
+      fprintf (f, "Slot %" PRIu32 " \"%s\"\n", s, slot->name);
+
+      if (slot->n_inputs > 0)
+      {
+         fprintf (f, "  Inputs\n");
+      }
+
+      for (uint32_t ix = 0; ix < slot->n_inputs; ix++)
+      {
+         signal = &slot->inputs[ix];
+
+         signal_val2str (
+            value_string,
+            sizeof (value_string),
+            up_vars[signal->ix],
+            signal->datatype);
+
+         fprintf (f, "    %" PRIu32 " \"%s\" %s\n", ix, signal->name, value_string);
+      }
+
+      if (slot->n_outputs > 0)
+      {
+         fprintf (f, "  Outputs\n");
+      }
+
+      for (uint32_t ix = 0; ix < slot->n_outputs; ix++)
+      {
+         signal = &slot->outputs[ix];
+
+         signal_val2str (
+            value_string,
+            sizeof (value_string),
+            up_vars[signal->ix],
+            signal->datatype);
+
+         fprintf (f, "    %" PRIu32 " \"%s\" %s\n", ix, signal->name, value_string);
+      }
+      if (slot->n_params > 0)
+      {
+         fprintf (f, "  Parameters\n");
+      }
+
+      for (uint32_t ix = 0; ix < slot->n_params; ix++)
+      {
+         param = &slot->params[ix];
+
+         signal_val2str (
+            value_string,
+            sizeof (value_string),
+            up_vars[param->ix],
+            param->datatype);
+
+         fprintf (f, "    %" PRIu32 " \"%s\" %s\n", ix, param->name, value_string);
+      }
+   }
+   fprintf (f, "\n");
+}
+
+void write_status_file (void)
+{
+   FILE * f = fopen ("/tmp/u-phy-sample.txt", "w+");
+   if (f == NULL)
+   {
+      printf ("Failed to open \"/tmp/u-phy-sample.txt\"\n");
+      return;
+   }
+
+   dump_device_status (f);
+
+   fclose (f);
+}
+
+/* Generate and inital input file */
+void write_input_file (void)
+{
+   up_slot_t * slot;
+   up_signal_t * signal;
+   char value_string[32];
+
+   FILE * f = fopen ("/tmp/u-phy-input.txt", "w+");
+   if (f == NULL)
+   {
+      printf ("Failed to open \"/tmp/u-phy-input.txt\"\n");
+      return;
+   }
+
+   for (uint32_t s = 0; s < device.n_slots; s++)
+   {
+      slot = &device.slots[s];
+
+      if (slot->n_inputs > 0)
+      {
+         for (uint32_t ix = 0; ix < slot->n_inputs; ix++)
+         {
+            signal = &slot->inputs[ix];
+
+            signal_val2str (
+               value_string,
+               sizeof (value_string),
+               up_vars[signal->ix],
+               signal->datatype);
+
+            fprintf (
+               f,
+               "%" PRIu16 " \"%s\" %s\n",
+               signal->ix,
+               signal->name,
+               value_string);
+         }
+      }
+   }
+   fclose (f);
+}
+
+/* Write up_vars inputs from input file */
+void set_input (char * ix_str, char * val_str)
+{
+   int ix;
+   uint16_t i, j;
+   up_slot_t * slot;
+   up_signal_t * signal;
+
+   if (ix_str == NULL || val_str == NULL)
+   {
+      return;
+   }
+
+   ix = atoi (ix_str);
+   for (i = 0; i < device.n_slots; i++)
+   {
+      slot = &device.slots[i];
+      for (j = 0; j < slot->n_inputs; j++)
+      {
+         signal = &slot->inputs[j];
+         if (signal->ix == ix)
+         {
+            switch (signal->datatype)
+            {
+            case UP_DTYPE_UINT8:
+            {
+               uint8_t value = (uint8_t)atoi (val_str);
+               *(uint8_t *)up_vars[ix] = value;
+            }
+            break;
+
+            case UP_DTYPE_INT8:
+            {
+               int8_t value = (int8_t)atoi (val_str);
+               *(int8_t *)up_vars[ix] = value;
+            }
+            break;
+            case UP_DTYPE_INT16:
+            {
+               int16_t value = (int16_t)atoi (val_str);
+               *(int16_t *)up_vars[ix] = value;
+            }
+            break;
+            case UP_DTYPE_UINT16:
+            {
+               uint16_t value = (uint16_t)atoi (val_str);
+               *(uint16_t *)up_vars[ix] = value;
+            }
+            break;
+            case UP_DTYPE_INT32:
+            {
+               int32_t value = (int32_t)atoi (val_str);
+               *(int32_t *)up_vars[ix] = value;
+            }
+            break;
+            case UP_DTYPE_UINT32:
+            {
+               uint32_t value = (uint32_t)atoi (val_str);
+               *(uint32_t *)up_vars[ix] = value;
+            }
+            break;
+            case UP_DTYPE_FLOAT32:
+            {
+               float value = (float)atof (val_str);
+               *(float *)up_vars[ix] = value;
+            }
+            break;
+            default:
+               /* Ignore*/
+               break;
+            }
+            return;
+         }
+      }
+   }
+}
+
+/* Read input file with expected format:
+"ix name value" where
+ix is index in up_vars
+name is ignored
+value is value.
+*/
+void read_input_file (void)
+{
+   char * p;
+   char line[200];
+
+   char * ix;
+   char * token;
+   char * value;
+
+   FILE * f = fopen ("/tmp/u-phy-input.txt", "r");
+   if (f == NULL)
+   {
+      printf ("Failed to open \"/tmp/u-phy-input.txt\"\n");
+      return;
+   }
+
+   p = fgets (line, sizeof (line), f);
+   while (p != NULL)
+   {
+      value = NULL;
+      ix = NULL;
+
+      if (p != NULL)
+      {
+         token = strtok_r (p, " ", &p);
+         if (token != NULL)
+         {
+            ix = token;
+
+            /* use last word in line as value */
+            token = strtok_r (p, " ", &p);
+            while (token != NULL)
+            {
+               value = token;
+               token = strtok_r (p, " ", &p);
+            }
+
+            set_input (ix, value);
+         }
+      }
+      p = fgets (line, sizeof (line), f);
+   }
+
+   fclose (f);
 }
 
 #endif
