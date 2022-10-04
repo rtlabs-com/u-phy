@@ -98,7 +98,7 @@ static void cb_param_write_ind (up_t * up)
    binary_t data;
    up_param_t * p;
 
-   while (up_param_get_write_req (&slot_ix, &param_ix, &data) == 0)
+   while (up_param_get_write_req (up, &slot_ix, &param_ix, &data) == 0)
    {
       p = &up_device.slots[slot_ix].params[param_ix];
       memcpy (up_vars[p->ix], data.data, data.dataLength);
