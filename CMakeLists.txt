@@ -21,7 +21,6 @@ add_compile_options(
 add_executable(sample
   main.c
   generated/model.c
-  generated/model_ecat.c
 )
 
 target_include_directories(sample

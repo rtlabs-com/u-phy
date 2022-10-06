@@ -58,8 +58,6 @@ static up_signal_t slot_I8_inputs[] = {
       .datatype = UP_DTYPE_UINT8,
       .bitlength = 8,
       .frame_offset = 0,
-      .ecat_index = 0x6000,
-      .ecat_subindex = 0,
    },
 };
 
@@ -70,8 +68,6 @@ static up_signal_t slot_O8_outputs[] = {
       .datatype = UP_DTYPE_UINT8,
       .bitlength = 8,
       .frame_offset = 0,
-      .ecat_index = 0x7000,
-      .ecat_subindex = 0,
    },
 };
 
@@ -82,8 +78,6 @@ static up_signal_t slot_IO8_inputs[] = {
       .datatype = UP_DTYPE_UINT8,
       .bitlength = 8,
       .frame_offset = 1,
-      .ecat_index = 0x6001,
-      .ecat_subindex = 0,
    },
 };
 
@@ -94,8 +88,6 @@ static up_signal_t slot_IO8_outputs[] = {
       .datatype = UP_DTYPE_UINT8,
       .bitlength = 8,
       .frame_offset = 1,
-      .ecat_index = 0x7001,
-      .ecat_subindex = 0,
    },
 };
 
@@ -107,8 +99,6 @@ static up_param_t slot_IO8_parameters[] = {
       .name = "IO8 Demo parameter int",
       .ix = 4,
       .pn_param_index = 123,
-      .ecat_index = 0x8000,
-      .ecat_subindex = 0,
       .datatype = UP_DTYPE_INT32,
       .bitlength = 32,
       .frame_offset = 0,
@@ -119,8 +109,6 @@ static up_param_t slot_IO8_parameters[] = {
       .name = "IO8 Demo parameter float",
       .ix = 5,
       .pn_param_index = 124,
-      .ecat_index = 0x8001,
-      .ecat_subindex = 0,
       .datatype = UP_DTYPE_FLOAT32,
       .bitlength = 32,
       .frame_offset = 4,
@@ -280,6 +268,132 @@ up_slot_t slots[] = {
       .outputs = slot_IODemo_outputs,
    },
 #endif
+};
+
+up_ciaobject_t ecat_I8_txpdo_entries[] = {
+   {
+      .index = 0x7000,
+      .subindex = 0,
+      .is_signal = true,
+      .signal_or_param_ix = 0,
+   }
+};
+
+up_ciapdo_t ecat_I8_txpdos[] = {
+   {
+      .name = "I8 Outputs",
+      .index = 0x1600,
+      .n_entries = 1,
+      .entries = ecat_I8_txpdo_entries,
+   }
+};
+
+up_ciaobject_t ecat_O8_rxpdo_entries[] = {
+   {
+      .index = 0x6000,
+      .subindex = 0,
+      .is_signal = true,
+      .signal_or_param_ix = 0,
+   }
+};
+
+up_ciapdo_t ecat_O8_rxpdos[] = {
+   {
+      .name = "O8 Outputs",
+      .index = 0x1A00,
+      .n_entries = 1,
+      .entries = ecat_O8_rxpdo_entries,
+   }
+};
+
+up_ciaobject_t ecat_IO8_txpdo_entries[] = {
+   {
+      .index = 0x7000,
+      .subindex = 0,
+      .is_signal = true,
+      .signal_or_param_ix = 0,
+   }
+};
+
+up_ciapdo_t ecat_IO8_txpdos[] = {
+   {
+      .name = "IO8 Inputs",
+      .index = 0x1600,
+      .n_entries = 1,
+      .entries = ecat_IO8_txpdo_entries,
+   }
+};
+
+up_ciaobject_t ecat_IO8_rxpdo_entries[] = {
+   {
+      .index = 0x6000,
+      .subindex = 0,
+      .is_signal = true,
+      .signal_or_param_ix = 0,
+   }
+};
+
+up_ciapdo_t ecat_IO8_rxpdos[] = {
+   {
+      .name = "IO8 Outputs",
+      .index = 0x1A00,
+      .n_entries = 1,
+      .entries = ecat_IO8_rxpdo_entries,
+   }
+};
+
+up_ciaobject_t ecat_IO8_objects[] = {
+   {
+      .index = 0x8000,
+      .subindex = 0,
+      .is_signal = false,
+      .signal_or_param_ix = 0,
+   },
+   {
+      .index = 0x8001,
+      .subindex = 0,
+      .is_signal = false,
+      .signal_or_param_ix = 1,
+   },
+};
+
+up_ecat_module_t ecat_modules[] = {
+   {
+      .n_rxpdos = 0,
+      .n_txpdos = 1,
+      .n_objects = 0,
+      .rxpdos = NULL,
+      .txpdos = ecat_I8_txpdos,
+      .objects = NULL,
+   },
+   {
+      .n_rxpdos = 1,
+      .n_txpdos = 0,
+      .n_objects = 0,
+      .rxpdos = ecat_O8_rxpdos,
+      .txpdos = NULL,
+      .objects = NULL,
+   },
+   {
+      .n_rxpdos = 1,
+      .n_txpdos = 1,
+      .n_objects = 2,
+      .rxpdos = ecat_IO8_rxpdos,
+      .txpdos = ecat_IO8_txpdos,
+      .objects = ecat_IO8_objects,
+   },
+};
+
+up_ecat_slot_t ecat_slots[] = {
+   {
+      .module_ix = 0,
+   },
+   {
+      .module_ix = 1,
+   },
+   {
+      .module_ix = 2,
+   },
 };
 
 up_device_t up_device = {
