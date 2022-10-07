@@ -119,7 +119,7 @@
                   <SoftwareRelease Value="1.0" />
                </ModuleInfo>
                <VirtualSubmoduleList>
-                  <VirtualSubmoduleItem ID="IDSM_301" SubmoduleIdentNumber="0x0301" MayIssueProcessAlarm="false">
+                  <VirtualSubmoduleItem ID="IDSM_301" SubmoduleIdentNumber="0x0301" MayIssueProcessAlarm="true">
                      <IOData>
                         <Input>
                            <DataItem DataType="Unsigned8" TextId="TOK_Input_DataItem_8"></DataItem>
@@ -182,9 +182,41 @@
                </VirtualSubmoduleList>
             </ModuleItem>
          </ModuleList>
+         
+         <ChannelProcessAlarmList>
+            <!-- Not used, may be faulty -->
+	         <SystemDefinedChannelProcessAlarmItem Reason="13">
+	        	 <Name TextId="IDT_Alarm_13" />
+             <ExtChannelProcessAlarmList>
+               <ExtChannelDiagItem API="1" ErrorType="20">
+						<Name TextId="IDT_Alarm_13_ErrorType_20"/>
+					</ExtChannelDiagItem>
+             </ExtChannelProcessAlarmList>
+	         </SystemDefinedChannelProcessAlarmItem>
+         </ChannelProcessAlarmList>
+         
+         <ChannelDiagList>
+            <!-- Diagnosis  -->
+            <ChannelDiagItem ErrorType="400">
+               <Name TextId="TOK_DIAG400"/>
+               <ExtChannelDiagList>
+                  <ExtChannelDiagItem ErrorType="1">
+                     <Name TextId="TOK_DIAG400_EXT1"/>
+                  </ExtChannelDiagItem>
+                  <ExtChannelDiagItem ErrorType="2">
+                     <Name TextId="TOK_DIAG400_EXT2"/>
+                  </ExtChannelDiagItem>
+                  <ExtChannelDiagItem ErrorType="3">
+                     <Name TextId="TOK_DIAG400_EXT3"/>
+                  </ExtChannelDiagItem>
+               </ExtChannelDiagList>
+            </ChannelDiagItem>
+         </ChannelDiagList>
+
          <GraphicsList>
             <GraphicItem ID="RT-LabsStackImage" GraphicFile="GSDML-RT-LABS-STACK" />
          </GraphicsList>
+
          <ExternalTextList>
             <PrimaryLanguage>
                <Text TextId="IDT_INFO_Device" Value="Uphy sample" />
@@ -224,6 +256,16 @@
                <Text TextId="TOK_Output_DataItem_uint32" Value="Output uint32"/>
                <Text TextId="TOK_Output_DataItem_int32"  Value="Output int32"/>
                <Text TextId="TOK_Output_DataItem_float32" Value="Output float32"/>
+               
+               <!-- Alarms -->
+		         <Text TextId="IDT_Alarm_13" Value="Sample alarm message 13"/>
+               <Text TextId="IDT_Alarm_13_ErrorType_20" Value="Ext error type 20"/>
+
+               <!-- Diagnosis -->
+               <Text TextId="TOK_DIAG400" Value="Demo diagnos message"/>
+               <Text TextId="TOK_DIAG400_EXT1" Value="Extended 1"/>
+               <Text TextId="TOK_DIAG400_EXT2" Value="Extended 2"/>
+               <Text TextId="TOK_DIAG400_EXT3" Value="Extended 3"/>
 
                <!--parameters-->
                <Text TextId="TOK_sample_parameter_1" Value="Parameter 1" />
