@@ -287,31 +287,44 @@ up_device_t up_device = {
    .serial_number = "20220112_A12",
 #if defined(OPTION_SAMPLE_PNET)
    .bustype = UP_BUSTYPE_PROFINET,
-   .busconf.profinet.vendor_id = 0x0493,
-   .busconf.profinet.device_id = 0x0003,
-   .busconf.profinet.profile_id = 0x1234,
-   .busconf.profinet.profile_specific_type = 0x5678,
-   .busconf.profinet.min_device_interval = 32,
-   .busconf.profinet.default_stationname = "u-phy-dev",
-   .busconf.profinet.order_id = "MOD01",
-   .busconf.profinet.hw_revision = 1,
-   .busconf.profinet.sw_revision_prefix = 'V',
-   .busconf.profinet.sw_revision_functional_enhancement = 0,
-   .busconf.profinet.sw_revision_bug_fix = 1,
-   .busconf.profinet.sw_revision_internal_change = 27,
-   .busconf.profinet.revision_counter = 0,
 #elif defined(OPTION_SAMPLE_ECAT)
    .bustype = UP_BUSTYPE_ECAT,
-   .busconf.ecat.vendor = 0x1337,
-   .busconf.ecat.productcode = 1,
-   .busconf.ecat.revision = 0x0101,
-   .busconf.ecat.serial = 1,
-   .busconf.ecat.hw_rev = "1.0.1",
-   .busconf.ecat.sw_rev = "1.0",
-   .busconf.ecat.profile = 0x1389,
 #elif defined(OPTION_SAMPLE_MOCK)
    .bustype = UP_BUSTYPE_MOCK,
 #endif
    .n_slots = NELEMENTS (slots),
    .slots = slots,
+};
+
+up_busconf_t up_busconf = {
+#if defined(OPTION_SAMPLE_PNET)
+   .profinet.vendor_id = 0x0493,
+   .profinet.device_id = 0x0003,
+   .profinet.profile_id = 0x1234,
+   .profinet.profile_specific_type = 0x5678,
+   .profinet.min_device_interval = 32,
+   .profinet.default_stationname = "u-phy-dev",
+   .profinet.order_id = "MOD01",
+   .profinet.hw_revision = 1,
+   .profinet.sw_revision_prefix = 'V',
+   .profinet.sw_revision_functional_enhancement = 0,
+   .profinet.sw_revision_bug_fix = 1,
+   .profinet.sw_revision_internal_change = 27,
+   .profinet.revision_counter = 0,
+#elif defined(OPTION_SAMPLE_ECAT)
+   .ecat.profile = 0x1389,
+   .ecat.vendor = 0x1337,
+   .ecat.productcode = 1,
+   .ecat.revision = 0x0101,
+   .ecat.serial = 1,
+   .ecat.hw_rev = "1.0.1",
+   .ecat.sw_rev = "1.0",
+   .ecat.pdo_increment = 16,
+   .ecat.index_increment = 0x0100,
+   .ecat.n_modules = 3,
+   .ecat.n_slots = 3,
+   .ecat.modules = ecat_modules,
+   .ecat.slots = ecat_slots,
+#elif defined(OPTION_SAMPLE_MOCK)
+#endif
 };

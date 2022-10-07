@@ -61,6 +61,10 @@ typedef struct up_data
 extern up_data_t up_data;
 extern void * up_vars[];
 extern up_device_t up_device;
+extern up_busconf_t up_busconf;
+
+/* EtherCAT adapter configuration */
+void up_ecat_configure (up_device_t * device, up_busconf_t * busconf);
 
 #ifdef __cplusplus
 }

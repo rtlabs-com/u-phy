@@ -107,6 +107,7 @@ static void cb_param_write_ind (up_t * up)
 
 static up_cfg_t cfg = {
    .device = &up_device,
+   .busconf = &up_busconf,
    .vars = up_vars,
    .sync = cb_sync,
    .avail = cb_avail,
