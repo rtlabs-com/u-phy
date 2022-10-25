@@ -107,6 +107,8 @@ static void cb_loop_ind (up_t * up)
 }
 #endif
 
+static up_busconf_t up_busconf;
+
 static up_cfg_t cfg = {
    .device = &up_device,
    .busconf = &up_busconf,
@@ -123,14 +125,38 @@ int _cmd_start (int argc, char * argv[])
 {
    int error;
 
-   printf ("Starting sample host application\n");
+   if (argc != 3)
+   {
+      printf ("usage: %s <transport cfg> <fieldbus>\n", argv[0]);
+      printf ("example: %s /dev/ttyUSB0 profinet\n", argv[0]);
+      exit (EXIT_FAILURE);
+   }
 
+   if (strcmp (argv[2], "profinet") == 0)
+   {
+      cfg.device->bustype = UP_BUSTYPE_PROFINET,
+      up_busconf.profinet = up_profinet_config;
+   }
+   else if (strcmp (argv[2], "ethercat") == 0)
+   {
+      cfg.device->bustype = UP_BUSTYPE_ECAT,
+      up_busconf.ecat = up_ethercat_config;
+   }
+   else
+   {
+      printf ("Unsupported fieldbus \"%s\", abort\n", argv[2]);
+      cfg.device->bustype = UP_BUSTYPE_MOCK;
+      up_busconf.mock = up_mock_config;
+      exit (EXIT_FAILURE);
+   }
+
+   printf ("Starting sample host application\n");
    up_t * up = up_init (&cfg);
 
 #if defined(OPTION_TRANSPORT_TCP)
    if (argc != 2)
    {
-      printf ("usage: %s <ip of uphycore>\n", argv[0]);
+      printf ("usage: %s <ip of u-phy core> <fieldbus>\n", argv[0]);
       exit (EXIT_FAILURE);
    }
 
@@ -143,9 +169,9 @@ int _cmd_start (int argc, char * argv[])
 #endif
 
 #if defined(__rtk__) && defined(OPTION_TRANSPORT_UART)
-   if (argc != 2)
+   if (argc != 3)
    {
-      printf ("usage: %s <port>\n", argv[0]);
+      printf ("usage: %s <port> <fieldbus>\n", argv[0]);
       exit (EXIT_FAILURE);
    }
 
@@ -158,9 +184,9 @@ int _cmd_start (int argc, char * argv[])
 #endif
 
 #if defined(__linux__) && defined(OPTION_TRANSPORT_UART)
-   if (argc != 2)
+   if (argc != 3)
    {
-      printf ("usage: %s <port>\n", argv[0]);
+      printf ("usage: %s <port> <fieldbus>\n", argv[0]);
       exit (EXIT_FAILURE);
    }
 

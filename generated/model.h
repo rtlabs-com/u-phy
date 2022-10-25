@@ -23,45 +23,26 @@ typedef struct up_data
 {
    struct
    {
-      uint8_t i8;
-   } i8;
+      uint8_t Input_8_bits;
+   } I8;
    struct
    {
-      uint8_t o8;
-   } o8;
+      uint8_t Output_8_bits;
+   } O8;
    struct
    {
-      uint8_t i8;
-      uint8_t o8;
-      int32_t param_1;
-      float param_2;
-   } io8;
-#ifdef ENABLE_IODEMO_SLOT
-   struct
-   {
-      int8_t in_i8;
-      uint8_t in_u8;
-      int16_t in_i16;
-      uint16_t in_u16;
-      int32_t in_i32;
-      uint32_t in_u32;
-      float in_f;
-
-      int8_t out_i8;
-      uint8_t out_u8;
-      int16_t out_i16;
-      uint16_t out_u16;
-      int32_t out_i32;
-      uint32_t out_u32;
-      float out_f;
-   } iodemo;
-#endif
+      uint8_t Input_8_bits;
+      uint8_t Output_8_bits;
+      uint32_t Parameter_1;
+   } I8O8;
 } up_data_t;
 
 extern up_data_t up_data;
 extern void * up_vars[];
 extern up_device_t up_device;
-extern up_busconf_t up_busconf;
+extern up_profinet_config_t up_profinet_config;
+extern up_ecat_device_t up_ethercat_config;
+extern up_mockadapter_config_t up_mock_config;
 
 #ifdef __cplusplus
 }

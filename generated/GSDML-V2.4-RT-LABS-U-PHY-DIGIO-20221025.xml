@@ -1,0 +1,170 @@
+<?xml version='1.0' encoding='iso-8859-1'?>
+<ISO15745Profile xmlns="http://www.profibus.com/GSDML/2003/11/DeviceProfile" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.profibus.com/GSDML/2003/11/DeviceProfile ..\xsd\GSDML-DeviceProfile-V2.4.xsd">
+    <ProfileHeader>
+        <ProfileIdentification>PROFINET Device Profile</ProfileIdentification>
+        <ProfileRevision>1.00</ProfileRevision>
+        <ProfileName>Device Profile for PROFINET Devices</ProfileName>
+        <ProfileSource>PROFIBUS Nutzerorganisation e. V. (PNO)</ProfileSource>
+        <ProfileClassID>Device</ProfileClassID>
+        <ISO15745Reference>
+            <ISO15745Part>4</ISO15745Part>
+            <ISO15745Edition>1</ISO15745Edition>
+            <ProfileTechnology>GSDML</ProfileTechnology>
+        </ISO15745Reference>
+    </ProfileHeader>
+    <ProfileBody>
+        <DeviceIdentity VendorID="0x0493" DeviceID="0x0003">
+            <InfoText TextId="IDT_INFO_DEV" />
+            <VendorName Value="RT-Labs AB" />
+        </DeviceIdentity>
+        <DeviceFunction>
+            <Family MainFamily="I/O" ProductFamily="U-Phy Samples" />
+        </DeviceFunction>
+        <ApplicationProcess>
+            <DeviceAccessPointList>
+                <DeviceAccessPointItem ID="IDD_1" PNIO_Version="V2.4" PhysicalSlots="0..4" ModuleIdentNumber="0x00000001" MinDeviceInterval="32" DNS_CompatibleName="u-phy-dev" FixedInSlots="0" ObjectUUID_LocalIndex="1" DeviceAccessSupported="false" MultipleWriteSupported="true" CheckDeviceID_Allowed="true" NameOfStationNotTransferable="false" LLDP_NoD_Supported="true" ResetToFactoryModes="1..2" RequiredSchemaVersion="V1.0" IOXS_Required="true" AddressAssignment="DCP" RemoteApplicationTimeout="300" MaxSupportedRecordSize="4068" PowerOnToCommReady="0" ParameterizationSpeedupSupported="false" SharedDeviceSupported="false" SharedInputSupported="false" NumberOfImplicitAR="1" AutoConfigurationSupported="false" CIR_Supported="false" PrmBeginPrmEndSequenceSupported="false" IO_SupervisorSupported="false" PROFIenergyASE_Supported="false" AdaptsRealIdentification="false">
+                    <ModuleInfo>
+                        <Name TextId="IDT_DAP_NAME" />
+                        <InfoText TextId="IDT_DAP_INFO" />
+                        <VendorName Value="RT-Labs AB" />
+                        <OrderNumber Value="MOD01" />
+                        <HardwareRelease Value="V0.8.0" />
+                        <SoftwareRelease Value="V0.5.0" />
+                    </ModuleInfo>
+                    <CertificationInfo ConformanceClass="A" ApplicationClass="" NetloadClass="I" />
+                    <IOConfigData MaxInputLength="244" MaxOutputLength="244" ApplicationLengthIncludesIOxS="false" />
+                    <UseableModules>
+                        <ModuleItemRef ModuleItemTarget="IDM_0x100" AllowedInSlots="1" />
+                        <ModuleItemRef ModuleItemTarget="IDM_0x200" AllowedInSlots="2" />
+                        <ModuleItemRef ModuleItemTarget="IDM_0x300" AllowedInSlots="3" />
+                    </UseableModules>
+                    <VirtualSubmoduleList>
+                        <VirtualSubmoduleItem ID="IDS_1" SubmoduleIdentNumber="0x00000001" Writeable_IM_Records="1 2 3" MayIssueProcessAlarm="false" API="0" PROFIsafeSupported="false" PROFIsafePIR_Supported="false" IM5_Supported="false" Max_iParameterSize="0">
+                            <IOData />
+                            <ModuleInfo>
+                                <Name TextId="IDT_DAP_NAME" />
+                                <InfoText TextId="IDT_DAP_INFO" />
+                            </ModuleInfo>
+                        </VirtualSubmoduleItem>
+                    </VirtualSubmoduleList>
+                    <SystemDefinedSubmoduleList>
+                        <InterfaceSubmoduleItem ID="IDS_I" SubmoduleIdentNumber="0x00008000" SubslotNumber="32768" TextId="IDT_NAME_IS" SupportedRT_Classes="RT_CLASS_1" SupportedProtocols="LLDP" NetworkComponentDiagnosisSupported="false" PTP_BoundarySupported="true" DCP_BoundarySupported="true" SupportedRT_Class="Class1" IsochroneModeSupported="false" IsochroneModeInRT_Classes="" SupportedServiceProtocols="CLRPC" DCP_HelloSupported="false" MulticastBoundarySupported="false" ParameterizationDisallowed="false" DelayMeasurementSupported="false" IM5_Supported="false" MaxFrameStartTime="1600" MinNRT_Gap="960" PDEV_CombinedObjectSupported="false" UsesStaticARP_CacheEntries="false">
+                            <ApplicationRelations StartupMode="Advanced" NumberOfAdditionalInputCR="0" NumberOfAdditionalOutputCR="0" NumberOfAdditionalMulticastProviderCR="0" NumberOfMulticastConsumerCR="0" PullModuleAlarmSupported="false" NumberOfAR="1">
+                                <TimingProperties SendClock="32" ReductionRatio="1 2 4 8 16 32 64 128 256 512" />
+                            </ApplicationRelations>
+                        </InterfaceSubmoduleItem>
+                        <PortSubmoduleItem ID="IDS_P1" SubmoduleIdentNumber="0x00008001" SubslotNumber="32769" TextId="IDT_NAME_PS1" MaxPortRxDelay="350" MaxPortTxDelay="160" MAUType="100BASETXFD" PortDeactivationSupported="false" SupportsRingportConfig="false" IsDefaultRingport="false" SupportsMRP_InterconnPortConfig="false" ParameterizationDisallowed="false" IM5_Supported="false">
+                            <MAUTypeList ExtensionSupported="false">
+                                <MAUTypeItem Value="30" Extension="0" AdjustSupported="false" />
+                                <MAUTypeItem Value="16" Extension="0" AdjustSupported="false" />
+                                <MAUTypeItem Value="5" Extension="0" AdjustSupported="false" />
+                            </MAUTypeList>
+                        </PortSubmoduleItem>
+                    </SystemDefinedSubmoduleList>
+                </DeviceAccessPointItem>
+            </DeviceAccessPointList>
+            <ModuleList>
+                <ModuleItem ID="IDM_0x100" ModuleIdentNumber="0x100" RequiredSchemaVersion="V1.0">
+                    <ModuleInfo>
+                        <Name TextId="IDT_MOD_NAME_0x100" />
+                        <InfoText TextId="IDT_MOD_INFO_0x100" />
+                        <HardwareRelease Value="1.0" />
+                        <SoftwareRelease Value="1.0" />
+                    </ModuleInfo>
+                    <VirtualSubmoduleList>
+                        <VirtualSubmoduleItem ID="IDSM_0x101" SubmoduleIdentNumber="0x101" MayIssueProcessAlarm="false" API="0" PROFIsafeSupported="false" PROFIsafePIR_Supported="false" IM5_Supported="false" Max_iParameterSize="0">
+                            <IOData>
+                                <Input Consistency="Item consistency">
+                                    <DataItem DataType="Unsigned8" TextId="IDT_I8_IN_Input_8_bits" UseAsBits="false" Subordinate="false" />
+                                </Input>
+                            </IOData>
+                            <ModuleInfo>
+                                <Name TextId="IDT_SUBMOD_NAME_0x101" />
+                                <InfoText TextId="IDT_SUBMOD_INFO_0x101" />
+                            </ModuleInfo>
+                        </VirtualSubmoduleItem>
+                    </VirtualSubmoduleList>
+                </ModuleItem>
+                <ModuleItem ID="IDM_0x200" ModuleIdentNumber="0x200" RequiredSchemaVersion="V1.0">
+                    <ModuleInfo>
+                        <Name TextId="IDT_MOD_NAME_0x200" />
+                        <InfoText TextId="IDT_MOD_INFO_0x200" />
+                        <HardwareRelease Value="1.0" />
+                        <SoftwareRelease Value="1.0" />
+                    </ModuleInfo>
+                    <VirtualSubmoduleList>
+                        <VirtualSubmoduleItem ID="IDSM_0x201" SubmoduleIdentNumber="0x201" MayIssueProcessAlarm="false" API="0" PROFIsafeSupported="false" PROFIsafePIR_Supported="false" IM5_Supported="false" Max_iParameterSize="0">
+                            <IOData>
+                                <Output Consistency="Item consistency">
+                                    <DataItem DataType="Unsigned8" TextId="IDT_O8_OUT_Output_8_bits" UseAsBits="false" Subordinate="false" />
+                                </Output>
+                            </IOData>
+                            <ModuleInfo>
+                                <Name TextId="IDT_SUBMOD_NAME_0x201" />
+                                <InfoText TextId="IDT_SUBMOD_INFO_0x201" />
+                            </ModuleInfo>
+                        </VirtualSubmoduleItem>
+                    </VirtualSubmoduleList>
+                </ModuleItem>
+                <ModuleItem ID="IDM_0x300" ModuleIdentNumber="0x300" RequiredSchemaVersion="V1.0">
+                    <ModuleInfo>
+                        <Name TextId="IDT_MOD_NAME_0x300" />
+                        <InfoText TextId="IDT_MOD_INFO_0x300" />
+                        <HardwareRelease Value="1.0" />
+                        <SoftwareRelease Value="1.0" />
+                    </ModuleInfo>
+                    <VirtualSubmoduleList>
+                        <VirtualSubmoduleItem ID="IDSM_0x301" SubmoduleIdentNumber="0x301" MayIssueProcessAlarm="false" API="0" PROFIsafeSupported="false" PROFIsafePIR_Supported="false" IM5_Supported="false" Max_iParameterSize="0">
+                            <IOData>
+                                <Input Consistency="Item consistency">
+                                    <DataItem DataType="Unsigned8" TextId="IDT_I8O8_IN_Input_8_bits" UseAsBits="false" Subordinate="false" />
+                                </Input>
+                                <Output Consistency="Item consistency">
+                                    <DataItem DataType="Unsigned8" TextId="IDT_I8O8_OUT_Output_8_bits" UseAsBits="false" Subordinate="false" />
+                                </Output>
+                            </IOData>
+                            <RecordDataList>
+                                <ParameterRecordDataItem Index="123" Length="4" TransferSequence="0" ChangeableWithBump="false">
+                                    <Name TextId="IDT_REC_NAME_Parameter_1" />
+                                    <Ref DataType="Unsigned32" DefaultValue="1" ByteOffset="0" TextId="IDT_REC_INFO_Parameter_1" AllowedValues="0..99" BitOffset="0" Changeable="true" Visible="true" />
+                                </ParameterRecordDataItem>
+                            </RecordDataList>
+                            <ModuleInfo>
+                                <Name TextId="IDT_SUBMOD_NAME_0x301" />
+                                <InfoText TextId="IDT_SUBMOD_INFO_0x301" />
+                            </ModuleInfo>
+                        </VirtualSubmoduleItem>
+                    </VirtualSubmoduleList>
+                </ModuleItem>
+            </ModuleList>
+            <ExternalTextList>
+                <PrimaryLanguage>
+                    <Text TextId="IDT_NAME_IS" Value="X1" />
+                    <Text TextId="IDT_NAME_PS1" Value="X1 P1" />
+                    <Text TextId="IDT_NAME_PS2" Value="X1 P2" />
+                    <Text TextId="IDT_INFO_DEV" Value="U-Phy sample device. Digital inputs and outputs supported." />
+                    <Text TextId="IDT_DAP_NAME" Value="U-Phy DIGIO Sample" />
+                    <Text TextId="IDT_DAP_INFO" Value="U-Phy sample device. Digital inputs and outputs supported." />
+                    <Text TextId="IDT_MOD_NAME_0x100" Value="I8" />
+                    <Text TextId="IDT_MOD_INFO_0x100" Value="Sample module with digital inputs" />
+                    <Text TextId="IDT_I8_IN_Input_8_bits" Value="Input 8 bits" />
+                    <Text TextId="IDT_SUBMOD_NAME_0x101" Value="I8" />
+                    <Text TextId="IDT_SUBMOD_INFO_0x101" Value="Sample module with digital inputs" />
+                    <Text TextId="IDT_MOD_NAME_0x200" Value="O8" />
+                    <Text TextId="IDT_MOD_INFO_0x200" Value="Sample module with digital outputs" />
+                    <Text TextId="IDT_O8_OUT_Output_8_bits" Value="Output 8 bits" />
+                    <Text TextId="IDT_SUBMOD_NAME_0x201" Value="O8" />
+                    <Text TextId="IDT_SUBMOD_INFO_0x201" Value="Sample module with digital outputs" />
+                    <Text TextId="IDT_MOD_NAME_0x300" Value="I8O8" />
+                    <Text TextId="IDT_MOD_INFO_0x300" Value="Demo module with inputs, outputs and parameters" />
+                    <Text TextId="IDT_I8O8_IN_Input_8_bits" Value="Input 8 bits" />
+                    <Text TextId="IDT_I8O8_OUT_Output_8_bits" Value="Output 8 bits" />
+                    <Text TextId="IDT_REC_NAME_Parameter_1" Value="Parameter 1" />
+                    <Text TextId="IDT_REC_INFO_Parameter_1" Value="Useful information on parameter 1" />
+                    <Text TextId="IDT_SUBMOD_NAME_0x301" Value="I8O8" />
+                    <Text TextId="IDT_SUBMOD_INFO_0x301" Value="Demo module with inputs, outputs and parameters" />
+                </PrimaryLanguage>
+            </ExternalTextList>
+        </ApplicationProcess>
+    </ProfileBody>
+</ISO15745Profile>

@@ -17,43 +17,19 @@
 
 #include <stdint.h>
 
-#undef ENABLE_IODEMO_SLOT
-
-#undef OPTION_SAMPLE_PNET
-#define OPTION_SAMPLE_ECAT
-#undef OPTION_SAMPLE_MOCK
-
 up_data_t up_data;
 
 void * up_vars[] = {
-   &up_data.i8.i8,       /* ix = 0 */
-   &up_data.o8.o8,       /* ix = 1 */
-   &up_data.io8.i8,      /* ix = 2 */
-   &up_data.io8.o8,      /* ix = 3 */
-   &up_data.io8.param_1, /* ix = 4 */
-   &up_data.io8.param_2, /* ix = 5 */
+   &up_data.I8.Input_8_bits,
+   &up_data.O8.Output_8_bits,
+   &up_data.I8O8.Input_8_bits,
+   &up_data.I8O8.Output_8_bits,
+   &up_data.I8O8.Parameter_1,
+};
 
-#ifdef ENABLE_IODEMO_SLOT
-   &up_data.iodemo.in_u8,   /* ix = 6 */
-   &up_data.iodemo.in_i8,   /* ix = 7 */
-   &up_data.iodemo.in_u16,  /* ix = 8 */
-   &up_data.iodemo.in_i16,  /* ix = 9 */
-   &up_data.iodemo.in_u32,  /* ix = 10 */
-   &up_data.iodemo.in_i32,  /* ix = 11 */
-   &up_data.iodemo.in_f,    /* ix = 12 */
-   &up_data.iodemo.out_u8,  /* ix = 13 */
-   &up_data.iodemo.out_i8,  /* ix = 14 */
-   &up_data.iodemo.out_u16, /* ix = 15 */
-   &up_data.iodemo.out_i16, /* ix = 16 */
-   &up_data.iodemo.out_u32, /* ix = 17 */
-   &up_data.iodemo.out_i32, /* ix = 18 */
-   &up_data.iodemo.out_f,   /* ix = 19 */
-#endif
-   NULL};
-
-static up_signal_t slot_I8_inputs[] = {
+static up_signal_t inputs_I8[] = {
    {
-      .name = "I8 Input 8 bits",
+      .name = "Input 8 bits",
       .ix = 0,
       .datatype = UP_DTYPE_UINT8,
       .bitlength = 8,
@@ -61,9 +37,9 @@ static up_signal_t slot_I8_inputs[] = {
    },
 };
 
-static up_signal_t slot_O8_outputs[] = {
+static up_signal_t outputs_O8[] = {
    {
-      .name = "O8 Output 8 bits",
+      .name = "Output 8 bits",
       .ix = 1,
       .datatype = UP_DTYPE_UINT8,
       .bitlength = 8,
@@ -71,9 +47,9 @@ static up_signal_t slot_O8_outputs[] = {
    },
 };
 
-static up_signal_t slot_IO8_inputs[] = {
+static up_signal_t inputs_I8O8[] = {
    {
-      .name = "IO8 Input 8 bits",
+      .name = "Input 8 bits",
       .ix = 2,
       .datatype = UP_DTYPE_UINT8,
       .bitlength = 8,
@@ -81,9 +57,9 @@ static up_signal_t slot_IO8_inputs[] = {
    },
 };
 
-static up_signal_t slot_IO8_outputs[] = {
+static up_signal_t outputs_I8O8[] = {
    {
-      .name = "IO8 Output 8 bits",
+      .name = "Output 8 bits",
       .ix = 3,
       .datatype = UP_DTYPE_UINT8,
       .bitlength = 8,
@@ -91,139 +67,16 @@ static up_signal_t slot_IO8_outputs[] = {
    },
 };
 
-static int32_t param_1_default_value = 12;
-static float param_2_default_value = 1.1;
-
-static up_param_t slot_IO8_parameters[] = {
+static up_param_t parameters_I8O8[] = {
    {
-      .name = "IO8 Demo parameter int",
+      .name = "Parameter 1",
       .ix = 4,
-      .pn_param_index = 123,
-      .datatype = UP_DTYPE_INT32,
+      .datatype = UP_DTYPE_UINT32,
       .bitlength = 32,
       .frame_offset = 0,
-      .default_value.dataLength = 4,
-      .default_value.data = (void *)&param_1_default_value,
-   },
-   {
-      .name = "IO8 Demo parameter float",
-      .ix = 5,
-      .pn_param_index = 124,
-      .datatype = UP_DTYPE_FLOAT32,
-      .bitlength = 32,
-      .frame_offset = 4,
-      .default_value.dataLength = 4,
-      .default_value.data = (void *)&param_2_default_value,
+      .pn_param_index = 123,
    },
 };
-
-#ifdef ENABLE_IODEMO_SLOT
-static up_signal_t slot_IODemo_inputs[] = {
-   {
-      .name = "Input uint8",
-      .ix = 6,
-      .datatype = UP_DTYPE_UINT8,
-      .bitlength = 8,
-      .frame_offset = 2,
-   },
-   {
-      .name = "Input int8",
-      .ix = 7,
-      .datatype = UP_DTYPE_INT8,
-      .bitlength = 8,
-      .frame_offset = 3,
-   },
-   {
-      .name = "Input uint16",
-      .ix = 8,
-      .datatype = UP_DTYPE_UINT16,
-      .bitlength = 16,
-      .frame_offset = 4,
-   },
-   {
-      .name = "Input int16",
-      .ix = 9,
-      .datatype = UP_DTYPE_INT16,
-      .bitlength = 16,
-      .frame_offset = 6,
-   },
-   {
-      .name = "Input uint32",
-      .ix = 10,
-      .datatype = UP_DTYPE_UINT32,
-      .bitlength = 32,
-      .frame_offset = 8,
-   },
-   {
-      .name = "Input int32",
-      .ix = 11,
-      .datatype = UP_DTYPE_INT32,
-      .bitlength = 32,
-      .frame_offset = 12,
-   },
-   {
-      .name = "Input float",
-      .ix = 12,
-      .datatype = UP_DTYPE_FLOAT32,
-      .bitlength = 32,
-      .frame_offset = 16,
-   },
-};
-
-static up_signal_t slot_IODemo_outputs[] = {
-
-   {
-      .name = "Output uint8",
-      .ix = 13,
-      .datatype = UP_DTYPE_UINT8,
-      .bitlength = 8,
-      .frame_offset = 2,
-   },
-   {
-      .name = "Output int8",
-      .ix = 14,
-      .datatype = UP_DTYPE_INT8,
-      .bitlength = 8,
-      .frame_offset = 3,
-   },
-
-   {
-      .name = "Output uint16",
-      .ix = 15,
-      .datatype = UP_DTYPE_UINT16,
-      .bitlength = 16,
-      .frame_offset = 4,
-   },
-   {
-      .name = "Output int16",
-      .ix = 16,
-      .datatype = UP_DTYPE_INT16,
-      .bitlength = 16,
-      .frame_offset = 6,
-   },
-   {
-      .name = "Output uint32",
-      .ix = 17,
-      .datatype = UP_DTYPE_UINT32,
-      .bitlength = 32,
-      .frame_offset = 8,
-   },
-   {
-      .name = "Output int32",
-      .ix = 18,
-      .datatype = UP_DTYPE_INT32,
-      .bitlength = 32,
-      .frame_offset = 12,
-   },
-   {
-      .name = "Output float",
-      .ix = 19,
-      .datatype = UP_DTYPE_FLOAT32,
-      .bitlength = 32,
-      .frame_offset = 16,
-   },
-};
-#endif
 
 up_slot_t slots[] = {
    {
@@ -231,43 +84,57 @@ up_slot_t slots[] = {
       .profinet_module_id = 0x100,
       .profinet_submodule_id = 0x101,
       .input_bitlength = 8,
-      .n_inputs = NELEMENTS (slot_I8_inputs),
-      .inputs = slot_I8_inputs,
+      .output_bitlength = 0,
+      .n_inputs = NELEMENTS (inputs_I8),
+      .inputs = inputs_I8,
    },
    {
       .name = "O8",
       .profinet_module_id = 0x200,
       .profinet_submodule_id = 0x201,
+      .input_bitlength = 0,
       .output_bitlength = 8,
-      .n_outputs = NELEMENTS (slot_O8_outputs),
-      .outputs = slot_O8_outputs,
+      .n_outputs = NELEMENTS (outputs_O8),
+      .outputs = outputs_O8,
    },
    {
-      .name = "IO8",
+      .name = "I8O8",
       .profinet_module_id = 0x300,
       .profinet_submodule_id = 0x301,
       .input_bitlength = 8,
       .output_bitlength = 8,
-      .n_inputs = NELEMENTS (slot_IO8_inputs),
-      .inputs = slot_IO8_inputs,
-      .n_outputs = NELEMENTS (slot_IO8_outputs),
-      .outputs = slot_IO8_outputs,
-      .n_params = NELEMENTS (slot_IO8_parameters),
-      .params = slot_IO8_parameters,
+      .n_inputs = NELEMENTS (inputs_I8O8),
+      .inputs = inputs_I8O8,
+      .n_outputs = NELEMENTS (outputs_I8O8),
+      .outputs = outputs_I8O8,
+      .n_params = NELEMENTS (parameters_I8O8),
+      .params = parameters_I8O8,
    },
-#ifdef ENABLE_IODEMO_SLOT
-   {
-      .name = "IODemo",
-      .profinet_module_id = 0x400,
-      .profinet_submodule_id = 0x401,
-      .input_bitlength = 144,
-      .output_bitlength = 144,
-      .n_inputs = NELEMENTS (slot_IODemo_inputs),
-      .inputs = slot_IODemo_inputs,
-      .n_outputs = NELEMENTS (slot_IODemo_outputs),
-      .outputs = slot_IODemo_outputs,
-   },
-#endif
+};
+
+up_device_t up_device = {
+   .name = "U-Phy DIGIO Sample",
+   .cfg.serial_number = "serial_1232",
+
+   .bustype = UP_BUSTYPE_MOCK,
+   .n_slots = NELEMENTS (slots),
+   .slots = slots,
+};
+
+up_profinet_config_t up_profinet_config = {
+   .vendor_id = 0x0493,
+   .device_id = 0x0003,
+   .profile_id = 0x0,
+   .profile_specific_type = 0x0,
+   .min_device_interval = 32,
+   .default_stationname = "u-phy-dev",
+   .order_id = "MOD01",
+   .hw_revision = 1,
+   .sw_revision_prefix = 'V',
+   .sw_revision_functional_enhancement = 0,
+   .sw_revision_bug_fix = 1,
+   .sw_revision_internal_change = 27,
+   .revision_counter = 0,
 };
 
 up_ciaobject_t ecat_I8_txpdo_entries[] = {{
@@ -380,49 +247,20 @@ up_ecat_slot_t ecat_slots[] = {
    },
 };
 
-up_device_t up_device = {
-   .name = "U-PHY MOD01",
-   .serial_number = "20220112_A12",
-#if defined(OPTION_SAMPLE_PNET)
-   .bustype = UP_BUSTYPE_PROFINET,
-#elif defined(OPTION_SAMPLE_ECAT)
-   .bustype = UP_BUSTYPE_ECAT,
-#elif defined(OPTION_SAMPLE_MOCK)
-   .bustype = UP_BUSTYPE_MOCK,
-#endif
-   .n_slots = NELEMENTS (slots),
-   .slots = slots,
+up_ecat_device_t up_ethercat_config = {
+   .profile = 0x1389,
+   .vendor = 0x1337,
+   .productcode = 1,
+   .revision = 0x0101,
+   .serial = 1,
+   .hw_rev = "1.0.1",
+   .sw_rev = "1.0",
+   .pdo_increment = 16,
+   .index_increment = 0x0100,
+   .n_modules = 3,
+   .n_slots = 3,
+   .modules = ecat_modules,
+   .slots = ecat_slots,
 };
 
-up_busconf_t up_busconf = {
-#if defined(OPTION_SAMPLE_PNET)
-   .profinet.vendor_id = 0x0493,
-   .profinet.device_id = 0x0003,
-   .profinet.profile_id = 0x1234,
-   .profinet.profile_specific_type = 0x5678,
-   .profinet.min_device_interval = 32,
-   .profinet.default_stationname = "u-phy-dev",
-   .profinet.order_id = "MOD01",
-   .profinet.hw_revision = 1,
-   .profinet.sw_revision_prefix = 'V',
-   .profinet.sw_revision_functional_enhancement = 0,
-   .profinet.sw_revision_bug_fix = 1,
-   .profinet.sw_revision_internal_change = 27,
-   .profinet.revision_counter = 0,
-#elif defined(OPTION_SAMPLE_ECAT)
-   .ecat.profile = 0x1389,
-   .ecat.vendor = 0x1337,
-   .ecat.productcode = 1,
-   .ecat.revision = 0x0101,
-   .ecat.serial = 1,
-   .ecat.hw_rev = "1.0.1",
-   .ecat.sw_rev = "1.0",
-   .ecat.pdo_increment = 16,
-   .ecat.index_increment = 0x0100,
-   .ecat.n_modules = 3,
-   .ecat.n_slots = 3,
-   .ecat.modules = ecat_modules,
-   .ecat.slots = ecat_slots,
-#elif defined(OPTION_SAMPLE_MOCK)
-#endif
-};
+up_mockadapter_config_t up_mock_config = {0};
