@@ -142,11 +142,14 @@ int _cmd_start (int argc, char * argv[])
       cfg.device->bustype = UP_BUSTYPE_ECAT,
       up_busconf.ecat = up_ethercat_config;
    }
+   else if (strcmp (argv[2], "mock") == 0)
+   {
+      cfg.device->bustype = UP_BUSTYPE_MOCK;
+      up_busconf.mock = up_mock_config;
+   }
    else
    {
       printf ("Unsupported fieldbus \"%s\", abort\n", argv[2]);
-      cfg.device->bustype = UP_BUSTYPE_MOCK;
-      up_busconf.mock = up_mock_config;
       exit (EXIT_FAILURE);
    }
 

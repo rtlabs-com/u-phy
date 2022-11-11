@@ -200,12 +200,6 @@ up_ciaobject_t ecat_IO8_objects[] = {
       .is_signal = false,
       .signal_or_param_ix = 0,
    },
-   {
-      .index = 0x8001,
-      .subindex = 0,
-      .is_signal = false,
-      .signal_or_param_ix = 1,
-   },
 };
 
 up_ecat_module_t ecat_modules[] = {
@@ -228,7 +222,7 @@ up_ecat_module_t ecat_modules[] = {
    {
       .n_rxpdos = 1,
       .n_txpdos = 1,
-      .n_objects = 2,
+      .n_objects = 1,
       .rxpdos = ecat_IO8_rxpdos,
       .txpdos = ecat_IO8_txpdos,
       .objects = ecat_IO8_objects,
