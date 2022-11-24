@@ -74,15 +74,12 @@ static up_param_t parameters_I8O8[] = {
       .datatype = UP_DTYPE_UINT32,
       .bitlength = 32,
       .frame_offset = 0,
-      .pn_param_index = 123,
    },
 };
 
 up_slot_t slots[] = {
    {
       .name = "I8",
-      .profinet_module_id = 0x100,
-      .profinet_submodule_id = 0x101,
       .input_bitlength = 8,
       .output_bitlength = 0,
       .n_inputs = NELEMENTS (inputs_I8),
@@ -90,8 +87,6 @@ up_slot_t slots[] = {
    },
    {
       .name = "O8",
-      .profinet_module_id = 0x200,
-      .profinet_submodule_id = 0x201,
       .input_bitlength = 0,
       .output_bitlength = 8,
       .n_outputs = NELEMENTS (outputs_O8),
@@ -99,8 +94,6 @@ up_slot_t slots[] = {
    },
    {
       .name = "I8O8",
-      .profinet_module_id = 0x300,
-      .profinet_submodule_id = 0x301,
       .input_bitlength = 8,
       .output_bitlength = 8,
       .n_inputs = NELEMENTS (inputs_I8O8),
@@ -121,6 +114,41 @@ up_device_t up_device = {
    .slots = slots,
 };
 
+up_pn_param_t pn_parameters_I8O8[] = {
+   {
+      .pn_index = 123,
+   },
+};
+
+up_pn_module_t pn_modules[] = {
+   {
+      .module_id = 0x100,
+      .submodule_id = 0x101,
+   },
+   {
+      .module_id = 0x200,
+      .submodule_id = 0x201,
+   },
+   {
+      .module_id = 0x300,
+      .submodule_id = 0x301,
+      .n_params = 1,
+      .params = pn_parameters_I8O8,
+   },
+};
+
+up_pn_slot_t pn_slots[] = {
+   {
+      .module_ix = 0,
+   },
+   {
+      .module_ix = 1,
+   },
+   {
+      .module_ix = 2,
+   },
+};
+
 up_profinet_config_t up_profinet_config = {
    .vendor_id = 0x0493,
    .device_id = 0x0003,
@@ -135,6 +163,10 @@ up_profinet_config_t up_profinet_config = {
    .sw_revision_bug_fix = 1,
    .sw_revision_internal_change = 27,
    .revision_counter = 0,
+   .n_modules = 3,
+   .n_slots = 3,
+   .modules = pn_modules,
+   .slots = pn_slots,
 };
 
 up_ciaobject_t ecat_I8_txpdo_entries[] = {{
