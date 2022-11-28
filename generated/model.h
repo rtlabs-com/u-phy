@@ -19,6 +19,10 @@ extern "C" {
 
 #include "up_types.h"
 
+/* Alarm error codes */
+#define UP_ERROR_CODE_I8O8_ALARM_400 400
+#define UP_ERROR_CODE_I8O8_ALARM_500 500
+
 typedef struct up_data
 {
    struct

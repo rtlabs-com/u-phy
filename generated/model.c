@@ -114,7 +114,7 @@ up_device_t up_device = {
    .slots = slots,
 };
 
-up_pn_param_t pn_parameters_I8O8[] = {
+up_pn_param_t pn_I8O8_parameters[] = {
    {
       .pn_index = 123,
    },
@@ -133,7 +133,7 @@ up_pn_module_t pn_modules[] = {
       .module_id = 0x300,
       .submodule_id = 0x301,
       .n_params = 1,
-      .params = pn_parameters_I8O8,
+      .params = pn_I8O8_parameters,
    },
 };
 
@@ -169,63 +169,79 @@ up_profinet_config_t up_profinet_config = {
    .slots = pn_slots,
 };
 
-up_ciaobject_t ecat_I8_txpdo_entries[] = {{
-   .index = 0x7000,
-   .subindex = 0,
-   .is_signal = true,
-   .signal_or_param_ix = 0,
-}};
+up_ciaobject_t ecat_I8_txpdo_entries[] = {
+   {
+      .index = 0x6000,
+      .subindex = 0,
+      .is_signal = true,
+      .signal_or_param_ix = 0,
+   },
+};
 
-up_ciapdo_t ecat_I8_txpdos[] = {{
-   .name = "I8 Outputs",
-   .index = 0x1600,
-   .n_entries = 1,
-   .entries = ecat_I8_txpdo_entries,
-}};
+up_ciapdo_t ecat_I8_txpdos[] = {
+   {
+      .name = "Inputs",
+      .index = 0x1a00,
+      .n_entries = 1,
+      .entries = ecat_I8_txpdo_entries,
+   },
+};
 
-up_ciaobject_t ecat_O8_rxpdo_entries[] = {{
-   .index = 0x6000,
-   .subindex = 0,
-   .is_signal = true,
-   .signal_or_param_ix = 0,
-}};
+up_ciaobject_t ecat_O8_rxpdo_entries[] = {
+   {
+      .index = 0x7000,
+      .subindex = 0,
+      .is_signal = true,
+      .signal_or_param_ix = 0,
+   },
+};
 
-up_ciapdo_t ecat_O8_rxpdos[] = {{
-   .name = "O8 Outputs",
-   .index = 0x1A00,
-   .n_entries = 1,
-   .entries = ecat_O8_rxpdo_entries,
-}};
+up_ciapdo_t ecat_O8_rxpdos[] = {
+   {
+      .name = "Outputs",
+      .index = 0x1600,
+      .n_entries = 1,
+      .entries = ecat_O8_rxpdo_entries,
+   },
+};
 
-up_ciaobject_t ecat_IO8_txpdo_entries[] = {{
-   .index = 0x7000,
-   .subindex = 0,
-   .is_signal = true,
-   .signal_or_param_ix = 0,
-}};
+up_ciaobject_t ecat_I8O8_txpdo_entries[] = {
+   {
+      .index = 0x6000,
+      .subindex = 0,
+      .is_signal = true,
+      .signal_or_param_ix = 0,
+   },
+};
 
-up_ciapdo_t ecat_IO8_txpdos[] = {{
-   .name = "IO8 Inputs",
-   .index = 0x1600,
-   .n_entries = 1,
-   .entries = ecat_IO8_txpdo_entries,
-}};
+up_ciapdo_t ecat_I8O8_txpdos[] = {
+   {
+      .name = "Inputs",
+      .index = 0x1a00,
+      .n_entries = 1,
+      .entries = ecat_I8O8_txpdo_entries,
+   },
+};
 
-up_ciaobject_t ecat_IO8_rxpdo_entries[] = {{
-   .index = 0x6000,
-   .subindex = 0,
-   .is_signal = true,
-   .signal_or_param_ix = 0,
-}};
+up_ciaobject_t ecat_I8O8_rxpdo_entries[] = {
+   {
+      .index = 0x7000,
+      .subindex = 0,
+      .is_signal = true,
+      .signal_or_param_ix = 0,
+   },
+};
 
-up_ciapdo_t ecat_IO8_rxpdos[] = {{
-   .name = "IO8 Outputs",
-   .index = 0x1A00,
-   .n_entries = 1,
-   .entries = ecat_IO8_rxpdo_entries,
-}};
+up_ciapdo_t ecat_I8O8_rxpdos[] = {
+   {
+      .name = "Outputs",
+      .index = 0x1600,
+      .n_entries = 1,
+      .entries = ecat_I8O8_rxpdo_entries,
+   },
+};
 
-up_ciaobject_t ecat_IO8_objects[] = {
+up_ciaobject_t ecat_I8O8_objects[] = {
    {
       .index = 0x8000,
       .subindex = 0,
@@ -255,9 +271,9 @@ up_ecat_module_t ecat_modules[] = {
       .n_rxpdos = 1,
       .n_txpdos = 1,
       .n_objects = 1,
-      .rxpdos = ecat_IO8_rxpdos,
-      .txpdos = ecat_IO8_txpdos,
-      .objects = ecat_IO8_objects,
+      .rxpdos = ecat_I8O8_rxpdos,
+      .txpdos = ecat_I8O8_txpdos,
+      .objects = ecat_I8O8_objects,
    },
 };
 
@@ -276,13 +292,13 @@ up_ecat_slot_t ecat_slots[] = {
 up_ecat_device_t up_ethercat_config = {
    .profile = 0x1389,
    .vendor = 0x1337,
-   .productcode = 1,
-   .revision = 0x0101,
+   .productcode = 0x1234,
+   .revision = 1,
    .serial = 1,
-   .hw_rev = "1.0.1",
-   .sw_rev = "1.0",
-   .pdo_increment = 16,
-   .index_increment = 0x0100,
+   .hw_rev = "",
+   .sw_rev = "",
+   .pdo_increment = 16,       /* TODO */
+   .index_increment = 0x0100, /* TODO */
    .n_modules = 3,
    .n_slots = 3,
    .modules = ecat_modules,

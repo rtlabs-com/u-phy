@@ -137,6 +137,14 @@
                     </VirtualSubmoduleList>
                 </ModuleItem>
             </ModuleList>
+            <ChannelDiagList>
+                <ChannelDiagItem ErrorType="400" MaintenanceAlarmState="D;MR;MD">
+                    <Name TextId="IDT_DIAG_400" />
+                </ChannelDiagItem>
+                <ChannelDiagItem ErrorType="500" MaintenanceAlarmState="D;MR;MD">
+                    <Name TextId="IDT_DIAG_500" />
+                </ChannelDiagItem>
+            </ChannelDiagList>
             <ExternalTextList>
                 <PrimaryLanguage>
                     <Text TextId="IDT_NAME_IS" Value="X1" />
@@ -163,6 +171,8 @@
                     <Text TextId="IDT_REC_INFO_Parameter_1" Value="Useful information on parameter 1" />
                     <Text TextId="IDT_SUBMOD_NAME_0x301" Value="I8O8" />
                     <Text TextId="IDT_SUBMOD_INFO_0x301" Value="Demo module with inputs, outputs and parameters" />
+                    <Text TextId="IDT_DIAG_400" Value="Alarm message 400" />
+                    <Text TextId="IDT_DIAG_500" Value="Alarm message 500" />
                 </PrimaryLanguage>
             </ExternalTextList>
         </ApplicationProcess>
