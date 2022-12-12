@@ -24,8 +24,8 @@
             <DeviceAccessPointList>
                 <DeviceAccessPointItem ID="IDD_1" PNIO_Version="V2.4" PhysicalSlots="0..4" ModuleIdentNumber="0x00000001" MinDeviceInterval="32" DNS_CompatibleName="u-phy-dev" FixedInSlots="0" ObjectUUID_LocalIndex="1" DeviceAccessSupported="false" MultipleWriteSupported="true" CheckDeviceID_Allowed="true" NameOfStationNotTransferable="false" LLDP_NoD_Supported="true" ResetToFactoryModes="1..2" RequiredSchemaVersion="V1.0" IOXS_Required="true" AddressAssignment="DCP" RemoteApplicationTimeout="300" MaxSupportedRecordSize="4068" PowerOnToCommReady="0" ParameterizationSpeedupSupported="false" SharedDeviceSupported="false" SharedInputSupported="false" NumberOfImplicitAR="1" AutoConfigurationSupported="false" CIR_Supported="false" PrmBeginPrmEndSequenceSupported="false" IO_SupervisorSupported="false" PROFIenergyASE_Supported="false" AdaptsRealIdentification="false">
                     <ModuleInfo>
-                        <Name TextId="IDT_DAP_NAME" />
-                        <InfoText TextId="IDT_DAP_INFO" />
+                        <Name TextId="IDT_DAP_1_NAME" />
+                        <InfoText TextId="IDT_DAP_1_INFO" />
                         <VendorName Value="RT-Labs AB" />
                         <OrderNumber Value="MOD01" />
                         <HardwareRelease Value="V0.8.0" />
@@ -42,8 +42,8 @@
                         <VirtualSubmoduleItem ID="IDS_1" SubmoduleIdentNumber="0x00000001" Writeable_IM_Records="1 2 3" MayIssueProcessAlarm="false" API="0" PROFIsafeSupported="false" PROFIsafePIR_Supported="false" IM5_Supported="false" Max_iParameterSize="0">
                             <IOData />
                             <ModuleInfo>
-                                <Name TextId="IDT_DAP_NAME" />
-                                <InfoText TextId="IDT_DAP_INFO" />
+                                <Name TextId="IDT_DAP_1_NAME" />
+                                <InfoText TextId="IDT_DAP_1_INFO" />
                             </ModuleInfo>
                         </VirtualSubmoduleItem>
                     </VirtualSubmoduleList>
@@ -55,7 +55,55 @@
                         </InterfaceSubmoduleItem>
                         <PortSubmoduleItem ID="IDS_P1" SubmoduleIdentNumber="0x00008001" SubslotNumber="32769" TextId="IDT_NAME_PS1" MaxPortRxDelay="350" MaxPortTxDelay="160" MAUType="100BASETXFD" PortDeactivationSupported="false" SupportsRingportConfig="false" IsDefaultRingport="false" SupportsMRP_InterconnPortConfig="false" ParameterizationDisallowed="false" IM5_Supported="false">
                             <MAUTypeList ExtensionSupported="false">
-                                <MAUTypeItem Value="30" Extension="0" AdjustSupported="false" />
+                                <MAUTypeItem Value="16" Extension="0" AdjustSupported="false" />
+                                <MAUTypeItem Value="5" Extension="0" AdjustSupported="false" />
+                            </MAUTypeList>
+                        </PortSubmoduleItem>
+                        <PortSubmoduleItem ID="IDS_P2" SubmoduleIdentNumber="0x00008002" SubslotNumber="32770" TextId="IDT_NAME_PS2" MaxPortRxDelay="350" MaxPortTxDelay="160" MAUType="100BASETXFD" PortDeactivationSupported="false" SupportsRingportConfig="false" IsDefaultRingport="false" SupportsMRP_InterconnPortConfig="false" ParameterizationDisallowed="false" IM5_Supported="false">
+                            <MAUTypeList ExtensionSupported="false">
+                                <MAUTypeItem Value="16" Extension="0" AdjustSupported="false" />
+                                <MAUTypeItem Value="5" Extension="0" AdjustSupported="false" />
+                            </MAUTypeList>
+                        </PortSubmoduleItem>
+                    </SystemDefinedSubmoduleList>
+                </DeviceAccessPointItem>
+                <DeviceAccessPointItem ID="IDD_2" PNIO_Version="V2.4" PhysicalSlots="0..4" ModuleIdentNumber="0x00000002" MinDeviceInterval="32" DNS_CompatibleName="u-phy-dev" FixedInSlots="0" ObjectUUID_LocalIndex="1" DeviceAccessSupported="false" MultipleWriteSupported="true" CheckDeviceID_Allowed="true" NameOfStationNotTransferable="false" LLDP_NoD_Supported="true" ResetToFactoryModes="1..2" RequiredSchemaVersion="V1.0" IOXS_Required="true" AddressAssignment="DCP" RemoteApplicationTimeout="300" MaxSupportedRecordSize="4068" PowerOnToCommReady="0" ParameterizationSpeedupSupported="false" SharedDeviceSupported="false" SharedInputSupported="false" NumberOfImplicitAR="1" AutoConfigurationSupported="false" CIR_Supported="false" PrmBeginPrmEndSequenceSupported="false" IO_SupervisorSupported="false" PROFIenergyASE_Supported="false" AdaptsRealIdentification="false">
+                    <ModuleInfo>
+                        <Name TextId="IDT_DAP_2_NAME" />
+                        <InfoText TextId="IDT_DAP_2_INFO" />
+                        <VendorName Value="RT-Labs AB" />
+                        <OrderNumber Value="MOD01-2" />
+                        <HardwareRelease Value="V0.1.0" />
+                        <SoftwareRelease Value="V0.1.0" />
+                    </ModuleInfo>
+                    <CertificationInfo ConformanceClass="A" ApplicationClass="" NetloadClass="I" />
+                    <IOConfigData MaxInputLength="244" MaxOutputLength="244" ApplicationLengthIncludesIOxS="false" />
+                    <UseableModules>
+                        <ModuleItemRef ModuleItemTarget="IDM_0x400" AllowedInSlots="1 2" />
+                    </UseableModules>
+                    <VirtualSubmoduleList>
+                        <VirtualSubmoduleItem ID="IDS_1" SubmoduleIdentNumber="0x00000002" Writeable_IM_Records="1 2 3" MayIssueProcessAlarm="false" API="0" PROFIsafeSupported="false" PROFIsafePIR_Supported="false" IM5_Supported="false" Max_iParameterSize="0">
+                            <IOData />
+                            <ModuleInfo>
+                                <Name TextId="IDT_DAP_2_NAME" />
+                                <InfoText TextId="IDT_DAP_2_INFO" />
+                            </ModuleInfo>
+                        </VirtualSubmoduleItem>
+                    </VirtualSubmoduleList>
+                    <SystemDefinedSubmoduleList>
+                        <InterfaceSubmoduleItem ID="IDS_I" SubmoduleIdentNumber="0x00000003" SubslotNumber="32768" TextId="IDT_NAME_IS" SupportedRT_Classes="RT_CLASS_1" SupportedProtocols="LLDP" NetworkComponentDiagnosisSupported="false" PTP_BoundarySupported="true" DCP_BoundarySupported="true" SupportedRT_Class="Class1" IsochroneModeSupported="false" IsochroneModeInRT_Classes="" SupportedServiceProtocols="CLRPC" DCP_HelloSupported="false" MulticastBoundarySupported="false" ParameterizationDisallowed="false" DelayMeasurementSupported="false" IM5_Supported="false" MaxFrameStartTime="1600" MinNRT_Gap="960" PDEV_CombinedObjectSupported="false" UsesStaticARP_CacheEntries="false">
+                            <ApplicationRelations StartupMode="Advanced" NumberOfAdditionalInputCR="0" NumberOfAdditionalOutputCR="0" NumberOfAdditionalMulticastProviderCR="0" NumberOfMulticastConsumerCR="0" PullModuleAlarmSupported="false" NumberOfAR="1">
+                                <TimingProperties SendClock="32" ReductionRatio="1 2 4 8 16 32 64 128 256 512" />
+                            </ApplicationRelations>
+                        </InterfaceSubmoduleItem>
+                        <PortSubmoduleItem ID="IDS_P1" SubmoduleIdentNumber="0x00000004" SubslotNumber="32769" TextId="IDT_NAME_PS1" MaxPortRxDelay="350" MaxPortTxDelay="160" MAUType="100BASETXFD" PortDeactivationSupported="false" SupportsRingportConfig="false" IsDefaultRingport="false" SupportsMRP_InterconnPortConfig="false" ParameterizationDisallowed="false" IM5_Supported="false">
+                            <MAUTypeList ExtensionSupported="false">
+                                <MAUTypeItem Value="16" Extension="0" AdjustSupported="false" />
+                                <MAUTypeItem Value="5" Extension="0" AdjustSupported="false" />
+                            </MAUTypeList>
+                        </PortSubmoduleItem>
+                        <PortSubmoduleItem ID="IDS_P2" SubmoduleIdentNumber="0x00000004" SubslotNumber="32770" TextId="IDT_NAME_PS2" MaxPortRxDelay="350" MaxPortTxDelay="160" MAUType="100BASETXFD" PortDeactivationSupported="false" SupportsRingportConfig="false" IsDefaultRingport="false" SupportsMRP_InterconnPortConfig="false" ParameterizationDisallowed="false" IM5_Supported="false">
+                            <MAUTypeList ExtensionSupported="false">
                                 <MAUTypeItem Value="16" Extension="0" AdjustSupported="false" />
                                 <MAUTypeItem Value="5" Extension="0" AdjustSupported="false" />
                             </MAUTypeList>
@@ -136,6 +184,42 @@
                         </VirtualSubmoduleItem>
                     </VirtualSubmoduleList>
                 </ModuleItem>
+                <ModuleItem ID="IDM_0x400" ModuleIdentNumber="0x400" RequiredSchemaVersion="V1.0">
+                    <ModuleInfo>
+                        <Name TextId="IDT_MOD_NAME_0x400" />
+                        <InfoText TextId="IDT_MOD_INFO_0x400" />
+                        <HardwareRelease Value="1.0" />
+                        <SoftwareRelease Value="1.0" />
+                    </ModuleInfo>
+                    <VirtualSubmoduleList>
+                        <VirtualSubmoduleItem ID="IDSM_0x401" SubmoduleIdentNumber="0x401" MayIssueProcessAlarm="false" API="0" PROFIsafeSupported="false" PROFIsafePIR_Supported="false" IM5_Supported="false" Max_iParameterSize="0">
+                            <IOData>
+                                <Input Consistency="Item consistency">
+                                    <DataItem DataType="Unsigned16" TextId="IDT_CST_IN_StatusWord" UseAsBits="false" Subordinate="false" />
+                                    <DataItem DataType="Integer16" TextId="IDT_CST_IN_ActualTorque" UseAsBits="false" Subordinate="false" />
+                                </Input>
+                                <Output Consistency="Item consistency">
+                                    <DataItem DataType="Unsigned16" TextId="IDT_CST_OUT_ControlWord" UseAsBits="false" Subordinate="false" />
+                                    <DataItem DataType="Integer16" TextId="IDT_CST_OUT_TargetTorque" UseAsBits="false" Subordinate="false" />
+                                </Output>
+                            </IOData>
+                            <RecordDataList>
+                                <ParameterRecordDataItem Index="123" Length="2" TransferSequence="0" ChangeableWithBump="false">
+                                    <Name TextId="IDT_REC_NAME_ErrorCode" />
+                                    <Ref DataType="Unsigned16" DefaultValue="0" ByteOffset="0" TextId="IDT_REC_INFO_ErrorCode" BitOffset="0" Changeable="true" Visible="true" />
+                                </ParameterRecordDataItem>
+                                <ParameterRecordDataItem Index="124" Length="4" TransferSequence="0" ChangeableWithBump="false">
+                                    <Name TextId="IDT_REC_NAME_Supported_drive_modes" />
+                                    <Ref DataType="Unsigned32" DefaultValue="0" ByteOffset="0" TextId="IDT_REC_INFO_Supported_drive_modes" BitOffset="0" Changeable="true" Visible="true" />
+                                </ParameterRecordDataItem>
+                            </RecordDataList>
+                            <ModuleInfo>
+                                <Name TextId="IDT_SUBMOD_NAME_0x401" />
+                                <InfoText TextId="IDT_SUBMOD_INFO_0x401" />
+                            </ModuleInfo>
+                        </VirtualSubmoduleItem>
+                    </VirtualSubmoduleList>
+                </ModuleItem>
             </ModuleList>
             <ChannelDiagList>
                 <ChannelDiagItem ErrorType="400" MaintenanceAlarmState="D;MR;MD">
@@ -151,8 +235,10 @@
                     <Text TextId="IDT_NAME_PS1" Value="X1 P1" />
                     <Text TextId="IDT_NAME_PS2" Value="X1 P2" />
                     <Text TextId="IDT_INFO_DEV" Value="U-Phy sample device. Digital inputs and outputs supported." />
-                    <Text TextId="IDT_DAP_NAME" Value="U-Phy DIGIO Sample" />
-                    <Text TextId="IDT_DAP_INFO" Value="U-Phy sample device. Digital inputs and outputs supported." />
+                    <Text TextId="IDT_DAP_1_NAME" Value="U-Phy DIGIO Sample" />
+                    <Text TextId="IDT_DAP_1_INFO" Value="U-Phy sample device. Digital inputs and outputs supported." />
+                    <Text TextId="IDT_DAP_2_NAME" Value="2 Axis Motor" />
+                    <Text TextId="IDT_DAP_2_INFO" Value="U-Phy sample CiA402 device" />
                     <Text TextId="IDT_MOD_NAME_0x100" Value="I8" />
                     <Text TextId="IDT_MOD_INFO_0x100" Value="Sample module with digital inputs" />
                     <Text TextId="IDT_I8_IN_Input_8_bits" Value="Input 8 bits" />
@@ -171,6 +257,18 @@
                     <Text TextId="IDT_REC_INFO_Parameter_1" Value="Useful information on parameter 1" />
                     <Text TextId="IDT_SUBMOD_NAME_0x301" Value="I8O8" />
                     <Text TextId="IDT_SUBMOD_INFO_0x301" Value="Demo module with inputs, outputs and parameters" />
+                    <Text TextId="IDT_MOD_NAME_0x400" Value="CST" />
+                    <Text TextId="IDT_MOD_INFO_0x400" Value="" />
+                    <Text TextId="IDT_CST_IN_StatusWord" Value="StatusWord" />
+                    <Text TextId="IDT_CST_IN_ActualTorque" Value="ActualTorque" />
+                    <Text TextId="IDT_CST_OUT_ControlWord" Value="ControlWord" />
+                    <Text TextId="IDT_CST_OUT_TargetTorque" Value="TargetTorque" />
+                    <Text TextId="IDT_REC_NAME_ErrorCode" Value="ErrorCode" />
+                    <Text TextId="IDT_REC_INFO_ErrorCode" Value="" />
+                    <Text TextId="IDT_REC_NAME_Supported_drive_modes" Value="Supported drive modes" />
+                    <Text TextId="IDT_REC_INFO_Supported_drive_modes" Value="" />
+                    <Text TextId="IDT_SUBMOD_NAME_0x401" Value="CST" />
+                    <Text TextId="IDT_SUBMOD_INFO_0x401" Value="" />
                     <Text TextId="IDT_DIAG_400" Value="Alarm message 400" />
                     <Text TextId="IDT_DIAG_500" Value="Alarm message 500" />
                 </PrimaryLanguage>
