@@ -34,9 +34,9 @@
                     <CertificationInfo ConformanceClass="A" ApplicationClass="" NetloadClass="I" />
                     <IOConfigData MaxInputLength="244" MaxOutputLength="244" ApplicationLengthIncludesIOxS="false" />
                     <UseableModules>
-                        <ModuleItemRef ModuleItemTarget="IDM_0x100" AllowedInSlots="1" />
-                        <ModuleItemRef ModuleItemTarget="IDM_0x200" AllowedInSlots="2" />
-                        <ModuleItemRef ModuleItemTarget="IDM_0x300" AllowedInSlots="3" />
+                        <ModuleItemRef ModuleItemTarget="IDM_0x00000100" FixedInSlots="1" />
+                        <ModuleItemRef ModuleItemTarget="IDM_0x00000200" FixedInSlots="2" />
+                        <ModuleItemRef ModuleItemTarget="IDM_0x00000300" FixedInSlots="3" />
                     </UseableModules>
                     <VirtualSubmoduleList>
                         <VirtualSubmoduleItem ID="IDS_1" SubmoduleIdentNumber="0x00000001" Writeable_IM_Records="1 2 3" MayIssueProcessAlarm="false" API="0" PROFIsafeSupported="false" PROFIsafePIR_Supported="false" IM5_Supported="false" Max_iParameterSize="0">
@@ -79,7 +79,7 @@
                     <CertificationInfo ConformanceClass="A" ApplicationClass="" NetloadClass="I" />
                     <IOConfigData MaxInputLength="244" MaxOutputLength="244" ApplicationLengthIncludesIOxS="false" />
                     <UseableModules>
-                        <ModuleItemRef ModuleItemTarget="IDM_0x400" AllowedInSlots="1 2" />
+                        <ModuleItemRef ModuleItemTarget="IDM_0x00000400" FixedInSlots="1 2" />
                     </UseableModules>
                     <VirtualSubmoduleList>
                         <VirtualSubmoduleItem ID="IDS_1" SubmoduleIdentNumber="0x00000002" Writeable_IM_Records="1 2 3" MayIssueProcessAlarm="false" API="0" PROFIsafeSupported="false" PROFIsafePIR_Supported="false" IM5_Supported="false" Max_iParameterSize="0">
@@ -112,57 +112,57 @@
                 </DeviceAccessPointItem>
             </DeviceAccessPointList>
             <ModuleList>
-                <ModuleItem ID="IDM_0x100" ModuleIdentNumber="0x100" RequiredSchemaVersion="V1.0">
+                <ModuleItem ID="IDM_0x00000100" ModuleIdentNumber="0x00000100" RequiredSchemaVersion="V1.0">
                     <ModuleInfo>
-                        <Name TextId="IDT_MOD_NAME_0x100" />
-                        <InfoText TextId="IDT_MOD_INFO_0x100" />
+                        <Name TextId="IDT_MOD_NAME_0x00000100" />
+                        <InfoText TextId="IDT_MOD_INFO_0x00000100" />
                         <HardwareRelease Value="1.0" />
                         <SoftwareRelease Value="1.0" />
                     </ModuleInfo>
                     <VirtualSubmoduleList>
-                        <VirtualSubmoduleItem ID="IDSM_0x101" SubmoduleIdentNumber="0x101" MayIssueProcessAlarm="false" API="0" PROFIsafeSupported="false" PROFIsafePIR_Supported="false" IM5_Supported="false" Max_iParameterSize="0">
+                        <VirtualSubmoduleItem ID="IDSM_0x00000101" SubmoduleIdentNumber="0x00000101" MayIssueProcessAlarm="false" API="0" PROFIsafeSupported="false" PROFIsafePIR_Supported="false" IM5_Supported="false" Max_iParameterSize="0">
                             <IOData>
                                 <Input Consistency="Item consistency">
                                     <DataItem DataType="Unsigned8" TextId="IDT_I8_IN_Input_8_bits" UseAsBits="false" Subordinate="false" />
                                 </Input>
                             </IOData>
                             <ModuleInfo>
-                                <Name TextId="IDT_SUBMOD_NAME_0x101" />
-                                <InfoText TextId="IDT_SUBMOD_INFO_0x101" />
+                                <Name TextId="IDT_SUBMOD_NAME_0x00000101" />
+                                <InfoText TextId="IDT_SUBMOD_INFO_0x00000101" />
                             </ModuleInfo>
                         </VirtualSubmoduleItem>
                     </VirtualSubmoduleList>
                 </ModuleItem>
-                <ModuleItem ID="IDM_0x200" ModuleIdentNumber="0x200" RequiredSchemaVersion="V1.0">
+                <ModuleItem ID="IDM_0x00000200" ModuleIdentNumber="0x00000200" RequiredSchemaVersion="V1.0">
                     <ModuleInfo>
-                        <Name TextId="IDT_MOD_NAME_0x200" />
-                        <InfoText TextId="IDT_MOD_INFO_0x200" />
+                        <Name TextId="IDT_MOD_NAME_0x00000200" />
+                        <InfoText TextId="IDT_MOD_INFO_0x00000200" />
                         <HardwareRelease Value="1.0" />
                         <SoftwareRelease Value="1.0" />
                     </ModuleInfo>
                     <VirtualSubmoduleList>
-                        <VirtualSubmoduleItem ID="IDSM_0x201" SubmoduleIdentNumber="0x201" MayIssueProcessAlarm="false" API="0" PROFIsafeSupported="false" PROFIsafePIR_Supported="false" IM5_Supported="false" Max_iParameterSize="0">
+                        <VirtualSubmoduleItem ID="IDSM_0x00000201" SubmoduleIdentNumber="0x00000201" MayIssueProcessAlarm="false" API="0" PROFIsafeSupported="false" PROFIsafePIR_Supported="false" IM5_Supported="false" Max_iParameterSize="0">
                             <IOData>
                                 <Output Consistency="Item consistency">
                                     <DataItem DataType="Unsigned8" TextId="IDT_O8_OUT_Output_8_bits" UseAsBits="false" Subordinate="false" />
                                 </Output>
                             </IOData>
                             <ModuleInfo>
-                                <Name TextId="IDT_SUBMOD_NAME_0x201" />
-                                <InfoText TextId="IDT_SUBMOD_INFO_0x201" />
+                                <Name TextId="IDT_SUBMOD_NAME_0x00000201" />
+                                <InfoText TextId="IDT_SUBMOD_INFO_0x00000201" />
                             </ModuleInfo>
                         </VirtualSubmoduleItem>
                     </VirtualSubmoduleList>
                 </ModuleItem>
-                <ModuleItem ID="IDM_0x300" ModuleIdentNumber="0x300" RequiredSchemaVersion="V1.0">
+                <ModuleItem ID="IDM_0x00000300" ModuleIdentNumber="0x00000300" RequiredSchemaVersion="V1.0">
                     <ModuleInfo>
-                        <Name TextId="IDT_MOD_NAME_0x300" />
-                        <InfoText TextId="IDT_MOD_INFO_0x300" />
+                        <Name TextId="IDT_MOD_NAME_0x00000300" />
+                        <InfoText TextId="IDT_MOD_INFO_0x00000300" />
                         <HardwareRelease Value="1.0" />
                         <SoftwareRelease Value="1.0" />
                     </ModuleInfo>
                     <VirtualSubmoduleList>
-                        <VirtualSubmoduleItem ID="IDSM_0x301" SubmoduleIdentNumber="0x301" MayIssueProcessAlarm="false" API="0" PROFIsafeSupported="false" PROFIsafePIR_Supported="false" IM5_Supported="false" Max_iParameterSize="0">
+                        <VirtualSubmoduleItem ID="IDSM_0x00000301" SubmoduleIdentNumber="0x00000301" MayIssueProcessAlarm="false" API="0" PROFIsafeSupported="false" PROFIsafePIR_Supported="false" IM5_Supported="false" Max_iParameterSize="0">
                             <IOData>
                                 <Input Consistency="Item consistency">
                                     <DataItem DataType="Unsigned8" TextId="IDT_I8O8_IN_Input_8_bits" UseAsBits="false" Subordinate="false" />
@@ -178,21 +178,21 @@
                                 </ParameterRecordDataItem>
                             </RecordDataList>
                             <ModuleInfo>
-                                <Name TextId="IDT_SUBMOD_NAME_0x301" />
-                                <InfoText TextId="IDT_SUBMOD_INFO_0x301" />
+                                <Name TextId="IDT_SUBMOD_NAME_0x00000301" />
+                                <InfoText TextId="IDT_SUBMOD_INFO_0x00000301" />
                             </ModuleInfo>
                         </VirtualSubmoduleItem>
                     </VirtualSubmoduleList>
                 </ModuleItem>
-                <ModuleItem ID="IDM_0x400" ModuleIdentNumber="0x400" RequiredSchemaVersion="V1.0">
+                <ModuleItem ID="IDM_0x00000400" ModuleIdentNumber="0x00000400" RequiredSchemaVersion="V1.0">
                     <ModuleInfo>
-                        <Name TextId="IDT_MOD_NAME_0x400" />
-                        <InfoText TextId="IDT_MOD_INFO_0x400" />
+                        <Name TextId="IDT_MOD_NAME_0x00000400" />
+                        <InfoText TextId="IDT_MOD_INFO_0x00000400" />
                         <HardwareRelease Value="1.0" />
                         <SoftwareRelease Value="1.0" />
                     </ModuleInfo>
                     <VirtualSubmoduleList>
-                        <VirtualSubmoduleItem ID="IDSM_0x401" SubmoduleIdentNumber="0x401" MayIssueProcessAlarm="false" API="0" PROFIsafeSupported="false" PROFIsafePIR_Supported="false" IM5_Supported="false" Max_iParameterSize="0">
+                        <VirtualSubmoduleItem ID="IDSM_0x00000401" SubmoduleIdentNumber="0x00000401" MayIssueProcessAlarm="false" API="0" PROFIsafeSupported="false" PROFIsafePIR_Supported="false" IM5_Supported="false" Max_iParameterSize="0">
                             <IOData>
                                 <Input Consistency="Item consistency">
                                     <DataItem DataType="Unsigned16" TextId="IDT_CST_IN_StatusWord" UseAsBits="false" Subordinate="false" />
@@ -214,8 +214,8 @@
                                 </ParameterRecordDataItem>
                             </RecordDataList>
                             <ModuleInfo>
-                                <Name TextId="IDT_SUBMOD_NAME_0x401" />
-                                <InfoText TextId="IDT_SUBMOD_INFO_0x401" />
+                                <Name TextId="IDT_SUBMOD_NAME_0x00000401" />
+                                <InfoText TextId="IDT_SUBMOD_INFO_0x00000401" />
                             </ModuleInfo>
                         </VirtualSubmoduleItem>
                     </VirtualSubmoduleList>
@@ -239,26 +239,26 @@
                     <Text TextId="IDT_DAP_1_INFO" Value="U-Phy sample device. Digital inputs and outputs supported." />
                     <Text TextId="IDT_DAP_2_NAME" Value="2 Axis Motor" />
                     <Text TextId="IDT_DAP_2_INFO" Value="U-Phy sample CiA402 device" />
-                    <Text TextId="IDT_MOD_NAME_0x100" Value="I8" />
-                    <Text TextId="IDT_MOD_INFO_0x100" Value="Sample module with digital inputs" />
+                    <Text TextId="IDT_MOD_NAME_0x00000100" Value="I8" />
+                    <Text TextId="IDT_MOD_INFO_0x00000100" Value="Sample module with digital inputs" />
                     <Text TextId="IDT_I8_IN_Input_8_bits" Value="Input 8 bits" />
-                    <Text TextId="IDT_SUBMOD_NAME_0x101" Value="I8" />
-                    <Text TextId="IDT_SUBMOD_INFO_0x101" Value="Sample module with digital inputs" />
-                    <Text TextId="IDT_MOD_NAME_0x200" Value="O8" />
-                    <Text TextId="IDT_MOD_INFO_0x200" Value="Sample module with digital outputs" />
+                    <Text TextId="IDT_SUBMOD_NAME_0x00000101" Value="I8" />
+                    <Text TextId="IDT_SUBMOD_INFO_0x00000101" Value="Sample module with digital inputs" />
+                    <Text TextId="IDT_MOD_NAME_0x00000200" Value="O8" />
+                    <Text TextId="IDT_MOD_INFO_0x00000200" Value="Sample module with digital outputs" />
                     <Text TextId="IDT_O8_OUT_Output_8_bits" Value="Output 8 bits" />
-                    <Text TextId="IDT_SUBMOD_NAME_0x201" Value="O8" />
-                    <Text TextId="IDT_SUBMOD_INFO_0x201" Value="Sample module with digital outputs" />
-                    <Text TextId="IDT_MOD_NAME_0x300" Value="I8O8" />
-                    <Text TextId="IDT_MOD_INFO_0x300" Value="Demo module with inputs, outputs and parameters" />
+                    <Text TextId="IDT_SUBMOD_NAME_0x00000201" Value="O8" />
+                    <Text TextId="IDT_SUBMOD_INFO_0x00000201" Value="Sample module with digital outputs" />
+                    <Text TextId="IDT_MOD_NAME_0x00000300" Value="I8O8" />
+                    <Text TextId="IDT_MOD_INFO_0x00000300" Value="Demo module with inputs, outputs and parameters" />
                     <Text TextId="IDT_I8O8_IN_Input_8_bits" Value="Input 8 bits" />
                     <Text TextId="IDT_I8O8_OUT_Output_8_bits" Value="Output 8 bits" />
                     <Text TextId="IDT_REC_NAME_Parameter_1" Value="Parameter 1" />
                     <Text TextId="IDT_REC_INFO_Parameter_1" Value="Useful information on parameter 1" />
-                    <Text TextId="IDT_SUBMOD_NAME_0x301" Value="I8O8" />
-                    <Text TextId="IDT_SUBMOD_INFO_0x301" Value="Demo module with inputs, outputs and parameters" />
-                    <Text TextId="IDT_MOD_NAME_0x400" Value="CST" />
-                    <Text TextId="IDT_MOD_INFO_0x400" Value="" />
+                    <Text TextId="IDT_SUBMOD_NAME_0x00000301" Value="I8O8" />
+                    <Text TextId="IDT_SUBMOD_INFO_0x00000301" Value="Demo module with inputs, outputs and parameters" />
+                    <Text TextId="IDT_MOD_NAME_0x00000400" Value="CST" />
+                    <Text TextId="IDT_MOD_INFO_0x00000400" Value="" />
                     <Text TextId="IDT_CST_IN_StatusWord" Value="StatusWord" />
                     <Text TextId="IDT_CST_IN_ActualTorque" Value="ActualTorque" />
                     <Text TextId="IDT_CST_OUT_ControlWord" Value="ControlWord" />
@@ -267,8 +267,8 @@
                     <Text TextId="IDT_REC_INFO_ErrorCode" Value="" />
                     <Text TextId="IDT_REC_NAME_Supported_drive_modes" Value="Supported drive modes" />
                     <Text TextId="IDT_REC_INFO_Supported_drive_modes" Value="" />
-                    <Text TextId="IDT_SUBMOD_NAME_0x401" Value="CST" />
-                    <Text TextId="IDT_SUBMOD_INFO_0x401" Value="" />
+                    <Text TextId="IDT_SUBMOD_NAME_0x00000401" Value="CST" />
+                    <Text TextId="IDT_SUBMOD_INFO_0x00000401" Value="" />
                     <Text TextId="IDT_DIAG_400" Value="Alarm message 400" />
                     <Text TextId="IDT_DIAG_500" Value="Alarm message 500" />
                 </PrimaryLanguage>

@@ -122,16 +122,16 @@ up_pn_param_t pn_I8O8_parameters[] = {
 
 up_pn_module_t pn_modules[] = {
    {
-      .module_id = 0x100,
-      .submodule_id = 0x101,
+      .module_id = 0x00000100,
+      .submodule_id = 0x00000101,
    },
    {
-      .module_id = 0x200,
-      .submodule_id = 0x201,
+      .module_id = 0x00000200,
+      .submodule_id = 0x00000201,
    },
    {
-      .module_id = 0x300,
-      .submodule_id = 0x301,
+      .module_id = 0x00000300,
+      .submodule_id = 0x00000301,
       .n_params = 1,
       .params = pn_I8O8_parameters,
    },
@@ -157,8 +157,8 @@ up_profinet_config_t up_profinet_config = {
    .dap_interface_submodule_id = 0x00008000,
    .dap_port_1_submodule_id = 0x00008001,
    .dap_port_2_submodule_id = 0x00008002,
-   .profile_id = 0x0,
-   .profile_specific_type = 0x0,
+   .profile_id = 0x0000,
+   .profile_specific_type = 0x0000,
    .min_device_interval = 32,
    .default_stationname = "u-phy-dev",
    .order_id = "MOD01",
