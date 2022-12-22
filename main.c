@@ -201,7 +201,7 @@ int _cmd_start (int argc, char * argv[])
    }
 #endif
 
-   error = up_rpc_init (up);
+   error = up_rpc_init (up, true);
    if (error)
    {
       printf ("Failed to connect to u-phy core\n");
