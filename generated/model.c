@@ -108,7 +108,8 @@ up_slot_t slots[] = {
 up_device_t up_device = {
    .name = "U-Phy DIGIO Sample",
    .cfg.serial_number = "serial_1232",
-
+   .outputs_frame_size = 2,
+   .inputs_frame_size = 2,
    .bustype = UP_BUSTYPE_MOCK,
    .n_slots = NELEMENTS (slots),
    .slots = slots,
