@@ -108,9 +108,9 @@ up_slot_t slots[] = {
 up_device_t up_device = {
    .name = "U-Phy DIGIO Sample",
    .cfg.serial_number = "serial_1232",
+   .bustype = UP_BUSTYPE_MOCK,
    .outputs_frame_size = 2,
    .inputs_frame_size = 2,
-   .bustype = UP_BUSTYPE_MOCK,
    .n_slots = NELEMENTS (slots),
    .slots = slots,
 };
@@ -258,6 +258,7 @@ up_ciaobject_t ecat_I8O8_objects[] = {
 
 up_ecat_module_t ecat_modules[] = {
    {
+      .profile = 5001,
       .n_rxpdos = 0,
       .n_txpdos = 1,
       .n_objects = 0,
@@ -266,6 +267,7 @@ up_ecat_module_t ecat_modules[] = {
       .objects = NULL,
    },
    {
+      .profile = 5001,
       .n_rxpdos = 1,
       .n_txpdos = 0,
       .n_objects = 0,
@@ -274,6 +276,7 @@ up_ecat_module_t ecat_modules[] = {
       .objects = NULL,
    },
    {
+      .profile = 5001,
       .n_rxpdos = 1,
       .n_txpdos = 1,
       .n_objects = 1,
@@ -296,9 +299,9 @@ up_ecat_slot_t ecat_slots[] = {
 };
 
 up_ecat_device_t up_ethercat_config = {
-   .profile = 0x1389,
+   .profile = 5001,
    .vendor = 0x1337,
-   .productcode = 0x1234,
+   .productcode = 0x1001,
    .revision = 1,
    .serial = 1,
    .hw_rev = "",
