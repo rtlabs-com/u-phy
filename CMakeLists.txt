@@ -10,6 +10,8 @@
 # See LICENSE file in the project root for full license information.
 #*******************************************************************/
 
+enable_language(ASM)
+
 # Set default options for all targets
 add_compile_options(
   -Wall
@@ -21,6 +23,7 @@ add_compile_options(
 add_executable(sample
   main.c
   generated/model.c
+  generated/eeprom.S
 )
 
 target_include_directories(sample

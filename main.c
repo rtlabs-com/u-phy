@@ -33,6 +33,12 @@
 
 #define ENABLE_IO_FILES
 
+/* Start and end tags for the generated EtherCAT SII eeprom.
+ * Defined in eeprom.S.
+ */
+extern const uint8_t _eeprom_bin_start;
+extern const uint8_t _eeprom_bin_end;
+
 static void cb_avail (up_t * up)
 {
    up_read_outputs (up);
@@ -212,6 +218,20 @@ int _cmd_start (int argc, char * argv[])
    {
       printf ("Failed to configure device\n");
       exit (EXIT_FAILURE);
+   }
+
+   if (cfg.device->bustype == UP_BUSTYPE_ECAT)
+   {
+      error = up_write_ecat_eeprom (
+         up,
+         &_eeprom_bin_start,
+         &_eeprom_bin_end - &_eeprom_bin_start);
+
+      if (error != 0)
+      {
+         printf ("Failed to write EtherCAT eeprom \n");
+         return error;
+      }
    }
 
    if (up_util_init (&up_device, up, up_vars) != 0)
