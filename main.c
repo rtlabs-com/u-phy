@@ -39,7 +39,7 @@
 extern const uint8_t _eeprom_bin_start;
 extern const uint8_t _eeprom_bin_end;
 
-static void cb_avail (up_t * up)
+static void cb_avail (up_t * up, void * user_arg)
 {
    up_read_outputs (up);
 
@@ -49,7 +49,7 @@ static void cb_avail (up_t * up)
 #endif
 }
 
-static void cb_sync (up_t * up)
+static void cb_sync (up_t * up, void * user_arg)
 {
 #if 0
    /* Activate outputs */
@@ -92,7 +92,7 @@ static void cb_sync (up_t * up)
 #endif
 }
 
-static void cb_param_write_ind (up_t * up)
+static void cb_param_write_ind (up_t * up, void * user_arg)
 {
    uint16_t slot_ix;
    uint16_t param_ix;
@@ -107,7 +107,7 @@ static void cb_param_write_ind (up_t * up)
 }
 
 #if defined(ENABLE_IO_FILES) && !defined(__rtk__)
-static void cb_loop_ind (up_t * up)
+static void cb_loop_ind (up_t * up, void * user_arg)
 {
    up_util_poll_cmd_file ("/tmp/u-phy-command.txt");
 }
