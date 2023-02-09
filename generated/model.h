@@ -19,6 +19,9 @@ extern "C" {
 
 #include "up_types.h"
 
+#define UP_DEVICE_PROFINET_SUPPORTED 1
+#define UP_DEVICE_ETHERCAT_SUPPORTED 1
+
 /* Alarm error codes */
 #define UP_ERROR_CODE_I8O8_ALARM_400 400
 #define UP_ERROR_CODE_I8O8_ALARM_500 500

@@ -140,13 +140,23 @@ int _cmd_start (int argc, char * argv[])
 
    if (strcmp (argv[2], "profinet") == 0)
    {
+#ifdef UP_DEVICE_PROFINET_SUPPORTED
       cfg.device->bustype = UP_BUSTYPE_PROFINET,
       up_busconf.profinet = up_profinet_config;
+#else
+      printf ("The device model has no Profinet configuration\n");
+      exit (EXIT_FAILURE);
+#endif
    }
    else if (strcmp (argv[2], "ethercat") == 0)
    {
+#ifdef UP_DEVICE_ETHERCAT_SUPPORTED
       cfg.device->bustype = UP_BUSTYPE_ECAT,
       up_busconf.ecat = up_ethercat_config;
+#else
+      printf ("The device model has no EtherCAT configuration\n");
+      exit (EXIT_FAILURE);
+#endif
    }
    else if (strcmp (argv[2], "mock") == 0)
    {
