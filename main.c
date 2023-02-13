@@ -29,6 +29,8 @@
 #include "bsp.h"
 #include "gpio.h"
 #include "shell.h"
+#else
+#include <unistd.h>
 #endif
 
 #define ENABLE_IO_FILES
@@ -223,6 +225,14 @@ int _cmd_start (int argc, char * argv[])
       printf ("Failed to connect to u-phy core\n");
       exit (EXIT_FAILURE);
    }
+
+#if !defined(__rtk__)
+   /* Delay startup so that there is time to restore the second serial
+    * connection, used for logging, before the device configuration is
+    * sent to the core.
+    */
+   sleep (1);
+#endif
 
    if (up_init_device (up) != 0)
    {
