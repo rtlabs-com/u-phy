@@ -267,8 +267,10 @@ int _cmd_start (int argc, char * argv[])
    }
 
 #ifdef ENABLE_IO_FILES
-   /* Generate template input file*/
+   /* Generate template input file */
    up_util_write_input_file ("/tmp/u-phy-input.txt");
+   /* Generate default status file */
+   up_util_write_status_file ("/tmp/u-phy-status.txt");
 #endif
 
    while (1)
