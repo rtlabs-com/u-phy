@@ -135,11 +135,13 @@ int _cmd_start (int argc, char * argv[])
 {
    int error;
 
+   /* Check command line arguments */
    if (argc != 3)
    {
       printf ("usage: %s <transport cfg> <fieldbus>\n", argv[0]);
+      printf ("The <fieldbus> can be profinet, ethercat or mock\n");
       printf ("example: %s /dev/ttyUSB0 profinet\n", argv[0]);
-      exit (EXIT_FAILURE);
+      return -1;
    }
 
    if (strcmp (argv[2], "profinet") == 0)
@@ -149,7 +151,7 @@ int _cmd_start (int argc, char * argv[])
       up_busconf.profinet = up_profinet_config;
 #else
       printf ("The device model has no Profinet configuration\n");
-      exit (EXIT_FAILURE);
+      return -1;
 #endif
    }
    else if (strcmp (argv[2], "ethercat") == 0)
@@ -159,7 +161,7 @@ int _cmd_start (int argc, char * argv[])
       up_busconf.ecat = up_ethercat_config;
 #else
       printf ("The device model has no EtherCAT configuration\n");
-      exit (EXIT_FAILURE);
+      return -1;
 #endif
    }
    else if (strcmp (argv[2], "mock") == 0)
@@ -170,19 +172,15 @@ int _cmd_start (int argc, char * argv[])
    else
    {
       printf ("Unsupported fieldbus \"%s\", abort\n", argv[2]);
-      exit (EXIT_FAILURE);
+      return -1;
    }
+
+   /* Initialise U-Phy and set up transport */
 
    printf ("Starting sample host application\n");
    up_t * up = up_init (&cfg);
 
 #if defined(OPTION_TRANSPORT_TCP)
-   if (argc != 2)
-   {
-      printf ("usage: %s <ip of u-phy core> <fieldbus>\n", argv[0]);
-      exit (EXIT_FAILURE);
-   }
-
    error = up_tcp_transport_init (up, argv[1], 5150);
    if (error)
    {
@@ -192,12 +190,6 @@ int _cmd_start (int argc, char * argv[])
 #endif
 
 #if defined(__rtk__) && defined(OPTION_TRANSPORT_UART)
-   if (argc != 3)
-   {
-      printf ("usage: %s <port> <fieldbus>\n", argv[0]);
-      exit (EXIT_FAILURE);
-   }
-
    error = up_uart_transport_init (up, argv[1]);
    if (error)
    {
@@ -207,12 +199,6 @@ int _cmd_start (int argc, char * argv[])
 #endif
 
 #if defined(__linux__) && defined(OPTION_TRANSPORT_UART)
-   if (argc != 3)
-   {
-      printf ("usage: %s <port> <fieldbus>\n", argv[0]);
-      exit (EXIT_FAILURE);
-   }
-
    error = up_serial_transport_init (up, argv[1]);
    if (error)
    {
@@ -304,7 +290,10 @@ int main (int argc, char * argv[])
 int main (int argc, char * argv[])
 {
    setvbuf (stdout, NULL, _IONBF, 0);
-   _cmd_start (argc, argv);
+   if (_cmd_start (argc, argv) != 0)
+   {
+      exit (EXIT_FAILURE);
+   }
 }
 
 #endif
