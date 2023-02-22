@@ -33,7 +33,9 @@
 #include <unistd.h>
 #endif
 
+#if defined(__linux__)
 #define ENABLE_IO_FILES
+#endif /* defined(__linux__) */
 
 /* Start and end tags for the generated EtherCAT SII eeprom.
  * Defined in eeprom.S.
@@ -89,8 +91,8 @@ static void cb_sync (up_t * up, void * user_arg)
    up_util_read_input_file ("/tmp/u-phy-input.txt");
    up_util_write_status_file ("/tmp/u-phy-status.txt");
 #else
-   up_data.i8.i8++;
-   up_data.io8.i8++;
+   up_data.I8.Input_8_bits++;
+   up_data.I8O8.Input_8_bits++;
 #endif
 }
 
@@ -108,7 +110,7 @@ static void cb_param_write_ind (up_t * up, void * user_arg)
    }
 }
 
-#if defined(ENABLE_IO_FILES) && !defined(__rtk__)
+#ifdef ENABLE_IO_FILES
 static void cb_loop_ind (up_t * up, void * user_arg)
 {
    up_util_poll_cmd_file ("/tmp/u-phy-command.txt");
@@ -124,7 +126,7 @@ static up_cfg_t cfg = {
    .sync = cb_sync,
    .avail = cb_avail,
    .param_write_ind = cb_param_write_ind,
-#if defined(ENABLE_IO_FILES) && !defined(__rtk__)
+#ifdef ENABLE_IO_FILES
    .poll_ind = cb_loop_ind,
 #endif
 };
