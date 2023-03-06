@@ -110,6 +110,16 @@ static void cb_param_write_ind (up_t * up, void * user_arg)
    }
 }
 
+static void cb_status_ind (up_t * up, uint32_t status, void * user_arg)
+{
+   printf (
+      "Core status: 0x%04" PRIX32 " [%s|%s|%s]\n",
+      status,
+      (status & UP_CORE_RUNNING) ? "RUNNING" : "-",
+      (status & UP_CORE_CONFIGURED) ? "CONFIGURED" : "-",
+      (status & UP_CORE_CONNECTED) ? "CONNECTED" : "-");
+}
+
 #ifdef ENABLE_IO_FILES
 static void cb_loop_ind (up_t * up, void * user_arg)
 {
@@ -126,6 +136,7 @@ static up_cfg_t cfg = {
    .sync = cb_sync,
    .avail = cb_avail,
    .param_write_ind = cb_param_write_ind,
+   .status_ind = cb_status_ind,
 #ifdef ENABLE_IO_FILES
    .poll_ind = cb_loop_ind,
 #endif
