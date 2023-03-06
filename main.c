@@ -91,8 +91,8 @@ static void cb_sync (up_t * up, void * user_arg)
    up_util_read_input_file ("/tmp/u-phy-input.txt");
    up_util_write_status_file ("/tmp/u-phy-status.txt");
 #else
-   up_data.I8.Input_8_bits++;
-   up_data.I8O8.Input_8_bits++;
+   up_data.I8.Input_8_bits.value++;
+   up_data.I8O8.Input_8_bits.value++;
 #endif
 }
 
@@ -106,7 +106,7 @@ static void cb_param_write_ind (up_t * up, void * user_arg)
    while (up_param_get_write_req (up, &slot_ix, &param_ix, &data) == 0)
    {
       p = &up_device.slots[slot_ix].params[param_ix];
-      memcpy (up_vars[p->ix], data.data, data.dataLength);
+      memcpy (up_vars[p->ix].value, data.data, data.dataLength);
    }
 }
 
@@ -124,6 +124,8 @@ static void cb_status_ind (up_t * up, uint32_t status, void * user_arg)
 static void cb_loop_ind (up_t * up, void * user_arg)
 {
    up_util_poll_cmd_file ("/tmp/u-phy-command.txt");
+   up_util_read_input_file ("/tmp/u-phy-input.txt");
+   up_util_write_status_file ("/tmp/u-phy-status.txt");
 }
 #endif
 

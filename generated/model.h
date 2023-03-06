@@ -30,22 +30,38 @@ typedef struct up_data
 {
    struct
    {
-      uint8_t Input_8_bits;
+      struct
+      {
+         uint8_t value;
+         up_signal_status_t status;
+      } Input_8_bits;
    } I8;
    struct
    {
-      uint8_t Output_8_bits;
+      struct
+      {
+         uint8_t value;
+         up_signal_status_t status;
+      } Output_8_bits;
    } O8;
    struct
    {
-      uint8_t Input_8_bits;
-      uint8_t Output_8_bits;
+      struct
+      {
+         uint8_t value;
+         up_signal_status_t status;
+      } Input_8_bits;
+      struct
+      {
+         uint8_t value;
+         up_signal_status_t status;
+      } Output_8_bits;
       uint32_t Parameter_1;
    } I8O8;
 } up_data_t;
 
 extern up_data_t up_data;
-extern void * up_vars[];
+extern up_signal_info_t up_vars[];
 extern up_device_t up_device;
 extern up_profinet_config_t up_profinet_config;
 extern up_ecat_device_t up_ethercat_config;

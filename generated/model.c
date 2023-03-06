@@ -19,12 +19,17 @@
 
 up_data_t up_data;
 
-void * up_vars[] = {
-   &up_data.I8.Input_8_bits,
-   &up_data.O8.Output_8_bits,
-   &up_data.I8O8.Input_8_bits,
-   &up_data.I8O8.Output_8_bits,
-   &up_data.I8O8.Parameter_1,
+up_signal_info_t up_vars[] = {
+   {.value = (void *)&up_data.I8.Input_8_bits.value,
+    .status = &up_data.I8.Input_8_bits.status},
+   {.value = (void *)&up_data.O8.Output_8_bits.value,
+    .status = &up_data.O8.Output_8_bits.status},
+   {.value = (void *)&up_data.I8O8.Input_8_bits.value,
+    .status = &up_data.I8O8.Input_8_bits.status},
+   {.value = (void *)&up_data.I8O8.Output_8_bits.value,
+    .status = &up_data.I8O8.Output_8_bits.status},
+   {.value = (void *)&up_data.I8O8.Parameter_1,
+    .status = NULL},
 };
 
 static up_signal_t inputs_I8[] = {
@@ -109,8 +114,6 @@ up_device_t up_device = {
    .name = "U-Phy DIGIO Sample",
    .cfg.serial_number = "serial_1232",
    .bustype = UP_BUSTYPE_MOCK,
-   .outputs_frame_size = 2,
-   .inputs_frame_size = 2,
    .n_slots = NELEMENTS (slots),
    .slots = slots,
 };
