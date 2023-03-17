@@ -29,8 +29,6 @@
 #include "bsp.h"
 #include "gpio.h"
 #include "shell.h"
-#else
-#include <unistd.h>
 #endif
 
 #if defined(__linux__)
@@ -120,6 +118,19 @@ static void cb_status_ind (up_t * up, uint32_t status, void * user_arg)
       (status & UP_CORE_CONNECTED) ? "CONNECTED" : "-");
 }
 
+static void cb_error_ind (up_t * up, up_error_t error, void * user_arg)
+{
+   switch (error)
+   {
+   case UP_ERROR_CORE_COMMUNICATION:
+      printf ("ERROR: Core communication error detected\n");
+      break;
+   default:
+      printf ("Unhandled error: %" PRIi16 "\n", error);
+      break;
+   }
+}
+
 #ifdef ENABLE_IO_FILES
 static void cb_loop_ind (up_t * up, void * user_arg)
 {
@@ -139,6 +150,7 @@ static up_cfg_t cfg = {
    .avail = cb_avail,
    .param_write_ind = cb_param_write_ind,
    .status_ind = cb_status_ind,
+   .error_ind = cb_error_ind,
 #ifdef ENABLE_IO_FILES
    .poll_ind = cb_loop_ind,
 #endif
@@ -147,6 +159,9 @@ static up_cfg_t cfg = {
 int _cmd_start (int argc, char * argv[])
 {
    int error;
+#ifdef ENABLE_IO_FILES
+   bool first_run = true;
+#endif
 
    /* Check command line arguments */
    if (argc != 3)
@@ -221,65 +236,80 @@ int _cmd_start (int argc, char * argv[])
    }
 #endif
 
-   error = up_rpc_init (up, true);
+   error = up_rpc_init (up);
    if (error)
    {
-      printf ("Failed to connect to u-phy core\n");
+      printf ("Failed to init rpc transport\n");
       exit (EXIT_FAILURE);
    }
 #endif /* !defined(OPTION_MONO) */
 
-#if !defined(__rtk__)
-   /* Delay startup so that there is time to restore the second serial
-    * connection, used for logging, before the device configuration is
-    * sent to the core.
-    */
-   sleep (1);
-#endif
-
-   if (up_init_device (up) != 0)
+   while (true)
    {
-      printf ("Failed to configure device\n");
-      exit (EXIT_FAILURE);
-   }
 
-   if (cfg.device->bustype == UP_BUSTYPE_ECAT)
-   {
-      error = up_write_ecat_eeprom (
-         up,
-         &_eeprom_bin_start,
-         &_eeprom_bin_end - &_eeprom_bin_start);
+      /* Delay startup so that there is time to restore the second serial
+       * connection, used for logging, before the device configuration is
+       * sent to the core.
+       */
+      os_usleep (1000 * 1000);
 
-      if (error != 0)
+      error = up_rpc_start (up, true);
+      if (error)
       {
-         printf ("Failed to write EtherCAT eeprom \n");
-         return error;
+         printf ("Failed to connect to u-phy core\n");
+         exit (EXIT_FAILURE);
       }
-   }
 
-   if (up_util_init (&up_device, up, up_vars) != 0)
-   {
-      printf ("Failed to init up utils\n");
-      exit (EXIT_FAILURE);
-   }
+      if (up_init_device (up) != 0)
+      {
+         printf ("Failed to configure device\n");
+         exit (EXIT_FAILURE);
+      }
 
-   if (up_start_device (up) != 0)
-   {
-      printf ("Failed to start device\n");
-      exit (EXIT_FAILURE);
-   }
+      if (cfg.device->bustype == UP_BUSTYPE_ECAT)
+      {
+         error = up_write_ecat_eeprom (
+            up,
+            &_eeprom_bin_start,
+            &_eeprom_bin_end - &_eeprom_bin_start);
+
+         if (error != 0)
+         {
+            printf ("Failed to write EtherCAT eeprom \n");
+            return error;
+         }
+      }
+
+      if (up_util_init (&up_device, up, up_vars) != 0)
+      {
+         printf ("Failed to init up utils\n");
+         exit (EXIT_FAILURE);
+      }
 
 #ifdef ENABLE_IO_FILES
-   /* Generate template input file */
-   up_util_write_input_file ("/tmp/u-phy-input.txt");
-   /* Generate default status file */
-   up_util_write_status_file ("/tmp/u-phy-status.txt");
+      if (first_run)
+      {
+         first_run = false;
+
+         /* Generate template input file */
+         up_util_write_input_file ("/tmp/u-phy-input.txt");
+         /* Generate default status file */
+         up_util_write_status_file ("/tmp/u-phy-status.txt");
+      }
 #endif
 
-   while (1)
-   {
-      extern void up_worker (up_t * up);
-      up_worker (up);
+      if (up_start_device (up) != 0)
+      {
+         printf ("Failed to start device\n");
+         exit (EXIT_FAILURE);
+      }
+
+      extern bool up_worker (up_t * up);
+      while (up_worker (up) == true)
+         ;
+
+      printf ("Restart application\n");
+      printf ("Reset Core and reconfigure device\n");
    }
 
    return 0;
