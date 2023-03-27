@@ -35,6 +35,15 @@
 #define ENABLE_IO_FILES
 #endif /* defined(__linux__) */
 
+/*
+ * By default the sample application enables the watchdog.
+ * Set ENABLE_UP_COMMUNICATION_WATCHDOG to 0 to keep the
+ * watchdog disabled.
+ */
+#ifndef ENABLE_UP_COMMUNICATION_WATCHDOG
+#define ENABLE_UP_COMMUNICATION_WATCHDOG 1
+#endif
+
 /* Start and end tags for the generated EtherCAT SII eeprom.
  * Defined in eeprom.S.
  */
@@ -303,6 +312,14 @@ int _cmd_start (int argc, char * argv[])
          printf ("Failed to start device\n");
          exit (EXIT_FAILURE);
       }
+
+#if (ENABLE_UP_COMMUNICATION_WATCHDOG == 1)
+      if (up_enable_watchdog (up, true) != 0)
+      {
+         printf ("Failed to enable watchdog\n");
+         exit (EXIT_FAILURE);
+      }
+#endif
 
       extern bool up_worker (up_t * up);
       while (up_worker (up) == true)
