@@ -130,17 +130,40 @@ static void cb_status_ind (up_t * up, uint32_t status, void * user_arg)
       (status & UP_CORE_CONNECTED) ? "CONNECTED" : "-");
 }
 
-static void cb_error_ind (up_t * up, up_error_t error, void * user_arg)
+static const char * error_code_to_str (up_error_t error_code)
 {
-   switch (error)
+   switch (error_code)
    {
+   case UP_ERROR_NONE:
+      return "UP_ERROR_NONE";
    case UP_ERROR_CORE_COMMUNICATION:
-      printf ("ERROR: Core communication error detected\n");
-      break;
+      return "UP_ERROR_CORE_COMMUNICATION";
+   case UP_ERROR_PARAMETER_WRITE:
+      return "UP_ERROR_PARAMETER_WRITE";
+   case UP_ERROR_PARAMETER_READ:
+      return "UP_ERROR_PARAMETER_READ";
+   case UP_ERROR_INVALID_PROFINET_MODULE_ID:
+      return "UP_ERROR_INVALID_PROFINET_MODULE_ID";
+   case UP_ERROR_INVALID_PROFINET_SUBMODULE_ID:
+      return "UP_ERROR_INVALID_PROFINET_SUBMODULE_ID";
+   case UP_ERROR_INVALID_PROFINET_PARAMETER_INDEX:
+      return "UP_ERROR_INVALID_PROFINET_PARAMETER_INDEX";
    default:
-      printf ("Unhandled error: %" PRIi16 "\n", error);
-      break;
+      return "UNKNOWN";
    }
+}
+
+static void cb_error_ind (up_t * up, up_error_t error_code, void * user_arg)
+{
+   printf (
+      "ERROR: error_code=%" PRIi16 " %s\n",
+      error_code,
+      error_code_to_str (error_code));
+}
+
+static void cb_profinet_signal_led_ind (up_t * up, void * user_arg)
+{
+   printf ("Flash Profinet signal LED for 3s at 1Hz\n");
 }
 
 #ifdef ENABLE_IO_FILES
@@ -163,6 +186,7 @@ static up_cfg_t cfg = {
    .param_write_ind = cb_param_write_ind,
    .status_ind = cb_status_ind,
    .error_ind = cb_error_ind,
+   .profinet_signal_led_ind = cb_profinet_signal_led_ind,
 #ifdef ENABLE_IO_FILES
    .poll_ind = cb_loop_ind,
 #endif
