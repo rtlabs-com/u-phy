@@ -208,6 +208,11 @@ int _cmd_start (int argc, char * argv[])
       return -1;
    }
 
+#ifdef OPTION_MONO
+   extern int core_main (void);
+   core_main();
+#endif
+
    if (strcmp (argv[2], "profinet") == 0)
    {
 #ifdef UP_DEVICE_PROFINET_SUPPORTED
@@ -289,12 +294,14 @@ int _cmd_start (int argc, char * argv[])
        */
       os_usleep (1000 * 1000);
 
+#if !defined(OPTION_MONO)
       error = up_rpc_start (up, true);
       if (error)
       {
          printf ("Failed to connect to u-phy core\n");
          exit (EXIT_FAILURE);
       }
+#endif
 
       if (up_init_device (up) != 0)
       {
