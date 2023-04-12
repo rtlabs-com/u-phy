@@ -327,8 +327,10 @@ int _cmd_start (int argc, char * argv[])
       {
          first_run = false;
 
-         /* Generate template input file */
+         /* Generate template input file and initialize up data */
          up_util_write_input_file ("/tmp/u-phy-input.txt");
+         up_util_read_input_file ("/tmp/u-phy-input.txt");
+
          /* Generate default status file */
          up_util_write_status_file ("/tmp/u-phy-status.txt");
       }
@@ -347,6 +349,9 @@ int _cmd_start (int argc, char * argv[])
          exit (EXIT_FAILURE);
       }
 #endif
+
+      /* Write input signals to set initial values and status */
+      up_write_inputs (up);
 
       extern bool up_worker (up_t * up);
       while (up_worker (up) == true)
