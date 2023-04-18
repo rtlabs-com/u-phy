@@ -122,12 +122,7 @@ static void cb_param_write_ind (up_t * up, void * user_arg)
 
 static void cb_status_ind (up_t * up, uint32_t status, void * user_arg)
 {
-   printf (
-      "Core status: 0x%04" PRIX32 " [%s|%s|%s]\n",
-      status,
-      (status & UP_CORE_RUNNING) ? "RUNNING" : "-",
-      (status & UP_CORE_CONFIGURED) ? "CONFIGURED" : "-",
-      (status & UP_CORE_CONNECTED) ? "CONNECTED" : "-");
+   /* Ignore */
 }
 
 static const char * error_code_to_str (up_error_t error_code)
@@ -292,7 +287,7 @@ int _cmd_start (int argc, char * argv[])
        * connection, used for logging, before the device configuration is
        * sent to the core.
        */
-      os_usleep (1000 * 1000);
+      os_usleep (2000 * 1000);
 
 #if !defined(OPTION_MONO)
       error = up_rpc_start (up, true);
