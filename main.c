@@ -343,11 +343,8 @@ int _cmd_start (int argc, char * argv[])
    /* Initialise U-Phy and set up transport */
 
 #ifdef OPTION_MONO
-   extern int up_core_main (void);
-   if (up_core_main() != 0)
-   {
-      printf ("Failed to start U-Phy core\n");
-   }
+   extern void up_core_init (void);
+   up_core_init();
 #endif
 
    if (str_to_bus_config (fieldbus, &cfg.device->bustype) == 0)
@@ -373,16 +370,7 @@ int _cmd_start (int argc, char * argv[])
    printf ("Starting sample application\n");
    up = up_init (&cfg);
 
-#if defined(OPTION_MONO)
-
-   os_thread_create (
-      "up_app_main",
-      APP_TASK_PRIO,
-      APP_TASK_STACK_SIZE,
-      up_app_main,
-      up);
-
-#else /* defined(OPTION_MONO) */
+#if !defined(OPTION_MONO)
 
    if (init_rpc_transport (up, transport) != 0)
    {
@@ -396,9 +384,18 @@ int _cmd_start (int argc, char * argv[])
       exit (EXIT_FAILURE);
    }
 
-   up_app_main (up);
+#endif /* !defined(OPTION_MONO) */
 
-#endif /* defined(OPTION_MONO) */
+#if defined(__rtk__)
+   os_thread_create (
+      "up_app_main",
+      APP_TASK_PRIO,
+      APP_TASK_STACK_SIZE,
+      up_app_main,
+      up);
+#else
+   up_app_main (up);
+#endif
 
    return 0;
 }
