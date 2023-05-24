@@ -38,6 +38,7 @@ static up_signal_t inputs_I8[] = {
       .ix = 0,
       .datatype = UP_DTYPE_UINT8,
       .bitlength = 8,
+      .flags = 0,
       .frame_offset = 0,
    },
 };
@@ -48,6 +49,7 @@ static up_signal_t outputs_O8[] = {
       .ix = 1,
       .datatype = UP_DTYPE_UINT8,
       .bitlength = 8,
+      .flags = 0,
       .frame_offset = 0,
    },
 };
@@ -58,6 +60,7 @@ static up_signal_t inputs_I8O8[] = {
       .ix = 2,
       .datatype = UP_DTYPE_UINT8,
       .bitlength = 8,
+      .flags = 0,
       .frame_offset = 1,
    },
 };
@@ -68,6 +71,7 @@ static up_signal_t outputs_I8O8[] = {
       .ix = 3,
       .datatype = UP_DTYPE_UINT8,
       .bitlength = 8,
+      .flags = 0,
       .frame_offset = 1,
    },
 };
@@ -113,6 +117,7 @@ up_slot_t slots[] = {
 up_device_t up_device = {
    .name = "U-Phy DIGIO Sample",
    .cfg.serial_number = "serial_1232",
+   .cfg.webgui_enable = true,
    .bustype = UP_BUSTYPE_MOCK,
    .n_slots = NELEMENTS (slots),
    .slots = slots,
