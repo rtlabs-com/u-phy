@@ -55,6 +55,15 @@
 extern const uint8_t _eeprom_bin_start;
 extern const uint8_t _eeprom_bin_end;
 
+#if defined(__rtk__)
+#if defined(OPTION_TRANSPORT_SPI) || defined (OPTION_TRANSPORT_UART)
+void shield_event_isr (void * arg)
+{
+   up_event_ind();
+}
+#endif
+#endif
+
 static void cb_avail (up_t * up, void * user_arg)
 {
    up_read_outputs (up);
@@ -187,6 +196,14 @@ static int init_rpc_transport (up_t * up, const char * cfg)
 {
 #if defined(OPTION_TRANSPORT_TCP)
    if (up_tcp_transport_init (up, cfg, 5150) != 0)
+   {
+      printf ("Failed to bring up transport\n");
+      return -1;
+   }
+#endif
+
+#if defined(__rtk__) && defined(OPTION_TRANSPORT_SPI)
+   if (up_spi_master_transport_init (up, cfg) != 0)
    {
       printf ("Failed to bring up transport\n");
       return -1;
