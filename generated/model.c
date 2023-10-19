@@ -116,7 +116,7 @@ up_slot_t slots[] = {
 
 up_device_t up_device = {
    .name = "U-Phy DIGIO Sample",
-   .cfg.serial_number = "serial_1232",
+   .cfg.serial_number = "1234",
    .cfg.webgui_enable = true,
    .bustype = UP_BUSTYPE_MOCK,
    .n_slots = NELEMENTS (slots),
@@ -183,7 +183,7 @@ up_profinet_config_t up_profinet_config = {
    .slots = pn_slots,
 };
 
-up_ciaobject_t ecat_I8_txpdo_entries[] = {
+up_ciaobject_t ecat_I8_Inputs_txpdo_entries[] = {
    {
       .index = 0x6000,
       .subindex = 0,
@@ -197,11 +197,11 @@ up_ciapdo_t ecat_I8_txpdos[] = {
       .name = "Inputs",
       .index = 0x1a00,
       .n_entries = 1,
-      .entries = ecat_I8_txpdo_entries,
+      .entries = ecat_I8_Inputs_txpdo_entries,
    },
 };
 
-up_ciaobject_t ecat_O8_rxpdo_entries[] = {
+up_ciaobject_t ecat_O8_Outputs_rxpdo_entries[] = {
    {
       .index = 0x7000,
       .subindex = 0,
@@ -215,11 +215,11 @@ up_ciapdo_t ecat_O8_rxpdos[] = {
       .name = "Outputs",
       .index = 0x1600,
       .n_entries = 1,
-      .entries = ecat_O8_rxpdo_entries,
+      .entries = ecat_O8_Outputs_rxpdo_entries,
    },
 };
 
-up_ciaobject_t ecat_I8O8_txpdo_entries[] = {
+up_ciaobject_t ecat_I8O8_Inputs_txpdo_entries[] = {
    {
       .index = 0x6000,
       .subindex = 0,
@@ -233,11 +233,11 @@ up_ciapdo_t ecat_I8O8_txpdos[] = {
       .name = "Inputs",
       .index = 0x1a00,
       .n_entries = 1,
-      .entries = ecat_I8O8_txpdo_entries,
+      .entries = ecat_I8O8_Inputs_txpdo_entries,
    },
 };
 
-up_ciaobject_t ecat_I8O8_rxpdo_entries[] = {
+up_ciaobject_t ecat_I8O8_Outputs_rxpdo_entries[] = {
    {
       .index = 0x7000,
       .subindex = 0,
@@ -251,7 +251,7 @@ up_ciapdo_t ecat_I8O8_rxpdos[] = {
       .name = "Outputs",
       .index = 0x1600,
       .n_entries = 1,
-      .entries = ecat_I8O8_rxpdo_entries,
+      .entries = ecat_I8O8_Outputs_rxpdo_entries,
    },
 };
 
@@ -320,6 +320,19 @@ up_ecat_device_t up_ethercat_config = {
    .n_slots = 3,
    .modules = ecat_modules,
    .slots = ecat_slots,
+};
+
+up_ethernetip_config_t up_ethernetip_config = {
+   .vendor_id = 1772,
+   .device_type = 43,
+   .product_code = 10,
+   .major_revision = 1,
+   .minor_revision = 1,
+   .min_data_interval = 2000,
+   .default_data_interval = 4000,
+   .input_assembly_id = 100,
+   .output_assembly_id = 101,
+   .config_assembly_id = 102,
 };
 
 up_mockadapter_config_t up_mock_config = {0};

@@ -124,6 +124,14 @@ static int str_to_bus_config (const char * str, up_bustype_t * bustype)
    }
 #endif
 
+#ifdef UP_DEVICE_ETHERNETIP_SUPPORTED
+   if (strcmp (str, "ethernetip") == 0)
+   {
+      *bustype = UP_BUSTYPE_ETHERNETIP;
+      return 0;
+   }
+#endif
+
    if (strcmp (str, "mock") == 0)
    {
       *bustype = UP_BUSTYPE_MOCK;
@@ -349,7 +357,7 @@ int _cmd_start (int argc, char * argv[])
    if (argc != 3)
    {
       printf ("usage: %s <transport cfg> <fieldbus>\n", argv[0]);
-      printf ("The <fieldbus> can be profinet, ethercat or mock\n");
+      printf ("The <fieldbus> can be profinet, ethercat, ethernetip or mock\n");
       printf ("example: %s /dev/ttyUSB0 profinet\n", argv[0]);
       return -1;
    }
@@ -374,8 +382,12 @@ int _cmd_start (int argc, char * argv[])
       case UP_BUSTYPE_ECAT:
          up_busconf.ecat = up_ethercat_config;
          break;
+      case UP_BUSTYPE_ETHERNETIP:
+         up_busconf.ethernetip = up_ethernetip_config;
+         break;
       case UP_BUSTYPE_MOCK:
          up_busconf.mock = up_mock_config;
+         break;
       }
    }
    else

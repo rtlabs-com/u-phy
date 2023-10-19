@@ -21,6 +21,7 @@ extern "C" {
 
 #define UP_DEVICE_PROFINET_SUPPORTED 1
 #define UP_DEVICE_ETHERCAT_SUPPORTED 1
+#define UP_DEVICE_ETHERNETIP_SUPPORTED 1
 
 /* Alarm error codes */
 #define UP_ERROR_CODE_I8O8_ALARM_400 400
@@ -65,6 +66,7 @@ extern up_signal_info_t up_vars[];
 extern up_device_t up_device;
 extern up_profinet_config_t up_profinet_config;
 extern up_ecat_device_t up_ethercat_config;
+extern up_ethernetip_config_t up_ethernetip_config;
 extern up_mockadapter_config_t up_mock_config;
 
 #ifdef __cplusplus
