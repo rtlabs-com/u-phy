@@ -333,6 +333,8 @@ up_ethernetip_config_t up_ethernetip_config = {
    .input_assembly_id = 100,
    .output_assembly_id = 101,
    .config_assembly_id = 102,
+   .input_only_heartbeat_assembly_id = 103,
+   .listen_only_heartbeat_assembly_id = 104,
 };
 
 up_mockadapter_config_t up_mock_config = {0};
