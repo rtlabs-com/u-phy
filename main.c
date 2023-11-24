@@ -63,7 +63,6 @@ void shield_event_isr (void * arg)
 }
 #endif
 #endif
-
 static void cb_avail (up_t * up, void * user_arg)
 {
    up_read_outputs (up);
@@ -108,7 +107,7 @@ static int str_to_bus_config (const char * str, up_bustype_t * bustype)
       return -1;
    }
 
-#ifdef UP_DEVICE_PROFINET_SUPPORTED
+#if UP_DEVICE_PROFINET_SUPPORTED
    if (strcmp (str, "profinet") == 0)
    {
       *bustype = UP_BUSTYPE_PROFINET;
@@ -116,7 +115,7 @@ static int str_to_bus_config (const char * str, up_bustype_t * bustype)
    }
 #endif
 
-#ifdef UP_DEVICE_ETHERCAT_SUPPORTED
+#if UP_DEVICE_ETHERCAT_SUPPORTED
    if (strcmp (str, "ethercat") == 0)
    {
       *bustype = UP_BUSTYPE_ECAT;
@@ -124,14 +123,13 @@ static int str_to_bus_config (const char * str, up_bustype_t * bustype)
    }
 #endif
 
-#ifdef UP_DEVICE_ETHERNETIP_SUPPORTED
+#if UP_DEVICE_ETHERNETIP_SUPPORTED
    if (strcmp (str, "ethernetip") == 0)
    {
       *bustype = UP_BUSTYPE_ETHERNETIP;
       return 0;
    }
 #endif
-
    if (strcmp (str, "mock") == 0)
    {
       *bustype = UP_BUSTYPE_MOCK;
@@ -377,13 +375,19 @@ int _cmd_start (int argc, char * argv[])
       switch (cfg.device->bustype)
       {
       case UP_BUSTYPE_PROFINET:
+#if UP_DEVICE_PROFINET_SUPPORTED
          up_busconf.profinet = up_profinet_config;
+#endif
          break;
       case UP_BUSTYPE_ECAT:
+#if UP_DEVICE_ETHERCAT_SUPPORTED
          up_busconf.ecat = up_ethercat_config;
+#endif
          break;
       case UP_BUSTYPE_ETHERNETIP:
+#if UP_DEVICE_ETHERNETIP_SUPPORTED
          up_busconf.ethernetip = up_ethernetip_config;
+#endif
          break;
       case UP_BUSTYPE_MOCK:
          up_busconf.mock = up_mock_config;
