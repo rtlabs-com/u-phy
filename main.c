@@ -40,6 +40,9 @@
 #define ENABLE_IO_FILES
 #endif /* defined(__linux__) */
 
+/* Enable to run synchronous operation mode */
+#undef APPLICATION_MODE_SYNCHRONOUS
+
 /*
  * By default the sample application enables the watchdog.
  * Set ENABLE_UP_COMMUNICATION_WATCHDOG to 0 to keep the
@@ -63,6 +66,7 @@ void shield_event_isr (void * arg)
 }
 #endif
 #endif
+
 static void cb_avail (up_t * up, void * user_arg)
 {
    up_read_outputs (up);
@@ -71,11 +75,6 @@ static void cb_avail (up_t * up, void * user_arg)
 static void cb_sync (up_t * up, void * user_arg)
 {
    up_write_inputs (up);
-
-#ifdef ENABLE_IO_FILES
-   up_util_read_input_file ("/tmp/u-phy-input.txt");
-   up_util_write_status_file ("/tmp/u-phy-status.txt");
-#endif
 }
 
 static void cb_param_write_ind (up_t * up, void * user_arg)
@@ -176,12 +175,21 @@ static void cb_profinet_signal_led_ind (up_t * up, void * user_arg)
    printf ("Flash Profinet signal LED for 3s at 1Hz\n");
 }
 
-#ifdef ENABLE_IO_FILES
 static void cb_loop_ind (up_t * up, void * user_arg)
 {
-   up_util_poll_cmd_file ("/tmp/u-phy-command.txt");
+#if defined(ENABLE_IO_FILES)
    up_util_read_input_file ("/tmp/u-phy-input.txt");
+#endif
+
+#if !defined(APPLICATION_MODE_SYNCHRONOUS)
+   up_write_inputs (up);
+   up_read_outputs (up);
+#endif
+
+#if defined(ENABLE_IO_FILES)
    up_util_write_status_file ("/tmp/u-phy-status.txt");
+   up_util_poll_cmd_file ("/tmp/u-phy-command.txt");
+#endif
 }
 
 /**
@@ -189,6 +197,7 @@ static void cb_loop_ind (up_t * up, void * user_arg)
  * - Generate template input file and initialize up data
  *  - Generate default status file
  */
+#if defined(ENABLE_IO_FILES)
 static void init_util_files (void)
 {
    up_util_write_input_file ("/tmp/u-phy-input.txt");
@@ -248,9 +257,7 @@ static up_cfg_t cfg = {
    .status_ind = cb_status_ind,
    .error_ind = cb_error_ind,
    .profinet_signal_led_ind = cb_profinet_signal_led_ind,
-#ifdef ENABLE_IO_FILES
    .poll_ind = cb_loop_ind,
-#endif
 };
 
 void up_app_main (void * arg)
@@ -314,6 +321,14 @@ void up_app_main (void * arg)
          printf ("Failed to start device\n");
          exit (EXIT_FAILURE);
       }
+
+#if defined(APPLICATION_MODE_SYNCHRONOUS)
+      if (up_write_event_mask(up, UP_EVENT_MASK_SYNCHRONOUS_MODE) != 0)
+      {
+         printf ("Failed to write eventmask mode\n");
+         exit (EXIT_FAILURE);
+      }
+#endif
 
 #if (ENABLE_UP_COMMUNICATION_WATCHDOG == 1)
       if (up_enable_watchdog (up, true) != 0)
