@@ -12,12 +12,12 @@
 
 target_include_directories(pn_lan9662
   PRIVATE
-  ${PROFINET_SOURCE_DIR}/src
-  ${PROFINET_SOURCE_DIR}/src/drivers/lan9662
-  ${PROFINET_BINARY_DIR}/src
+  ${PNET_SOURCE_DIR}/src
+  ${PNET_SOURCE_DIR}/src/drivers/lan9662
+  ${PNET_BINARY_DIR}/src
   )
 
 
-target_link_libraries (pn_lan9662 PUBLIC profinet mera)
+target_link_libraries (pn_lan9662 PUBLIC pnet mera)
 
 install (TARGETS pn_lan9662 DESTINATION bin)

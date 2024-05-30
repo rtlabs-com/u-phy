@@ -28,7 +28,7 @@ extern "C" {
 
 /* Thread configuration for targets where sample
  * event loop is run in a separate thread (not main).
- * This applies for linux sample app implementation.
+ * This applies for Linux sample app implementation.
  */
 #define APP_MAIN_THREAD_PRIORITY  15
 #define APP_MAIN_THREAD_STACKSIZE 4096 /* bytes */
@@ -117,7 +117,7 @@ app_data_t * app_init (const pnet_cfg_t * pnet_cfg, const app_args_t * app_args)
  * calling this function.
  *
  * RUN_IN_MAIN_THREAD is intended for rt-kernel targets.
- * RUN_IN_SEPARATE_THREAD is intended for linux targets.
+ * RUN_IN_SEPARATE_THREAD is intended for Linux targets.
  *
  * @param app                 In:    Application handle
  * @param task_config         In:    Defines if stack and application

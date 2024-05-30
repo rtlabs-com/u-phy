@@ -793,9 +793,10 @@ static int app_new_data_status_ind (
    bool is_valid = data_status & BIT (PNET_DATA_STATUS_BIT_DATA_VALID);
 
    APP_LOG_DEBUG (
-      "Data status indication. AREP: %u  Data status changes: 0x%02x  "
+      "Data status indication. AREP: %u CREP: %u Data status changes: 0x%02x  "
       "Data status: 0x%02x\n",
       arep,
+      crep,
       changes,
       data_status);
    APP_LOG_DEBUG (
