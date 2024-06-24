@@ -127,6 +127,15 @@ static int str_to_bus_config (const char * str, up_bustype_t * bustype)
       return 0;
    }
 #endif
+
+#if UP_DEVICE_MODBUS_SUPPORTED
+   if (strcmp (str, "modbus") == 0)
+   {
+      *bustype = UP_BUSTYPE_MODBUS;
+      return 0;
+   }
+#endif
+
    if (strcmp (str, "mock") == 0)
    {
       *bustype = UP_BUSTYPE_MOCK;
@@ -368,7 +377,7 @@ int _cmd_start (int argc, char * argv[])
    if (argc != 3)
    {
       printf ("usage: %s <transport cfg> <fieldbus>\n", argv[0]);
-      printf ("The <fieldbus> can be profinet, ethercat, ethernetip or mock\n");
+      printf ("The <fieldbus> can be profinet, ethercat, ethernetip, modbus or mock\n");
       printf ("example: %s /dev/ttyUSB0 profinet\n", argv[0]);
       return -1;
    }
@@ -400,6 +409,11 @@ int _cmd_start (int argc, char * argv[])
       case UP_BUSTYPE_ETHERNETIP:
 #if UP_DEVICE_ETHERNETIP_SUPPORTED
          up_busconf.ethernetip = up_ethernetip_config;
+#endif
+         break;
+      case UP_BUSTYPE_MODBUS:
+#if UP_DEVICE_MODBUS_SUPPORTED
+         up_busconf.modbus = up_modbus_config;
 #endif
          break;
       case UP_BUSTYPE_MOCK:
@@ -456,11 +470,11 @@ const shell_cmd_t cmd_start = {
 #if defined(OPTION_MONO)
       "Start monolithic u-phy device including core and device model.\n"
       "Usage: up_start <fieldbus>\n"
-      "where fieldbus can be ethercat, profinet or mock\n"};
+      "where fieldbus can be ethercat, profinet, ethernetip, modbus or mock\n"};
 #else
       "Start u-phy host device.\n"
       "Usage: up_start <transport> <fieldbus>\n"
-      "where fieldbus can be ethercat, profinet or mock\n"};
+      "where fieldbus can be ethercat, profinet, ethernetip, modbus or mock\n"};
 #endif
 
 SHELL_CMD (cmd_start);
@@ -503,7 +517,7 @@ const shell_cmd_t cmd_autostart = {
    .help_short = "configure u-phy device autostart",
    .help_long = "Set u-phy autostart configuration \n"
                 "Usage: up_autostart <fieldbus>\n"
-                "where fieldbus can be ethercat | profinet | mock.\n"
+                "where fieldbus can be ethercat | profinet | modbus | mock.\n"
                 "If no valid fieldbus is given, autostart is disabled."};
 
 SHELL_CMD (cmd_autostart);

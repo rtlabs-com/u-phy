@@ -48,5 +48,6 @@ target_link_libraries(sample
   $<$<BOOL:${OPTION_ADAPTER_PNET}>:pnadapter>
   $<$<BOOL:${OPTION_ADAPTER_ECAT}>:ecat>
   $<$<BOOL:${OPTION_ADAPTER_ENIP}>:enip_adapter>
+  $<$<BOOL:${OPTION_ADAPTER_MBUS}>:mbus_adapter>
 )
 endif()
