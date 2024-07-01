@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<ISO15745Profile xmlns="http://www.profibus.com/GSDML/2003/11/DeviceProfile" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.profibus.com/GSDML/2003/11/DeviceProfile ..\xsd\GSDML-DeviceProfile-V2.4.xsd">
+<ISO15745Profile xmlns="http://www.profibus.com/GSDML/2003/11/DeviceProfile" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.profibus.com/GSDML/2003/11/DeviceProfile ..\xsd\GSDML-DeviceProfile-V2.43.xsd">
    <!-- ProfileHeader definition as defined in ISO 15745-1. Please do not change the content. -->
    <ProfileHeader>
       <ProfileIdentification>PROFINET Device Profile</ProfileIdentification>
@@ -23,12 +23,12 @@
       </DeviceFunction>
       <ApplicationProcess>
          <DeviceAccessPointList>
-            <DeviceAccessPointItem ID="IDD_1" PNIO_Version="V2.4" PhysicalSlots="0..4" ModuleIdentNumber="0x00000001" MinDeviceInterval="32" DNS_CompatibleName="rt-labs-dev" FixedInSlots="0" ObjectUUID_LocalIndex="1" DeviceAccessSupported="false" MultipleWriteSupported="true" CheckDeviceID_Allowed="true" NameOfStationNotTransferable="false" LLDP_NoD_Supported="true" ResetToFactoryModes="1..2">
+            <DeviceAccessPointItem ID="IDD_1" PNIO_Version="V2.43" PhysicalSlots="0..4" ModuleIdentNumber="0x00000001" MinDeviceInterval="32" DNS_CompatibleName="rt-labs-dev" FixedInSlots="0" ObjectUUID_LocalIndex="1" DeviceAccessSupported="false" MultipleWriteSupported="true" CheckDeviceID_Allowed="true" NameOfStationNotTransferable="false" LLDP_NoD_Supported="true" ResetToFactoryModes="1..2">
             <!--
 Replace the tag above with the one below to support shared device.
 -->
             <!--
-            <DeviceAccessPointItem ID="IDD_1" PNIO_Version="V2.4" PhysicalSlots="0..4" ModuleIdentNumber="0x00000001" MinDeviceInterval="32" DNS_CompatibleName="rt-labs-dev" FixedInSlots="0" ObjectUUID_LocalIndex="1" DeviceAccessSupported="false" MultipleWriteSupported="true" SharedDeviceSupported="true" CheckDeviceID_Allowed="true" NameOfStationNotTransferable="false" LLDP_NoD_Supported="true" ResetToFactoryModes="1..2">
+            <DeviceAccessPointItem ID="IDD_1" PNIO_Version="V2.43" PhysicalSlots="0..4" ModuleIdentNumber="0x00000001" MinDeviceInterval="32" DNS_CompatibleName="rt-labs-dev" FixedInSlots="0" ObjectUUID_LocalIndex="1" DeviceAccessSupported="false" MultipleWriteSupported="true" SharedDeviceSupported="true" CheckDeviceID_Allowed="true" NameOfStationNotTransferable="false" LLDP_NoD_Supported="true" ResetToFactoryModes="1..2">
 -->
                <ModuleInfo>
                   <Name TextId="IDT_MODULE_NAME_DAP1"/>
@@ -253,7 +253,7 @@ Add additional PortSubmoduleItems to support additional ports
             </LogBookEntryItem>
          </LogBookEntryList>
          <GraphicsList>
-            <GraphicItem ID="RT-LabsStackImage" GraphicFile="GSDML-RT-LABS-STACK"/>
+            <GraphicItem ID="RT-LabsStackImage" GraphicFile="GSDML-0493-0002-RT-LABS-STACK"/>
          </GraphicsList>
          <ExternalTextList>
             <PrimaryLanguage>
