@@ -88,9 +88,7 @@ static void cb_param_write_ind (up_t * up, void * user_arg)
    {
       p = &up_device.slots[slot_ix].params[param_ix];
       memcpy (up_vars[p->ix].value, data.data, data.dataLength);
-#if !defined(OPTION_MONO)
       free (data.data);
-#endif
    }
 }
 
