@@ -369,16 +369,16 @@ int _cmd_start (int argc, char * argv[])
 #if defined(OPTION_MONO)
    if (argc != 2)
    {
-      printf ("error - try \"help %s\n", argv[0]);
+      shell_usage (argv[0], "wrong number of arguments");
       return -1;
    }
    fieldbus = argv[1];
 #else  /* defined(OPTION_MONO) */
    if (argc != 3)
    {
-      printf ("usage: %s <transport cfg> <fieldbus>\n", argv[0]);
-      printf ("The <fieldbus> can be profinet, ethercat, ethernetip, modbus or mock\n");
-      printf ("example: %s /dev/ttyUSB0 profinet\n", argv[0]);
+#if defined(__rtk__)
+      shell_usage (argv[0], "wrong number of arguments");
+#endif
       return -1;
    }
    transport = argv[1];
@@ -460,22 +460,37 @@ int _cmd_start (int argc, char * argv[])
    return 0;
 }
 
+static char cmd_start_help_long[] =
+#if defined(OPTION_MONO)
+   "Start monolithic u-phy device including core and device model.\n"
+   "Usage: up_start <fieldbus>\n"
+#else
+   "Start u-phy host device.\n"
+   "Usage: up_start <transport> <fieldbus>\n"
+#endif
+   "where fieldbus can be one of:\n"
+#if UP_DEVICE_ETHERCAT_SUPPORTED
+   "  - ethercat\n"
+#endif
+#if UP_DEVICE_PROFINET_SUPPORTED
+   "  - profinet\n"
+#endif
+#if UP_DEVICE_ETHERNETIP_SUPPORTED
+   "  - ethernetip\n"
+#endif
+#if UP_DEVICE_MODBUS_SUPPORTED
+   "  - modbus\n"
+#endif
+   "  - mock\n";
+
 #if defined(__rtk__)
 
 const shell_cmd_t cmd_start = {
    .cmd = _cmd_start,
    .name = "up_start",
    .help_short = "start u-phy device",
-   .help_long =
-#if defined(OPTION_MONO)
-      "Start monolithic u-phy device including core and device model.\n"
-      "Usage: up_start <fieldbus>\n"
-      "where fieldbus can be ethercat, profinet, ethernetip, modbus or mock\n"};
-#else
-      "Start u-phy host device.\n"
-      "Usage: up_start <transport> <fieldbus>\n"
-      "where fieldbus can be ethercat, profinet, ethernetip, modbus or mock\n"};
-#endif
+   .help_long = cmd_start_help_long
+};
 
 SHELL_CMD (cmd_start);
 
@@ -515,10 +530,26 @@ const shell_cmd_t cmd_autostart = {
    .cmd = _cmd_autostart,
    .name = "up_autostart",
    .help_short = "configure u-phy device autostart",
-   .help_long = "Set u-phy autostart configuration \n"
-                "Usage: up_autostart <fieldbus>\n"
-                "where fieldbus can be ethercat | profinet | modbus | mock.\n"
-                "If no valid fieldbus is given, autostart is disabled."};
+   .help_long =
+      "Set u-phy autostart configuration \n"
+      "Usage: up_autostart <fieldbus>\n"
+      "where fieldbus can be one of:\n"
+#if UP_DEVICE_ETHERCAT_SUPPORTED
+      "  - ethercat\n"
+#endif
+#if UP_DEVICE_PROFINET_SUPPORTED
+      "  - profinet\n"
+#endif
+#if UP_DEVICE_ETHERNETIP_SUPPORTED
+      "  - ethernetip\n"
+#endif
+#if UP_DEVICE_MODBUS_SUPPORTED
+      "  - modbus\n"
+#endif
+      "  - mock\n"
+      "\n"
+      "If no valid fieldbus is given, autostart is disabled.\n"
+};
 
 SHELL_CMD (cmd_autostart);
 
@@ -568,6 +599,8 @@ int main (int argc, char * argv[])
    setvbuf (stdout, NULL, _IONBF, 0);
    if (_cmd_start (argc, argv) != 0)
    {
+      puts (cmd_start_help_long);
+      printf ("Example:\n%s /dev/ttyACM0 profinet\n", argv[0]);
       exit (EXIT_FAILURE);
    }
 }
