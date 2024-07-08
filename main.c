@@ -58,6 +58,10 @@
 extern const uint8_t _eeprom_bin_start;
 extern const uint8_t _eeprom_bin_end;
 
+#if !defined(__rtk__)
+extern void core_set_interface (char * iface, size_t size);
+#endif
+
 #if defined(__rtk__)
 #if defined(OPTION_TRANSPORT_SPI) || defined (OPTION_TRANSPORT_UART)
 void shield_event_isr (void * arg)
@@ -367,11 +371,19 @@ int _cmd_start (int argc, char * argv[])
 
    /* Check command line arguments */
 #if defined(OPTION_MONO)
+#if defined(__rtk__)
    if (argc != 2)
    {
       shell_usage (argv[0], "wrong number of arguments");
       return -1;
    }
+#else
+   if (argc != 3)
+   {
+      return -1;
+   }
+   core_set_interface (argv[2], strlen (argv[2]));
+#endif
    fieldbus = argv[1];
 #else  /* defined(OPTION_MONO) */
    if (argc != 3)
@@ -463,7 +475,11 @@ int _cmd_start (int argc, char * argv[])
 static char cmd_start_help_long[] =
 #if defined(OPTION_MONO)
    "Start monolithic u-phy device including core and device model.\n"
+#if !defined(__rtk__)
+   "Usage: up_start <fieldbus> <network interface>\n"
+#else
    "Usage: up_start <fieldbus>\n"
+#endif
 #else
    "Start u-phy host device.\n"
    "Usage: up_start <transport> <fieldbus>\n"
@@ -600,7 +616,11 @@ int main (int argc, char * argv[])
    if (_cmd_start (argc, argv) != 0)
    {
       puts (cmd_start_help_long);
+#if defined(OPTION_MONO) && defined(__linux__)
+      printf ("Example:\n%s profinet eth0\n", argv[0]);
+#else
       printf ("Example:\n%s /dev/ttyACM0 profinet\n", argv[0]);
+#endif
       exit (EXIT_FAILURE);
    }
 }
