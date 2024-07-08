@@ -27,6 +27,18 @@ add_executable(sample
   $<$<BOOL:${OPTION_MONO}>:${CMAKE_CURRENT_SOURCE_DIR}/../core/core.c>
 )
 
+if(LINUX_MONO AND OPTION_ADAPTER_PNET)
+configure_file(
+  ${CMAKE_CURRENT_SOURCE_DIR}/../p-net/src/ports/linux/set_network_parameters
+  ${CMAKE_CURRENT_BINARY_DIR}/set_network_parameters
+  COPYONLY
+)
+configure_file(
+  ${CMAKE_CURRENT_SOURCE_DIR}/../p-net/src/ports/linux/set_profinet_leds
+  ${CMAKE_CURRENT_BINARY_DIR}/set_profinet_leds
+  COPYONLY
+)
+endif()
 
 target_include_directories(sample
   PRIVATE
