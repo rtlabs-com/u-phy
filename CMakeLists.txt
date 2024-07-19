@@ -10,10 +10,12 @@
 # See LICENSE file in the project root for full license information.
 #*******************************************************************/
 
+if(NOT WINDOWS_MONO)
 enable_language(ASM)
 
 # Set default options for all targets
-add_compile_options(
+target_compile_options(erpc
+  PRIVATE
   -Wall
   -Wextra
   -Werror
@@ -26,6 +28,41 @@ add_executable(sample
   generated/eeprom.S
   $<$<BOOL:${OPTION_MONO}>:${CMAKE_CURRENT_SOURCE_DIR}/../core/core.c>
 )
+
+else()
+
+# Set default options for all targets
+target_compile_options(erpc
+  PRIVATE
+  /Wall
+  /WX
+  /wd4100 # unreferenced parameter
+  /wd4242 # conversion from __int64 to uint16_t
+  )
+
+  add_executable(sample
+  main.c
+  generated/model.c
+  $<$<BOOL:${OPTION_MONO}>:${CMAKE_CURRENT_SOURCE_DIR}/../core/core.c>
+  )
+
+  target_compile_options(sample
+  PRIVATE
+  /D_CRT_NONSTDC_NO_WARNINGS # * deprecated; use _*
+  /Wall
+  /WX
+  /wd4061 # enumerator in switch not explicitly handled
+  /wd4127 # conditional expression is constant
+  /wd4100 # unreferenced parameter
+  /wd4210 # function fiven file scope (extern)
+  /wd4242 # conversion from uint16_t to uint8_t
+  /wd4244 # conversion from __int64 to uint16_t
+  /wd4668 # ERPC_ALLOCATION_POLICY* is not defined; replacing with 0
+  /wd4820 # padding added
+  /wd5045 # compiler will insert Spectre mitigation if /Qspectre specified
+)
+
+endif()
 
 if(LINUX_MONO AND OPTION_ADAPTER_PNET)
 configure_file(

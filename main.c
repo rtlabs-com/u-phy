@@ -55,8 +55,13 @@
 /* Start and end tags for the generated EtherCAT SII eeprom.
  * Defined in eeprom.S.
  */
+#if !defined(_WIN32)
 extern const uint8_t _eeprom_bin_start;
 extern const uint8_t _eeprom_bin_end;
+#else
+static const uint8_t _eeprom_bin_start = 0;
+static const uint8_t _eeprom_bin_end = 0;
+#endif
 
 #if !defined(__rtk__)
 extern void core_set_interface (char * iface, size_t size);
@@ -618,6 +623,8 @@ int main (int argc, char * argv[])
       puts (cmd_start_help_long);
 #if defined(OPTION_MONO) && defined(__linux__)
       printf ("Example:\n%s profinet eth0\n", argv[0]);
+#elif defined(OPTION_MONO) && defined(_WIN32)
+      printf ("Example:\n%s profinet Ethernet\n", argv[0]);
 #else
       printf ("Example:\n%s /dev/ttyACM0 profinet\n", argv[0]);
 #endif
