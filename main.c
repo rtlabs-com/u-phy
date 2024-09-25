@@ -52,15 +52,8 @@
 #define ENABLE_UP_COMMUNICATION_WATCHDOG 1
 #endif
 
-/* Start and end tags for the generated EtherCAT SII eeprom.
- * Defined in eeprom.S.
- */
-#if !defined(_WIN32)
-extern const uint8_t _eeprom_bin_start;
-extern const uint8_t _eeprom_bin_end;
-#else
-static const uint8_t _eeprom_bin_start = 0;
-static const uint8_t _eeprom_bin_end = 0;
+#if defined(OPTION_MONO)
+extern void up_core_init (void);
 #endif
 
 #if !defined(__rtk__)
@@ -305,8 +298,15 @@ void up_app_main (void * arg)
          exit (EXIT_FAILURE);
       }
 
+#if defined (UP_DEVICE_ETHERCAT_SUPPORTED) && !defined (_WIN32)
       if (cfg.device->bustype == UP_BUSTYPE_ECAT)
       {
+         /* Start and end tags for the generated EtherCAT SII eeprom.
+          * Defined in eeprom.S.
+          */
+         extern const uint8_t _eeprom_bin_start;
+         extern const uint8_t _eeprom_bin_end;
+
          if (
             up_write_ecat_eeprom (
                up,
@@ -317,6 +317,7 @@ void up_app_main (void * arg)
             return;
          }
       }
+#endif
 
       if (up_util_init (&up_device, up, up_vars) != 0)
       {
@@ -357,7 +358,6 @@ void up_app_main (void * arg)
       /* Write input signals to set initial values and status */
       up_write_inputs (up);
 
-      extern bool up_worker (up_t * up);
       while (up_worker (up) == true)
          ;
 
@@ -405,7 +405,6 @@ int _cmd_start (int argc, char * argv[])
    /* Initialise U-Phy and set up transport */
 
 #ifdef OPTION_MONO
-   extern void up_core_init (void);
    up_core_init();
 #endif
 

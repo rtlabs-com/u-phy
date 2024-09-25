@@ -10,10 +10,9 @@
  * See LICENSE file in the project root for full license information.
  ********************************************************************/
 
-    .section .data
+    .section .text
     .globl  _eeprom_bin_start
 _eeprom_bin_start:
     .incbin "eeprom.bin"
     .globl  _eeprom_bin_end
 _eeprom_bin_end:
-
