@@ -242,7 +242,7 @@ static int init_rpc_transport (up_t * up, const char * cfg)
    }
 #endif
 
-#if defined(__linux__) && defined(OPTION_TRANSPORT_UART)
+#if (defined(__linux__) || defined(_WIN32)) && defined(OPTION_TRANSPORT_UART)
    if (up_serial_transport_init (up, cfg) != 0)
    {
       printf ("Failed to bring up transport\n");
