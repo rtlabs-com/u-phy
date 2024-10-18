@@ -6,32 +6,27 @@
 # |_|    \__|(_)|_| \__,_||_.__/ |___/
 #
 # www.rt-labs.com
-# Copyright 2022 rt-labs AB, Sweden.
+# Copyright 2024 rt-labs AB, Sweden.
 # See LICENSE file in the project root for full license information.
 #*******************************************************************/
 
-add_executable(sample
-  generated/model.c
-  application.c
-)
+enable_language(ASM)
 
-# Platform configuration
-include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/${CMAKE_SYSTEM_NAME}.cmake)
+option(ENABLE_IO_FILES "" ON)
 
-target_include_directories(sample
+target_sources(sample
   PRIVATE
-  generated
-  ${CMAKE_CURRENT_SOURCE_DIR}
-  ${UPHY_BINARY_DIR}
+  generated/eeprom.S
+  $<$<BOOL:${OPTION_MONO}>:ports/linux/mono.c>
+  $<$<NOT:$<BOOL:${OPTION_MONO}>>:ports/linux/client.c>
 )
 
-target_link_libraries(sample
+target_compile_definitions(sample
   PRIVATE
-  build-flags
-  uphy
+  $<$<BOOL:${ENABLE_IO_FILES}>:ENABLE_IO_FILES=1>
 )
 
-install(
-  TARGETS sample
-  EXPORT UphyConfig
+target_compile_options(sample
+  PRIVATE
+  $<$<STREQUAL:${CMAKE_SYSTEM_NAME},Linux>:-Wa,--noexecstack>
 )
