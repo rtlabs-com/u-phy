@@ -338,4 +338,8 @@ up_ethernetip_config_t up_ethernetip_config = {
    .listen_only_heartbeat_assembly_id = 104,
 };
 
+up_modbus_config_t up_modbus_config = {
+   .port = 502,
+};
+
 up_mockadapter_config_t up_mock_config = {0};
