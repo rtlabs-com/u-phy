@@ -54,6 +54,7 @@
 
 #if defined(OPTION_MONO)
 extern void up_core_init (void);
+extern void core_bringup_network (void);
 #endif
 
 #if !defined(__rtk__)
@@ -606,8 +607,7 @@ int main (int argc, char * argv[])
 #if defined(OPTION_MONO)
    if (auto_start() != 0)
    {
-      extern void core_reconfigure_net_if (void);
-      core_reconfigure_net_if();
+      core_bringup_network();
    }
 #endif
 }
