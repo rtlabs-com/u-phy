@@ -170,8 +170,6 @@ static int _cmd_autostart (int argc, char * argv[])
    up_bustype_t bustype = UP_BUSTYPE_INVALID;
    char * fieldbus;
 
-   printf ("argc %d\n", argc);
-
    if (argc < 2)
    {
       shell_usage (argv[0], "wrong number of arguments");
