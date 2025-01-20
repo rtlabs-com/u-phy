@@ -14,7 +14,7 @@ enable_language(ASM)
 
 target_sources(sample
   PRIVATE
-  generated/eeprom.S
+  eeprom.S
   $<$<BOOL:${OPTION_MONO}>:ports/rt-kernel/mono.c>
   $<$<NOT:$<BOOL:${OPTION_MONO}>>:ports/rt-kernel/client.c>
 )

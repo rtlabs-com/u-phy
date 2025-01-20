@@ -16,7 +16,7 @@ option(ENABLE_IO_FILES "" ON)
 
 target_sources(sample
   PRIVATE
-  generated/eeprom.S
+  eeprom.S
   $<$<BOOL:${OPTION_MONO}>:ports/linux/mono.c>
   $<$<NOT:$<BOOL:${OPTION_MONO}>>:ports/linux/client.c>
 )
