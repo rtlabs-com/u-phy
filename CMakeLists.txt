@@ -33,5 +33,5 @@ target_link_libraries(sample
 
 install(
   TARGETS sample
-  EXPORT UphyConfig
+  EXPORT UPhyConfig
 )
