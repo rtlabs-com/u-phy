@@ -18,26 +18,8 @@
 
 #include <stdio.h>
 
-static int init_rpc_transport (up_t * up, const char * cfg)
-{
-#if defined(OPTION_TRANSPORT_TCP)
-   if (up_tcp_transport_init (up, cfg, 5150) != 0)
-   {
-      printf ("Failed to bring up transport\n");
-      return -1;
-   }
-#endif
-
-#if defined(OPTION_TRANSPORT_UART)
-   if (up_serial_transport_init (up, cfg) != 0)
-   {
-      printf ("Failed to bring up transport\n");
-      return -1;
-   }
-#endif
-
-   return 0;
-}
+/* For POSIX compatibility */
+#define strtok_r strtok_s
 
 static void main_entry (up_t * up)
 {
@@ -71,15 +53,26 @@ static void main_entry (up_t * up)
 static int _cmd_start (int argc, char * argv[])
 {
    up_t * up;
-   char * transport = NULL;
+   char * saveptr;
+   char * scheme;
+   char * transport;
    char * fieldbus;
+   bool scheme_found = false;
 
    /* Check command line arguments */
    if (argc != 3)
    {
       return -1;
    }
-   transport = argv[1];
+
+   scheme = strtok_r (argv[1], ":", &saveptr);
+   if (scheme == NULL)
+      return -1;
+
+   transport = strtok_r (NULL, ":", &saveptr);
+   if (transport == NULL)
+      return -1;
+
    fieldbus = argv[2];
 
    /* Set up transport */
@@ -121,10 +114,34 @@ static int _cmd_start (int argc, char * argv[])
    printf ("Starting sample application\n");
    up = up_init (&app_cfg);
 
-   if (init_rpc_transport (up, transport) != 0)
+#if defined(OPTION_TRANSPORT_TCP)
+   if (strcmp (scheme, "tcp") == 0)
    {
-      printf ("Failed to init rpc transport\n");
-      exit (EXIT_FAILURE);
+      scheme_found = true;
+      if (up_tcp_transport_init (up, transport, 5150) != 0)
+      {
+         printf ("Failed to bring up TCP transport\n");
+         return -1;
+   }
+   }
+#endif
+
+#if defined(OPTION_TRANSPORT_UART)
+   if (strcmp (scheme, "uart") == 0)
+   {
+      scheme_found = true;
+      if (up_serial_transport_init (up, transport) != 0)
+      {
+         printf ("Failed to bring up UART transport\n");
+         return -1;
+      }
+   }
+#endif
+
+   if (!scheme_found)
+   {
+      printf ("Unknown scheme %s\n", scheme);
+      return -1;
    }
 
    if (up_rpc_init (up) != 0)
@@ -140,8 +157,15 @@ static int _cmd_start (int argc, char * argv[])
 
 static char cmd_start_help_long[] =
    "Start u-phy host device.\n"
-   "Usage: up_start <transport> <fieldbus>\n"
-   "where fieldbus can be one of:\n"
+   "\nUsage: up_start <scheme:transport> <fieldbus>\n"
+   "\nwhere scheme:transport can be one of:\n"
+#if defined(OPTION_TRANSPORT_TCP)
+   "  - tcp:<network interface>\n"
+#endif
+#if defined(OPTION_TRANSPORT_UART)
+   "  - uart:<serial port>\n"
+#endif
+   "\nand fieldbus can be one of:\n"
 #if UP_DEVICE_ETHERCAT_SUPPORTED
    "  - ethercat\n"
 #endif
@@ -162,7 +186,7 @@ int main (int argc, char * argv[])
    if (_cmd_start (argc, argv) != 0)
    {
       puts (cmd_start_help_long);
-      printf ("Example:\n%s /dev/ttyACM0 profinet\n", argv[0]);
+      printf ("Example:\n%s uart:COM1 profinet\n", argv[0]);
       exit (EXIT_FAILURE);
    }
 }

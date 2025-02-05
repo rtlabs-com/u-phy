@@ -34,34 +34,6 @@ void shield_event_isr (void * arg)
 }
 #endif
 
-static int init_rpc_transport (up_t * up, const char * cfg)
-{
-#if defined(OPTION_TRANSPORT_TCP)
-   if (up_tcp_transport_init (up, cfg, 5150) != 0)
-   {
-      printf ("Failed to bring up transport\n");
-      return -1;
-   }
-#endif
-
-#if defined(OPTION_TRANSPORT_SPI)
-   if (up_spi_master_transport_init (up, cfg) != 0)
-   {
-      printf ("Failed to bring up transport\n");
-      return -1;
-   }
-#endif
-
-#if defined(OPTION_TRANSPORT_UART)
-   if (up_uart_transport_init (up, cfg) != 0)
-   {
-      printf ("Failed to bring up transport\n");
-      return -1;
-   }
-#endif
-
-   return 0;
-}
 
 static void main_entry (void * arg)
 {
@@ -118,8 +90,11 @@ static void main_entry (void * arg)
 static int _cmd_start (int argc, char * argv[])
 {
    up_t * up;
-   char * transport = NULL;
+   char * saveptr;
+   char * scheme;
+   char * transport;
    char * fieldbus;
+   bool scheme_found = false;
 
    /* Check command line arguments */
    if (argc != 3)
@@ -127,7 +102,21 @@ static int _cmd_start (int argc, char * argv[])
       shell_usage (argv[0], "wrong number of arguments");
       return -1;
    }
-   transport = argv[1];
+
+   scheme = strtok_r (argv[1], ":", &saveptr);
+   if (scheme == NULL)
+   {
+      shell_usage (argv[0], "bad scheme");
+      return -1;
+   }
+
+   transport = strtok_r (NULL, ":", &saveptr);
+   if (transport == NULL)
+   {
+      shell_usage (argv[0], "bad transport");
+      return -1;
+   }
+
    fieldbus = argv[2];
 
    /* Set up transport */
@@ -169,10 +158,46 @@ static int _cmd_start (int argc, char * argv[])
    printf ("Starting sample application\n");
    up = up_init (&app_cfg);
 
-   if (init_rpc_transport (up, transport) != 0)
+#if defined(OPTION_TRANSPORT_TCP)
+   if (strcmp (scheme, "tcp") == 0)
    {
-      printf ("Failed to init rpc transport\n");
-      exit (EXIT_FAILURE);
+      scheme_found = true;
+      if (up_tcp_transport_init (up, transport, 5150) != 0)
+      {
+         printf ("Failed to bring up TCP transport\n");
+         exit (EXIT_FAILURE);
+      }
+   }
+#endif
+
+#if defined(OPTION_TRANSPORT_SPI)
+   if (strcmp (scheme, "spi") == 0)
+   {
+      scheme_found = true;
+      if (up_spi_master_transport_init (up, transport) != 0)
+      {
+         printf ("Failed to bring up SPI transport\n");
+         exit (EXIT_FAILURE);
+      }
+   }
+#endif
+
+#if defined(OPTION_TRANSPORT_UART)
+   if (strcmp (scheme, "uart") == 0)
+   {
+      scheme_found = true;
+      if (up_uart_transport_init (up, transport) != 0)
+      {
+         printf ("Failed to bring up UART transport\n");
+         exit (EXIT_FAILURE);
+      }
+   }
+#endif
+
+   if (!scheme_found)
+   {
+      printf ("Unknown scheme %s\n", scheme);
+      return -1;
    }
 
    if (up_rpc_init (up) != 0)
@@ -193,8 +218,18 @@ static int _cmd_start (int argc, char * argv[])
 
 static char cmd_start_help_long[] =
    "Start u-phy host device.\n"
-   "Usage: up_start <transport> <fieldbus>\n"
-   "where fieldbus can be one of:\n"
+   "\nUsage: up_start <scheme:transport> <fieldbus>\n"
+   "\nwhere scheme:transport can be one of:\n"
+#if defined(OPTION_TRANSPORT_TCP)
+   "  - tcp:<network interface>\n"
+#endif
+#if defined(OPTION_TRANSPORT_SPI)
+   "  - spi:<spi device>\n"
+#endif
+#if defined(OPTION_TRANSPORT_UART)
+   "  - uart:<serial device>\n"
+#endif
+   "\nand fieldbus can be one of:\n"
 #if UP_DEVICE_ETHERCAT_SUPPORTED
    "  - ethercat\n"
 #endif
