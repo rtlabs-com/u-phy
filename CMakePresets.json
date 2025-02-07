@@ -1,0 +1,46 @@
+{
+  "version": 6,
+  "configurePresets": [{
+    "name": "default",
+    "hidden": true,
+    "generator": "Ninja",
+    "binaryDir": "${sourceDir}/build/${presetName}",
+    "environment": {
+      "CMAKE_PREFIX_PATH": "$env{UPHY}/cmake"
+    },
+    "cacheVariables": {
+      "CMAKE_EXPORT_COMPILE_COMMANDS": true
+    }
+  }, {
+    "name": "debug",
+    "inherits": "default",
+    "cacheVariables": {
+      "CMAKE_BUILD_TYPE": "Debug"
+    }
+  }, {
+    "name": "release",
+    "inherits": "default",
+    "cacheVariables": {
+      "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+    }
+  }, {
+    "name": "f446nucleo",
+    "inherits": "debug",
+    "toolchainFile": "$env{RTK}/cmake/toolchain/rt-kernel.cmake",
+    "environment": {
+      "BSP": "f446nucleo",
+      "BSP_DIR": "$env{UPHY}/bsp/f446nucleo"
+    },
+    "cacheVariables": {
+      "CMAKE_MODULE_PATH": "$env{RTK}/cmake",
+      "CMAKE_PREFIX_PATH": "$env{RTK}/cmake/stm32/stm32f4/cortex-m4f"
+    }
+  }],
+  "buildPresets": [{
+    "name": "debug",
+    "configurePreset": "debug"
+  }, {
+    "name": "release",
+    "configurePreset": "release"
+  }]
+}

@@ -1,0 +1,234 @@
+{
+  "name": "U-Phy DIGIO Sample",
+  "vendor": "RT-Labs AB",
+  "devices": [
+    {
+      "name": "U-Phy DIGIO Sample",
+      "id":"591e2d6e-c9cd-443c-af15-f0cfc086ed5b",
+      "description": "U-Phy sample device. Digital inputs and outputs supported.",
+      "hardware_release": "V0.8.0",
+      "software_release": "V0.5.0",
+      "serial": "1234",
+      "loglevel": "INFO",
+      "webgui_enable": true,
+      "slots": [
+        {
+          "name": "I8",
+          "module": "185116e7-6eb2-48b6-82c4-2ae50e005447"
+        },
+        {
+          "name": "O8",
+          "module": "3219b9f1-82c8-4907-a331-b97bf4146325"
+        },
+        {
+          "name": "I8O8",
+          "module": "22b3e3b6-4c7f-44c5-895f-df6389da0c36"
+        }
+      ],
+      "ethercat": {
+        "product_code": "#x1001",
+        "revision": "1",
+        "profile": "5001"
+      },
+      "profinet": {
+        "dap_module_id": "1",
+        "profile_id": "0x0",
+        "profile_specific_type": "0x0",
+        "min_device_interval": "32",
+        "default_stationname": "u-phy-dev",
+        "order_id": "MOD01",
+        "hw_revision": "1",
+        "sw_revision_prefix": "V",
+        "sw_revision_functional_enhancement": "0",
+        "sw_revision_bug_fix": "1",
+        "sw_revision_internal_change": "27",
+        "revision_counter": "0",
+        "main_family": "I/O",
+        "product_family": "U-Phy Samples"
+      },
+      "ethernetip": {
+        "revision": "1.1",
+        "product_code": "10",
+        "home_url": "https://rt-labs.com/u-phy/",
+        "create_date": "09-06-2023",
+        "create_time": "13:04:42",
+        "modification_date": "09-06-2023",
+        "modification_time": "13:04:42",
+        "min_data_interval": "2000",
+        "default_data_interval": "4000"
+      },
+      "modbus": {
+        "port": "502"
+      }
+    }
+  ],
+  "modules": [
+    {
+      "name": "I8",
+      "id":"185116e7-6eb2-48b6-82c4-2ae50e005447",
+      "description": "Sample module with digital inputs",
+      "inputs": [
+        {
+          "name": "Input 8 bits",
+          "id":"511d35c1-ce0e-4326-87a0-2a038ebaa9af",
+          "datatype": "UINT8",
+          "description": "Signal specific information"
+        }
+      ],
+      "profinet": {
+        "module_id": "0x100",
+        "submodule_id": "0x101"
+      },
+      "ethercat": {
+        "txpdo": [
+          {
+            "name": "Inputs",
+            "index": "#x1a00",
+            "entries": [
+              {
+                "index": "#x6000",
+                "subindex": "0",
+                "signal": "511d35c1-ce0e-4326-87a0-2a038ebaa9af"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "O8",
+      "id":"3219b9f1-82c8-4907-a331-b97bf4146325",
+      "description": "Sample module with digital outputs",
+      "outputs": [
+        {
+          "name": "Output 8 bits",
+          "id":"1d3f8a24-a0c6-482e-ad75-a5be9798b0d0",
+          "datatype": "UINT8",
+          "description": "Signal specific information"
+        }
+      ],
+      "profinet": {
+        "module_id": "0x200",
+        "submodule_id": "0x201"
+      },
+      "ethercat": {
+        "profile": "5001",
+        "rxpdo": [
+          {
+            "name": "Outputs",
+            "index": "#x1600",
+            "entries": [
+              {
+                "index": "#x7000",
+                "subindex": "0",
+                "signal": "1d3f8a24-a0c6-482e-ad75-a5be9798b0d0"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "I8O8",
+      "id":"22b3e3b6-4c7f-44c5-895f-df6389da0c36",
+      "description": "Demo module with inputs, outputs and parameters",
+      "inputs": [
+        {
+          "name": "Input 8 bits",
+          "id":"d046abbd-d411-42d1-a2e4-ccc902e2f2de",
+          "datatype": "UINT8",
+          "description": "Signal specific information"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "Output 8 bits",
+          "id":"b3e65c42-ffb3-4860-b28f-9e7cc6ac4540",
+          "datatype": "UINT8",
+          "description": "Signal specific information"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "Parameter 1",
+          "id":"051a31e4-86b3-45e8-84de-bb1d53bc4fc9",
+          "description": "Useful information on parameter 1",
+          "datatype": "UINT32",
+          "default": "1",
+          "min": "0",
+          "max": "99",
+          "permissions": "RW",
+          "persistent": false,
+          "derived": true,
+          "profinet": {
+            "index": "123"
+          }
+        }
+      ],
+      "alarms":[
+        {
+          "name": "Alarm 400",
+          "message": "Alarm message 400",
+          "id": "217ae373-39a7-4235-a397-7665bf1bb681",
+          "error_code": "400"
+        },
+        {
+          "name": "Alarm 500",
+          "message": "Alarm message 500",
+          "id":"a6539bcb-9a2e-4ae5-809e-ad1c94daa4b0",
+          "error_code": "500"
+        }
+      ],
+      "profinet": {
+        "module_id": "0x300",
+        "submodule_id": "0x301"
+      },
+      "ethercat": {
+        "rxpdo": [
+          {
+            "name": "Outputs",
+            "index": "#x1600",
+            "entries": [
+              {
+                "index": "#x7000",
+                "subindex": "0",
+                "signal": "b3e65c42-ffb3-4860-b28f-9e7cc6ac4540"
+              }
+            ]
+          }
+        ],
+        "txpdo": [
+          {
+            "name": "Inputs",
+            "index": "#x1a00",
+            "entries": [
+              {
+                "index": "#x6000",
+                "subindex": "0",
+                "signal": "d046abbd-d411-42d1-a2e4-ccc902e2f2de"
+              }
+            ]
+          }
+        ],
+        "objects": [
+          {
+            "index": "#x8000",
+            "subindex": "0",
+            "signal": "051a31e4-86b3-45e8-84de-bb1d53bc4fc9"
+          }
+        ]
+      }
+    }
+  ],
+  "ethercat": {
+    "vendor_id": "#x1337",
+    "group": "U-Phy"
+  },
+  "profinet": {
+    "vendor_id": "0x0493",
+    "device_id": "0x0003"
+  },
+  "ethernetip": {
+    "vendor_id": "1772"
+  }
+}
