@@ -15,3 +15,8 @@ target_sources(sample
   $<$<BOOL:${OPTION_MONO}>:ports/windows/mono.c>
   $<$<NOT:$<BOOL:${OPTION_MONO}>>:ports/windows/client.c>
 )
+
+target_compile_options(sample
+  PRIVATE
+  /wd4702 # unreachable code in main.c
+)
