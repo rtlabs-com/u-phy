@@ -10,8 +10,6 @@
 # See LICENSE file in the project root for full license information.
 #*******************************************************************/
 
-include(JLink)
-
 enable_language(ASM)
 
 target_sources(sample
@@ -20,5 +18,3 @@ target_sources(sample
   $<$<BOOL:${OPTION_MONO}>:ports/rt-kernel/mono.c>
   $<$<NOT:$<BOOL:${OPTION_MONO}>>:ports/rt-kernel/client.c>
 )
-
-jlink_flash(sample DEVICE ATSAME53J20 INTERFACE swd SPEED 4000)
