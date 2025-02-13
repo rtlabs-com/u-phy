@@ -135,7 +135,7 @@ static void cb_profinet_signal_led_ind (up_t * up, void * user_arg)
 
 static void cb_loop_ind (up_t * up, void * user_arg)
 {
-   /* Called every 100 ms. Used to implement free-running (i.e. not
+   /* Called every 10 ms. Used to implement free-running (i.e. not
       synchronous) mode.  */
 
 #if !(APPLICATION_MODE_SYNCHRONOUS)
