@@ -9,7 +9,8 @@
       "CMAKE_PREFIX_PATH": "$env{UPHY}/cmake"
     },
     "cacheVariables": {
-      "CMAKE_EXPORT_COMPILE_COMMANDS": true
+      "CMAKE_EXPORT_COMPILE_COMMANDS": true,
+      "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "$<0:>${sourceDir}/build/${presetName}/bin"
     }
   }, {
     "name": "debug",
