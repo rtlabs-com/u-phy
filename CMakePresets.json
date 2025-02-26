@@ -43,5 +43,8 @@
   }, {
     "name": "release",
     "configurePreset": "release"
+  }, {
+    "name": "f446nucleo",
+    "configurePreset": "f446nucleo"
   }]
 }
