@@ -12,7 +12,7 @@
 
 cmake_minimum_required(VERSION 3.28)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
-project(SAMPLE VERSION 1.0.0)
+project(SAMPLE VERSION 1.0.1)
 
 if(NOT TARGET uphy)
   find_package(UPhy REQUIRED)
