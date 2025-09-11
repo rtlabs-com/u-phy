@@ -78,21 +78,6 @@
       "profinet": {
         "module_id": "0x100",
         "submodule_id": "0x101"
-      },
-      "ethercat": {
-        "txpdo": [
-          {
-            "name": "Inputs",
-            "index": "#x1a00",
-            "entries": [
-              {
-                "index": "#x6000",
-                "subindex": "0",
-                "signal": "511d35c1-ce0e-4326-87a0-2a038ebaa9af"
-              }
-            ]
-          }
-        ]
       }
     },
     {
@@ -110,22 +95,6 @@
       "profinet": {
         "module_id": "0x200",
         "submodule_id": "0x201"
-      },
-      "ethercat": {
-        "profile": "5001",
-        "rxpdo": [
-          {
-            "name": "Outputs",
-            "index": "#x1600",
-            "entries": [
-              {
-                "index": "#x7000",
-                "subindex": "0",
-                "signal": "1d3f8a24-a0c6-482e-ad75-a5be9798b0d0"
-              }
-            ]
-          }
-        ]
       }
     },
     {
@@ -182,41 +151,6 @@
       "profinet": {
         "module_id": "0x300",
         "submodule_id": "0x301"
-      },
-      "ethercat": {
-        "rxpdo": [
-          {
-            "name": "Outputs",
-            "index": "#x1600",
-            "entries": [
-              {
-                "index": "#x7000",
-                "subindex": "0",
-                "signal": "b3e65c42-ffb3-4860-b28f-9e7cc6ac4540"
-              }
-            ]
-          }
-        ],
-        "txpdo": [
-          {
-            "name": "Inputs",
-            "index": "#x1a00",
-            "entries": [
-              {
-                "index": "#x6000",
-                "subindex": "0",
-                "signal": "d046abbd-d411-42d1-a2e4-ccc902e2f2de"
-              }
-            ]
-          }
-        ],
-        "objects": [
-          {
-            "index": "#x8000",
-            "subindex": "0",
-            "signal": "051a31e4-86b3-45e8-84de-bb1d53bc4fc9"
-          }
-        ]
       }
     }
   ],
