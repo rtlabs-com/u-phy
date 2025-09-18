@@ -15,6 +15,7 @@
 #include "up_api.h"
 #include "up_util.h"
 #include "model.h"
+#include "core.h"
 
 #include "osal.h"
 
@@ -27,9 +28,6 @@
 #define STORAGE_ROOT        "/disk1" /* No trailing slash */
 #define APP_TASK_PRIO       5
 #define APP_TASK_STACK_SIZE 6000
-
-extern void up_core_init (void);
-extern void core_bringup_network (void);
 
 static void main_entry (void * arg)
 {
@@ -89,10 +87,6 @@ static int _cmd_start (int argc, char * argv[])
       return -1;
    }
    fieldbus = argv[1];
-
-   /* Initialise U-Phy */
-
-   up_core_init();
 
    app_cfg.device->bustype = up_str_to_bustype (fieldbus);
    switch (app_cfg.device->bustype)
@@ -257,6 +251,9 @@ static int auto_start (void)
 
 int main (int argc, char * argv[])
 {
+   /* Initialise U-Phy */
+   up_core_init();
+
    if (auto_start() != 0)
    {
       core_bringup_network();

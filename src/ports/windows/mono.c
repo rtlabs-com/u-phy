@@ -15,12 +15,9 @@
 #include "up_api.h"
 #include "up_util.h"
 #include "model.h"
+#include "core.h"
 
 #include <stdio.h>
-
-extern void up_core_init (void);
-extern void core_set_interface (char * iface, size_t size);
-extern void core_bringup_network (void);
 
 static void main_entry (up_t * up)
 {
@@ -58,9 +55,6 @@ static int _cmd_start (int argc, char * argv[])
    core_set_interface (argv[2], strlen (argv[2]));
    fieldbus = argv[1];
 
-   /* Initialise U-Phy */
-
-   up_core_init();
 
    app_cfg.device->bustype = up_str_to_bustype (fieldbus);
    switch (app_cfg.device->bustype)
@@ -121,6 +115,9 @@ static char cmd_start_help_long[] =
 
 int main (int argc, char * argv[])
 {
+   /* Initialise U-Phy */
+   up_core_init();
+
    setvbuf (stdout, NULL, _IONBF, 0);
    if (_cmd_start (argc, argv) != 0)
    {
