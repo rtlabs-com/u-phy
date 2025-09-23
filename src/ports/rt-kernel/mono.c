@@ -253,6 +253,7 @@ int main (int argc, char * argv[])
 {
    /* Initialise U-Phy */
    up_core_init();
+   up_core_set_status (UP_CORE_CONNECTED);
 
    if (auto_start() != 0)
    {
