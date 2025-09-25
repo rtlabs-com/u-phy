@@ -15,7 +15,6 @@
 #include "up_api.h"
 #include "up_util.h"
 #include "model.h"
-#include "core.h"
 
 #include "osal.h"
 
@@ -28,6 +27,10 @@
 #define STORAGE_ROOT        "/disk1" /* No trailing slash */
 #define APP_TASK_PRIO       5
 #define APP_TASK_STACK_SIZE 6000
+
+extern void up_core_init (void);
+extern void up_core_set_status (uint32_t status);
+extern void core_bringup_network (void);
 
 static void main_entry (void * arg)
 {

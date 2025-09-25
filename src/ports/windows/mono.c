@@ -15,9 +15,13 @@
 #include "up_api.h"
 #include "up_util.h"
 #include "model.h"
-#include "core.h"
 
 #include <stdio.h>
+
+extern void up_core_init (void);
+extern void up_core_set_status (uint32_t status);
+extern void core_set_interface (char * iface, size_t size);
+extern void core_bringup_network (void);
 
 static void main_entry (up_t * up)
 {
