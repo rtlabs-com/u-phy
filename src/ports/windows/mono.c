@@ -83,6 +83,11 @@ static int _cmd_start (int argc, char * argv[])
       app_busconf.modbus = up_modbus_config;
 #endif
       break;
+   case UP_BUSTYPE_CCLINK:
+#if UP_DEVICE_CCLINK_SUPPORTED
+      app_busconf.cclink = up_cclink_config;
+#endif
+      break;
    case UP_BUSTYPE_MOCK:
       app_busconf.mock = up_mock_config;
       break;
@@ -114,6 +119,9 @@ static char cmd_start_help_long[] =
 #endif
 #if UP_DEVICE_MODBUS_SUPPORTED
    "  - modbus\n"
+#endif
+#if UP_DEVICE_CCLINK_SUPPORTED
+   "  - cclink\n"
 #endif
    "  - mock\n";
 
