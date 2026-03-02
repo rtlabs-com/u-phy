@@ -8,6 +8,7 @@ the following protocols:
 - **EtherCAT**
 - **EtherNet/IP**
 - **Modbus TCP**
+- **CC-Link IE Field Network Basic (CCIEFB)**
 
 For detailed information, including tutorials and guides on how to
 utilize this sample application effectively, please refer to our
