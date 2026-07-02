@@ -28,6 +28,11 @@
 #define APPLICATION_MODE_SYNCHRONOUS 0
 #endif
 
+/* Set the poll interval [us] for free-running mode. */
+#ifndef APPLICATION_POLL_INTERVAL_US
+#define APPLICATION_POLL_INTERVAL_US 10000
+#endif
+
 /* Enable watchdog to detect U-Phy communication failures. The sample
    application enables the watchdog by default.  Set
    ENABLE_UP_COMMUNICATION_WATCHDOG to 0 to keep the watchdog
@@ -200,6 +205,12 @@ void app_main (up_t * up)
    if (up_write_event_mask(up, UP_EVENT_MASK_SYNCHRONOUS_MODE) != 0)
    {
       printf ("Failed to write eventmask mode\n");
+      exit (EXIT_FAILURE);
+   }
+#else
+   if (up_set_poll_interval (up, APPLICATION_POLL_INTERVAL_US) != 0)
+   {
+      printf ("Failed to set poll interval to %d us\n", APPLICATION_POLL_INTERVAL_US);
       exit (EXIT_FAILURE);
    }
 #endif
